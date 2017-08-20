@@ -327,6 +327,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
             var recentSkins = $localStorage.recentSkins;
             if (!recentSkins) recentSkins = [];
             recentSkins.unshift(data.id);
+            if (recentSkins.length > 20) recentSkins.pop();
             $localStorage.recentSkins = recentSkins;
 
             if ($stateParams.callback) {
