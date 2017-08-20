@@ -52,4 +52,18 @@
             </div>
         </div>
     </div>
+    <br/>
+    <div class="card-panel z-depth-2" ng-show="$storage.recentSkins && $storage.recentSkins.length>0">
+        <div class="row">
+            <div class="col s12">
+                <h4>Your Skins</h4>
+
+                <div>
+                    <a ng-repeat="skin in $storage.recentSkins" class="galleryImage tooltipped" href="/{{skin}}" ui-sref="gallery.view({id:skin})" ui-sref-options="{notify:false}" data-position="top" data-delay="20" data-tooltip="{{ '#' + skin }}">
+                        <img ng-class="{'skull-image': !browser.isFirefox()}" src="/img/loading.svg" ng-preload-src="https://api.mineskin.org/render/{{ skin }}/head">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

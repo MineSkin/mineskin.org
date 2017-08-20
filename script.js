@@ -363,10 +363,12 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
     };
 }]);
 
-mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", "$cookies", "$window", "$state", "$timeout", "$sce", "ngMeta", function ($scope, $stateParams, $http, $cookies, $window, $state, $timeout, $sce, ngMeta) {
+mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", "$cookies", "$window", "$state", "$timeout", "$sce", "ngMeta","$localStorage", function ($scope, $stateParams, $http, $cookies, $window, $state, $timeout, $sce, ngMeta,$localStorage) {
     console.info("galleryController")
 
     $scope.materializeInit('tab2');
+
+    $scope.$storage = $localStorage;
 
     // To keep track of reloads (new-loads), since the pagination seems to reset the route-param back to its default value
     var newLoad = true;
