@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html ng-app="mineskinApp" ng-controller="skinController">
+    <head>
+        <title ng-bind="ngMeta.title">MineSkin</title>
+        <link id="favicon" rel="icon" type="image/png" href="{{ ngMeta.image || 'https://mineskin.org/favicon.png'}}"/>
+
+        <!-- SEO -->
+        <meta name="keywords" content="mineskin,skin,skull,generator,custom,head,skin,minecraft,player,playerhead,skulls,customskull,spigot,bukkit,generator,api,customblocks">
+        <meta name="description" content="MineSkin.org allows you to generate skin texture data for Minecraft which is signed by Mojang.">
+        <!--<update-meta name="description" content="{{head.pageDescription}}"></update-meta>-->
+        <meta name="author" content="inventivetalent">
+
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="MineSkin">
+        <!--<update-meta property="og:title" content="{{head.pageTitle || 'MineSkin'}}"></update-meta>-->
+        <meta property="og:image" content="https://mineskin.org/favicon.png">
+        <!--<update-meta property="og:image" content="{{head.pageIcon || 'https://mineskin.org/favicon.png'}}"></update-meta>-->
+        <meta property="og:description" content="MineSkin.org allows you to generate skin texture data for Minecraft which is signed by Mojang.">
+        <!--<update-meta property="og:description" content="{{head.pageDescription}}"></update-meta>-->
+
+        <meta property="twitter:title" content="MineSkin">
+        <!--<update-meta property="twitter:title" content="{{head.pageTitle || 'MineSkin'}}"></update-meta>-->
+        <meta property="twitter:image" content="https://mineskin.org/favicon.png">
+        <!--<update-meta property="twitter:image" content="{{head.pageIcon || 'https://mineskin.org/favicon.png'}}"></update-meta>-->
+        <meta property="twitter:description" content="MineSkin.org allows you to generate skin texture data for Minecraft which is signed by Mojang.">
+        <!--<update-meta property="twitter:description" content="{{head.pageDescription}}"></update-meta>-->
+        <meta property="twitter:site" content="@MineSkinOrg">
+        <meta property="twitter:creator" content="@Inventivtalent">
+        <meta property="twitter:card" content="summary">
+
+
+        <!-- Style -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css" integrity="sha256-x8PYmLKD83R9T/sYmJn1j3is/chhJdySyhet/JuHnfY=" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css" integrity="sha256-mkKV3FUh67dtli09bVbaYyM1526XgR92cz1uKarE1jo=" crossorigin="anonymous"/>
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+        <meta name=viewport content="width=device-width, initial-scale=1">
+
+        <meta name="fragment" content="!">
+        <base href="/">
+
+        <script type='application/ld+json'>
+{
+  "@context": "http://www.schema.org",
+  "@type": "WebSite",
+  "name": "MineSkin",
+  "url": "https://mineskin.org"
+}
+        </script>
+    </head>
+    <body ng-cloak>
+        <header>
+            <nav class="nav-extended indigo">
+                <div class="nav-wrapper row">
+                    <a href="#" class="brand-logo center">MineSkin</a>
+                </div>
+                <div class="nav-content">
+                    <ul class="tabs tabs-transparent tabs-fixed-width" style="overflow-x: hidden;">
+                        <li class="tab"><a ui-sref="index()" ng-class="{'active':state.is('index')}" href="#tab1" id="tab1-trigger">Generate</a></li>
+                        <li class="tab"><a ui-sref="gallery()" ng-class="{'active':state.is('gallery')}" href="#tab2" id="tab2-trigger">Gallery</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <main>
+            <div id="tab1" class="col s12">
+                <div ui-view="tab1"></div>
+            </div>
+            <div id="tab2" class="col s12">
+                <div ui-view="tab2"></div>
+            </div>
+        </main>
+        <footer class="indigo page-footer darken-1" style="margin-top:100px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col s8">
+                        <h5 class="white-text">About</h5>
+                        <p class="grey-text text-lighten-4">
+                            <strong>MineSkin.org</strong> allows you to generate <strong>skin texture data</strong> signed by Mojang.<br/>
+                            These can be used on ingame skull blocks or to change a player's skin using some packet magic :).<br/>
+                            <br/>
+                            This website makes custom skins a lot more convenient and less time consuming, since it uses multiple accounts donated by multiple awesome people &lt;3. This way, you don't have to use your own account to generate textures.<br/>
+                            <strong>This way you can get your custom textures within seconds, without going through the hassle of changing your own skin, etc.</strong><br/>
+                            If you'd like to make things even faster, please <a href="https://inventivetalent.org/contact/" target="_blank">contact inventivetalent</a> to donate a Minecraft account :) (<a href="https://github.com/MineSkin/mineskin.org/wiki/Account-Contribution" target="_blank">more details</a>)<br/>
+                        </p>
+                    </div>
+                    <div class="col s2">
+                        <h5 class="white-text">Useful Links</h5>
+                        <ul>
+                            <li><a class="white-text" href="https://twitter.com/MineSkinOrg" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Twitter</a></li>
+                            <li><a class="white-text" href="https://github.com/MineSkin" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> GitHub</a></li>
+                            <li><a class="white-text" href="https://www.spigotmc.org/threads/164209" target="_blank">SpigotMC Thread</a></li>
+                            <br/>
+                            <li><a class="white-text" target="_blank" href="https://github.com/MineSkin/mineskin.org/wiki/Account-Contribution">Donate Account</a></li>
+                            <li><a class="white-text" target="_blank" href="https://donation.inventivetalent.org/paypal/?item=MineSkin">General Donation</a></li>
+                        </ul>
+                    </div>
+                    <div class="col s2">
+                        <h5 class="white-text">More Links</h5>
+                        <ul>
+                            <li><a class="white-text" ui-sref="index.stats">Stats</a></li>
+                            <br/>
+                            <li><a class="white-text" href="https://github.com/InventivetalentDev/MineskinClient" target="_blank">Java API Client</a></li>
+                            <li><a class="white-text" href="https://forums.spongepowered.org/t/lib-mineskinsponge-create-skins-easily/16293" target="_blank">SpongePowered API Client</a></li>
+                            <br/>
+                            <li><a class="white-text" href="https://r.spiget.org/25417" target="_blank">CustomSkins Plugin</a></li>
+                            <li><a class="white-text" href="https://r.spiget.org/6478" target="_blank">CustomBlocks Plugin</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                <div class="container">
+                    Made by <a class="cyan-text" href="https://inventivetalent.org" target="_blank">inventivetalent</a>
+                    <span class="pull-right">
+                        This website is not affiliated with Minecraft / Mojang AB.
+                    </span>
+                </div>
+            </div>
+        </footer>
+
+
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.4/angular.min.js" integrity="sha256-jFCqhWdzGFjoG8/SAncY2afI/Xv1TPSWSZrb9dpXQbk=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.4/angular-cookies.min.js" integrity="sha256-KYao/9ufihAPfOpLlVPFDjECsFXMQqBhlbLn3FBsgvw=" crossorigin="anonymous"></script>
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.6.5/angular-sanitize.min.js" integrity="sha256-FPRibkFAa4FnfmKmMCV4sX162vfxgb3aOyN4kL+3bvA=" crossorigin="anonymous"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js" integrity="sha256-0YzDSJS0qH+wpvug+Im1cMB9CX919NMtHj0d2VVHPp4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-meta/1.0.0/ngMeta.min.js" integrity="sha256-ozIo0gq6Sx8v/G9Tuaw8a70PT5leMat+Z3JeWyxZxzA=" crossorigin="anonymous"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js" integrity="sha256-FMocp8pp1WruAK6GtjNDtuGAALCt/dCsVtw7oSjvPX0=" crossorigin="anonymous"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js" integrity="sha256-3mqgTUhHNgfXgjrzjPOaW03DdQ9hgW92BApzLREoRoA=" crossorigin="anonymous"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" integrity="sha256-1hjUhpc44NwiNg8OwMu2QzJXhD8kcj+sJA3aCQZoUjg=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-moment/1.0.1/angular-moment.min.js" integrity="sha256-BvdaZdPJc+x1dwsmn62ZkJ+4WepCjqP3xAFYrPP10F8=" crossorigin="anonymous"></script>
+
+        <!--<script src="https://cdn.rawgit.com/dwmkerr/angular-modal-service/126c6ecf/dst/angular-modal-service.min.js"></script>-->
+        <!-- Modified script which fixes issues with using the service in the onEnter function -->
+        <script src="https://cdn.rawgit.com/pdgendt/c351649feb30860182c2/raw/2ca26cbdc7d5913e567b2a52087ee109b362cb8a/angular-modal-service.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.13/ng-file-upload.min.js" integrity="sha256-TqtYHg6/i06jaAnqVU0twQV7dROa7Um8CpqElzK9024=" crossorigin="anonymous"></script>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-materialize/0.2.2/angular-materialize.min.js"></script>
+
+        <script src="https://platform.twitter.com/widgets.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.6.0/clipboard.min.js"></script>
+
+        <script src="script.js"></script>
+    </body>
+</html>

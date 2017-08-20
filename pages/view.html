@@ -1,0 +1,150 @@
+<div class="modal">
+    <div class="modal-content">
+        <style>
+            .skin-image {
+                -webkit-filter: drop-shadow(8px 8px 6px rgba(0, 0, 0, 0.5));
+
+                min-width: 150px;
+                min-height: 150px;
+            }
+        </style>
+        <h4>{{ skin.name || '#' + skin.id}}
+            <small class="text-muted">{{skin.private ? "(private)" : ""}}</small>
+        </h4>
+        <div class="row card-panel">
+            <div class="col s3" style="min-width: 195px; min-height: 415px; z-index:1;">
+                <div style="min-height: 406px;">
+                    <img src="https://api.mineskin.org/render/skin?url={{skin.data.texture.url}}&skinName={{skin.name}}&options=%26aa=true%26hr={{skinRotation}}" id="skinImage" class="center-align skin-image">
+                </div>
+                <div style="padding-top: 20px;" class="text-center">
+                    <div class="btn-group">
+                        <button class="btn btn-primary" title="Rotate Left" ng-click="skinRotation = (skinRotation - 36) % 360" ng-disabled="!skinImageLoaded"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+                        <button class="btn btn-primary" title="Rotate Right" ng-click="skinRotation = (skinRotation + 36) % 360" ng-disabled="!skinImageLoaded"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="col s9" style="z-index:1;">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <label for="textureValue">Texture Value</label>
+                        <input type="text" readonly id="textureValue" ng-model="skin.data.texture.value">
+                        <button class="btn tooltipped" data-clipboard-target="#textureValue"><i class="fa fa-clipboard" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <label for="textureSignature">Texture Signature</label>
+                        <input type="text" readonly id="textureSignature" ng-model="skin.data.texture.signature">
+                        <button class="btn tooltipped" data-clipboard-target="#textureSignature"><i class="fa fa-clipboard" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <label for="textureUrl">Texture URL</label>
+                        <input type="text" readonly id="textureUrl" ng-model="skin.data.texture.url">
+                        <button class="btn tooltipped" data-clipboard-target="#textureUrl"><i class="fa fa-clipboard" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <br>
+
+                        <a href="https://minecraft.net/profile/skin/remote?url={{skin.data.texture.url}}" target="_blank">Use this Skin</a><br/>
+                        <a href="{{skin.data.texture.url}}" target="_blank">Download Skin</a> (Right-Click &gt; Save as)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row card-panel">
+            <div class="col s12">
+                <div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <label for="giveCommand">Skull /give Command</label>
+                            <textarea style="min-height: 150px;max-width:100%;" id="giveCommand" class="materialize-textarea" readonly>/give @p minecraft:skull 1 3 {
+    SkullOwner:{
+        Id:{{skin.data.uuid}},
+        Properties:{
+            textures:[{
+                Value:"{{skin.data.texture.value}}",
+                Signature:"{{skin.data.texture.signature}}"
+            }]
+        }
+    },
+    display:{
+        Name:"{{ skin.name || '#' + skin.id}}",
+        Lore:[
+            "Skin #{{skin.id}}",
+            "generated on {{(skin.timestamp*1000 | date : "medium")}}",
+            "via MineSkin.org"
+        ]
+    }
+}
+            </textarea>
+                            <button class="btn tooltipped" data-clipboard-target="#giveCommand"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy</button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row card-panel">
+            <div class="col s12">
+                <div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <label for="javaGameProfile">Java Game Profile</label>
+                            <textarea style="min-height: 150px;max-width:100%;" id="javaGameProfile" class="materialize-textarea" readonly>// Skin #{{skin.id}} generated on {{(skin.timestamp*1000 | date : "medium")}} via MineSkin.org
+GameProfile skin{{skin.id}} = new GameProfile(UUID.fromString("{{skin.data.uuid}}"), "skin{{skin.id}}");
+skin{{skin.id}}.getProperties().put("textures", new Property(
+    "textures",
+    "{{skin.data.texture.value}}",
+    "{{skin.data.texture.signature}}"));
+            </textarea>
+                            <button class="btn tooltipped" data-clipboard-target="#javaGameProfile"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br/>
+
+        <div class="row">
+            <div class="pull-left">
+                {{skin.views}} views
+            </div>
+            <div class="pull-right">
+                <div ng-show="skin.accountId > 0 && skin.timestamp > 0" class="text-muted">
+                    Generated on {{(skin.timestamp*1000 | date : "medium")}} by account #{{skin.accountId}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var clipboard = new Clipboard('.btn');
+
+        function setTooltip(btn, message) {
+            $(btn).tooltip({delay: 1, tooltip: message, position: "bottom"}).trigger("mouseenter")
+        }
+
+        function hideTooltip(btn) {
+            setTimeout(function () {
+                $(btn).tooltip('remove');
+            }, 5000);
+        }
+
+        clipboard.on('success', function (e) {
+            setTooltip(e.trigger, 'Copied!');
+            hideTooltip(e.trigger);
+        });
+
+        clipboard.on('error', function (e) {
+            setTooltip(e.trigger, 'Failed!');
+            hideTooltip(e.trigger);
+        });
+    </script>
+</div>

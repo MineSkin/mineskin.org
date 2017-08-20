@@ -1,0 +1,22 @@
+<div class="modal">
+    <div class="modal-content">
+        <h4>Stats</h4>
+
+        <br/>
+        <div style="text-align: center; font-size: 20px;">
+            <strong>MineSkin</strong> has already generated <strong>{{stats.total | number}}</strong> skins in total,<br/>
+            <strong>{{stats.unique | number}}</strong> of which are completely unique!<br/>
+            <br/>
+            In only the last 24 hours, MineSkin generated <strong>{{stats.lastDay | number}}</strong> skins,<br/>
+            which adds up to <strong>{{stats.details.lastMonth | number}}</strong> in the last month and <strong>{{stats.details.lastYear | number}}</strong> last year,<br/>
+            and <strong>{{stats.details.lastHour | number}}</strong> in just the last 60 minutes!<br/>
+            <br/>
+            <strong>{{stats.details.genUpload / stats.unique * 100 | number: 0}}%</strong> of skins were uploaded,<br/>
+            <strong>{{stats.details.genUrl / stats.unique * 100 | number: 0}}%</strong> were generated from an URL<br/>
+            and <strong>{{stats.details.genUser / stats.unique * 100 | number: 0}}%</strong> have been generated from other Minecraft players.<br/>
+            <br/>
+            All the generated skins have been viewed <strong>{{stats.details.totalViews | number}}</strong> times in total.<br/>
+            <br/>
+        </div>
+    </div>
+</div>

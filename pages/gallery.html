@@ -1,0 +1,55 @@
+<div class="container">
+    <style>
+        /*
+        * Based on http://stackoverflow.com/a/14260175/6257838
+        */
+        .skull-image {
+            -webkit-filter: drop-shadow(8px 8px 6px rgba(0, 0, 0, 0.5));
+
+            min-width: 150px;
+            min-height: 150px;
+        }
+    </style>
+
+    <h2>Skin Gallery
+        <small>{{'Page #' + pagination.page}}</small>
+    </h2>
+    <div class="card-panel z-depth-2">
+        <div class="row">
+            <div class="col s12">
+                <div ng-init="galleryInit()">
+                    <div ng-show="skins.length === 0">
+                        <h3>Loading...</h3>
+                    </div>
+                    <div>
+                        <a ng-repeat="skin in skins" class="galleryImage tooltipped" href="/{{skin.id}}" ui-sref="gallery.view({id:skin.id})" ui-sref-options="{notify:false}" data-position="top" data-delay="20" data-tooltip="{{skin.name || '#' + skin.id}}">
+                            <img ng-class="{'skull-image': !browser.isFirefox(), 'new-image': (getLastSkinCookie() < skin.id)}" src="/img/loading.svg" ng-preload-src="https://api.mineskin.org/render/{{viewMode == 0 ? 'head' : 'skin'}}?url={{skin.url}}&skinName={{skin.name}}">
+                        </a>
+                    </div>
+
+                    <br/>
+                    <div class="center-align">
+                        <pagination
+                                page="pagination.page"
+                                page-size="pagination.itemsPerPage"
+                                total="pagination.totalItems"
+                                show-prev-next="true"
+                                use-simple-prev-next="false"
+                                dots="..."
+                                hide-if-empty="false"
+                                adjacent="2"
+                                scroll-top="false"
+                                pagination-action="pageChanged(page)"/>
+                    </div>
+                    <div>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-primary" ng-click="toggleViewMode()">
+                                Toggle View
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
