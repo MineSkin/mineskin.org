@@ -1,7 +1,7 @@
 var apiBaseUrl = "https://api.mineskin.org";
 var websiteBaseUrl = "https://mineskin.org";
 
-var mineskinApp = angular.module("mineskinApp", ["ui.router", "ui.materialize", "ngFileUpload", "ngCookies", "angularModalService", "ngMeta"]);
+var mineskinApp = angular.module("mineskinApp", ["ui.router", "ui.materialize", "ngFileUpload", "ngCookies", "angularModalService", "ngMeta", "ngStorage"]);
 
 mineskinApp.directive("ngPreloadSrc", function () {
     return {
@@ -204,7 +204,7 @@ mineskinApp.run(['$transitions', '$rootScope', 'ngMeta', function ($transitions,
     ngMeta.init()
 }])
 
-mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http", "$timeout", "$interval", "$stateParams", function ($scope, Upload, $state, $http, $timeout, $interval, $stateParams) {
+mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http", "$timeout", "$interval", "$stateParams", "$localStorage", function ($scope, Upload, $state, $http, $timeout, $interval, $stateParams, $localStorage) {
     console.info("indexController")
 
     $scope.skinUpload = undefined;
@@ -323,6 +323,11 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
 
         setTimeout(function () {
             successAlert.close();
+
+            var recentSkins = $localStorage.recentSkins;
+            if (!recentSkins) recentSkins = [];
+            recentSkins.unshift(data.id);
+            $localStorage.recentSkins = recentSkins;
 
             if ($stateParams.callback) {
                 window.location = $stateParams.callback.replace(":id", data.id);
