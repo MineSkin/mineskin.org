@@ -59,7 +59,7 @@
                 <h4>Your Skins</h4>
 
                 <div>
-                    <a ng-repeat="skin in $storage.recentSkins" class="galleryImage tooltipped" href="/{{skin}}" ui-sref="gallery.view({id:skin})" ui-sref-options="{notify:false}" data-position="top" data-delay="20" data-tooltip="{{ '#' + skin }}">
+                    <a ng-repeat="skin in $storage.recentSkins | limitTo:8" class="galleryImage tooltipped" href="/{{skin}}" ui-sref="gallery.view({id:skin})" ui-sref-options="{notify:false}" data-position="top" data-delay="20" data-tooltip="{{ '#' + skin }}">
                         <img ng-class="{'skull-image': !browser.isFirefox()}" src="/img/loading.svg" ng-preload-src="https://api.mineskin.org/render/{{ skin }}/head">
                     </a>
                 </div>
