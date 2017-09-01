@@ -71,9 +71,12 @@
         <div class="row">
             <div class="col s12">
                 <div class="center-align">
-                    <button class="btn" ng-disabled="generatorTimeout > 0 || (!skinUrl && (!skinUpload || uploadForm.file.$invalid) && !skinUser)" ng-click="generate()">Generate!</button>
+                    <button class="btn" ng-disabled="generating || generatorTimeout > 0 || (!skinUrl && (!skinUpload || uploadForm.file.$invalid) && !skinUser)" ng-click="generate()">Generate!</button>
                     <br/>
                     <span class="help-block" ng-show="generatorTimeout > 0">Please wait {{generatorTimeout}} more second(s)...</span>
+                    <div class="progress" ng-show="generating">
+                        <div class="indeterminate"></div>
+                    </div>
                 </div>
 
 
