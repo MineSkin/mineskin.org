@@ -219,7 +219,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
 
     $interval(function () {
         console.log($scope.windowFocused)
-        if($scope.windowFocused) {
+        if ($scope.windowFocused) {
             $scope.refreshStats();
         }
     }, 10000);
@@ -366,7 +366,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
     };
 }]);
 
-mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", "$cookies", "$window", "$state", "$timeout", "$sce", "ngMeta","$localStorage", function ($scope, $stateParams, $http, $cookies, $window, $state, $timeout, $sce, ngMeta,$localStorage) {
+mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", "$cookies", "$window", "$state", "$timeout", "$sce", "ngMeta", "$localStorage", function ($scope, $stateParams, $http, $cookies, $window, $state, $timeout, $sce, ngMeta, $localStorage) {
     console.info("galleryController")
 
     $scope.materializeInit('tab2');
@@ -377,6 +377,15 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
     var newLoad = true;
 
     $scope.searchQuery = "";
+    $scope.searchTimeout = null;
+    $scope.searchChanged = function () {
+        if ($scope.searchTimeout) {
+            $timeout.cancel($scope.searchTimeout);
+        }
+        $scope.searchTimeout = $timeout(function () {
+            $scope.reloadGallery();
+        }, 500);
+    };
     $scope.viewMode = $cookies.get("viewMode") || 0;// 0 = heads only; 1 = full skins
     $scope.resultType = $cookies.get("resultType");
     if ($scope.resultType == undefined) {
@@ -551,12 +560,12 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
             });
         });
     };
-    $scope.windowFocused=false;
-    $scope.onfocus=function () {
-        $scope.windowFocused=true;
+    $scope.windowFocused = false;
+    $scope.onfocus = function () {
+        $scope.windowFocused = true;
     };
-    $scope.onblur=function () {
-        $scope.windowFocused=false;
+    $scope.onblur = function () {
+        $scope.windowFocused = false;
     };
     /* -Stats */
 
