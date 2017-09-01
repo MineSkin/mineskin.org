@@ -42,16 +42,21 @@
                                 pagination-action="pageChanged(page)"/>
                     </div>
                     <div>
-                        <div class="pull-let">
-                            <div class="input-field col s3">
+                        <div class="row">
+                            <div class="input-field col s4">
                                 <input type="text" id="searchQuery" ng-model="searchQuery" ng-minlength="1" ng-maxlength="100" ng-change="searchChanged()">
                                 <label for="searchQuery" class="required-label">Search Query</label>
                             </div>
-                        </div>
-                        <div class="pull-right">
-                            <button type="button" class="btn btn-primary" ng-click="toggleViewMode()">
-                                Toggle View
-                            </button>
+                            <div class="col s4">
+
+                            </div>
+                            <div class="col s4">
+                               <div class="pull-right">
+                                   <button type="button" class="btn btn-primary" ng-click="toggleViewMode()">
+                                       Toggle View
+                                   </button>
+                               </div>
+                            </div>
                         </div>
                     </div>
                 </div>
