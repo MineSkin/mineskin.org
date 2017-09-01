@@ -218,7 +218,10 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
     $scope.materializeInit('tab1');
 
     $interval(function () {
-        $scope.refreshStats();
+        console.log($scope.windowFocused)
+        if($scope.windowFocused) {
+            $scope.refreshStats();
+        }
     }, 10000);
 
     $scope.generate = function () {
@@ -547,6 +550,13 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
                 $scope.stats = response.data;
             });
         });
+    };
+    $scope.windowFocused=false;
+    $scope.onfocus=function () {
+        $scope.windowFocused=true;
+    };
+    $scope.onblur=function () {
+        $scope.windowFocused=false;
     };
     /* -Stats */
 
