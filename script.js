@@ -215,7 +215,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
     $scope.skinName = "";
     $scope.skinModel = "steve";
 
-    $scope.generating=false;
+    $scope.generating = false;
 
     $scope.materializeInit('tab1');
 
@@ -237,7 +237,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
         console.log($scope.skinUser);
 
         if ($scope.skinUrl) {
-            $scope.generating=true;
+            $scope.generating = true;
             var genAlert = $scope.addAlert("Generating Skin from URL...", "info", 15000);
             setTimeout(function () {
                 $http({
@@ -256,7 +256,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
                 });
             }, 500);
         } else if ($scope.skinUpload) {
-            $scope.generating=true;
+            $scope.generating = true;
             var genAlert = $scope.addAlert("Uploading Skin...", "info", 15000);
             setTimeout(function () {
                 Upload.upload({
@@ -276,7 +276,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
                 });
             }, 500);
         } else if ($scope.skinUser) {
-            $scope.generating=true;
+            $scope.generating = true;
             var skinUuid;
 
             function generateUser(uuid) {
@@ -307,8 +307,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
             } else {
                 var validateAlert = $scope.addAlert("Validating Username...", "info", 10000);
                 $.ajax({
-                    url: apiBaseUrl + "/validate/user/" + $scope.skinUser + "?callback=?",
-                    dataType: "jsonp",
+                    url: apiBaseUrl + "/validate/user/" + $scope.skinUser ,
                     success: function (data) {
                         if (data.valid) {
                             $scope.addAlert("Username is valid", "success", 1000);
@@ -324,7 +323,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
         }
     };
     $scope.generateSuccess = function (data, genAlert) {
-        $scope.generating=false;
+        $scope.generating = false;
         var successAlert = $scope.addAlert("Skin Generated!", "success", 10000);
         if (genAlert) {
             genAlert.close();
@@ -347,7 +346,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
         }, 1000);
     };
     $scope.generateError = function (message, genAlert) {
-        $scope.generating=false;
+        $scope.generating = false;
         $scope.addAlert("Failed to generate Skin: " + message, "danger", 10000);
         if (genAlert) {
             genAlert.close();
@@ -359,8 +358,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
 
     $scope.refreshTimeout = function () {
         $.ajax({
-            url: apiBaseUrl + "/get/delay?callback=?",
-            dataType: "jsonp",
+            url: apiBaseUrl + "/get/delay",
             success: function (data) {
                 $scope.generatorDelay = data.delay;
                 $scope.generatorTimeout = data.nextRelative;
@@ -504,7 +502,9 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
     });
 }])
 
-mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state", function ($scope, $timeout, $http, $state) {
+mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state", "$cookies", function ($scope, $timeout, $http, $state, $cookies) {
+    apiBaseUrl = $cookies.get("apiBaseUrl") || apiBaseUrl;
+
     /* +Alerts */
     $scope.alerts = [];
     $scope.addAlert = function (msg, type, timeout) {
