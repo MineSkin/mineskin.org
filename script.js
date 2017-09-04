@@ -135,7 +135,7 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
             }
         })
         .state("gallery", {
-            url: "/gallery/:page",
+            url: "/gallery/:page?query",
             params: {
                 page: {value: "1"}
             },
@@ -307,7 +307,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
             } else {
                 var validateAlert = $scope.addAlert("Validating Username...", "info", 10000);
                 $.ajax({
-                    url: apiBaseUrl + "/validate/user/" + $scope.skinUser ,
+                    url: apiBaseUrl + "/validate/user/" + $scope.skinUser,
                     success: function (data) {
                         if (data.valid) {
                             $scope.addAlert("Username is valid", "success", 1000);
@@ -381,13 +381,14 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
     // To keep track of reloads (new-loads), since the pagination seems to reset the route-param back to its default value
     var newLoad = true;
 
-    $scope.searchQuery = "";
+    $scope.searchQuery = $stateParams.query || "";
     $scope.searchTimeout = null;
     $scope.searchChanged = function () {
         if ($scope.searchTimeout) {
             $timeout.cancel($scope.searchTimeout);
         }
         $scope.searchTimeout = $timeout(function () {
+            $state.transitionTo('gallery', {page: $stateParams.page, query: $scope.searchQuery}, {notify: false});
             $scope.reloadGallery();
         }, 500);
     };
