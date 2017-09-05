@@ -216,6 +216,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
     $scope.skinModel = "steve";
 
     $scope.generating = false;
+    $scope.generateAttempt = 0;
 
     $scope.materializeInit('tab1');
 
@@ -324,6 +325,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
     };
     $scope.generateSuccess = function (data, genAlert) {
         $scope.generating = false;
+        $scope.generateAttempt = 0;
         var successAlert = $scope.addAlert("Skin Generated!", "success", 10000);
         if (genAlert) {
             genAlert.close();
@@ -346,11 +348,23 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
         }, 1000);
     };
     $scope.generateError = function (message, genAlert) {
-        $scope.generating = false;
-        $scope.addAlert("Failed to generate Skin: " + message, "danger", 10000);
+        // $scope.generating = false;
+        $scope.generateAttempt++;
+        $scope.addAlert("Failed to generate Skin: " + message, "danger", 2000);
         if (genAlert) {
             genAlert.close();
         }
+
+        if ($scope.generateAttempt > 5) {
+            $scope.generating = false;
+            return;
+        }
+        $timeout(function () {
+            Materialize.toast("Waiting 5 seconds and trying again...", 5000);
+            $timeout(function () {
+                $scope.generate();
+            }, 7000);
+        }, 500);
     };
 
     $scope.generatorTimeout = 0;
