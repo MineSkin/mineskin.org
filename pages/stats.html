@@ -2,8 +2,23 @@
     <div class="modal-content">
         <h4>Stats</h4>
 
-        <br/>
-        <div style="text-align: center; font-size: 20px;">
+        <div class="center" ng-show="!stats" style="padding:20px">
+            <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; font-size: 20px;" ng-show="stats">
             <strong>MineSkin</strong> has already generated <strong>{{stats.total | number}}</strong> skins in total,<br/>
             <strong>{{stats.unique | number}}</strong> of which are completely unique!<br/>
             <br/>
