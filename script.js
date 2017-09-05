@@ -363,7 +363,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
             Materialize.toast("Waiting 5 seconds and trying again...", 5000);
             $timeout(function () {
                 $scope.generate();
-            }, 7000);
+            }, 7000 + ($scope.generatorDelay * 1000));
         }, 500);
     };
 
