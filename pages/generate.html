@@ -2,41 +2,66 @@
     <h2>Generate New Skin</h2>
 
     <div class="card-panel z-depth-2">
-        <h3>Select Skin</h3>
-
         <div class="row">
-            <form class="col s12" name="uploadForm">
-                <div class="row">
-                    <div ng-show="!skinUrl && !skinUser" class="input-field file-field col s12">
-                        <div ngf-drop ng-model="skinUpload" class="drop-box">
-                            <div ng-show="!skinUpload">
-                                <a type="file" ngf-select class="btn" id="skinUpload" name="file" ng-model="skinUpload" ngf-pattern="'image/png'" ngf-accept="'image/png'" ngf-max-size="16KB" ngf-dimensions="$width == 64 && ($height == 32 || $height == 64)" ngf-run-all-validations="true" ngf-model-options="{allowInvalid: true}"><i class="fa fa-file-image-o" aria-hidden="true"></i>&nbsp; Select File
-                                </a>
+            <div class="col s12 m9">
+                <h3>Select Skin</h3>
+
+                <form class="col s12" name="uploadForm">
+                    <div class="row">
+                        <div ng-show="!skinUrl && !skinUser" class="input-field file-field col s12">
+                            <div ngf-drop ng-model="skinUpload" class="drop-box">
+                                <div ng-show="!skinUpload">
+                                    <a type="file" ngf-select class="btn" id="skinUpload" name="file" ng-model="skinUpload" ngf-pattern="'image/png'" ngf-accept="'image/png'" ngf-max-size="16KB" ngf-dimensions="$width == 64 && ($height == 32 || $height == 64)" ngf-run-all-validations="true" ngf-model-options="{allowInvalid: true}"><i class="fa fa-file-image-o" aria-hidden="true"></i>&nbsp; Select
+                                        File
+                                    </a>
+                                </div>
+                                <div ng-show="skinUpload" style="padding-top: 4px;">
+                                    <img src="" ngf-thumbnail="skinUpload" class="z-depth-1" style="height:128px;margin:2px;image-rendering: pixelated">
+                                    <a class="btn" ng-click="skinUpload=null;">X</a>
+                                </div>
+                                <ul ng-show="uploadForm.file.$invalid">
+                                    <li ng-show="uploadForm.file.$error.dimensions">Image dimensions are {{ skinUpload.$ngfWidth }}x{{ skinUpload.$ngfHeight }}, must be either 64x32 or 64x64</li>
+                                    <li ng-show="uploadForm.file.$error.maxSize">Image size is {{ skinUpload.size / 1000 | number: 1 }} KB, must be at most 16 KB</li>
+                                </ul>
                             </div>
-                            <div ng-show="skinUpload" style="padding-top: 4px;">
-                                <img src="" ngf-thumbnail="skinUpload" class="z-depth-1" style="height:128px;margin:2px;image-rendering: pixelated">
-                                <a class="btn" ng-click="skinUpload=null;">X</a>
-                            </div>
-                            <ul ng-show="uploadForm.file.$invalid">
-                                <li ng-show="uploadForm.file.$error.dimensions">Image dimensions are {{ skinUpload.$ngfWidth }}x{{ skinUpload.$ngfHeight }}, must be either 64x32 or 64x64</li>
-                                <li ng-show="uploadForm.file.$error.maxSize">Image size is {{ skinUpload.size / 1000 | number: 1 }} KB, must be at most 16 KB</li>
-                            </ul>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div ng-show="!skinUpload && !skinUser" class="input-field col s12">
-                        <input type="url" id="skinUrl" ng-model="skinUrl" ng-required="!skinUpload && !skinUser">
-                        <label for="skinUrl" class="required-label"><i class="fa fa-link" aria-hidden="true"></i>&nbsp; Image URL</label>
+                    <div class="row">
+                        <div ng-show="!skinUpload && !skinUser" class="input-field col s12">
+                            <input type="url" id="skinUrl" ng-model="skinUrl" ng-required="!skinUpload && !skinUser">
+                            <label for="skinUrl" class="required-label"><i class="fa fa-link" aria-hidden="true"></i>&nbsp; Image URL</label>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div ng-show="!skinUrl && !skinUpload" class="input-field col s12">
-                        <input type="text" id="skinUser" ng-model="skinUser" ng-required="!skinUrl && !skinUpload" ng-minlength="4" ng-maxlength="36" ng-change="skinName = skinUser">
-                        <label for="skinUser" class="required-label"><i class="fa fa-user" aria-hidden="true"></i>&nbsp; Minecraft Username</label>
+                    <div class="row">
+                        <div ng-show="!skinUrl && !skinUpload" class="input-field col s12">
+                            <input type="text" id="skinUser" ng-model="skinUser" ng-required="!skinUrl && !skinUpload" ng-minlength="4" ng-maxlength="36" ng-change="skinName = skinUser">
+                            <label for="skinUser" class="required-label"><i class="fa fa-user" aria-hidden="true"></i>&nbsp; Minecraft Username</label>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="col s12 m3 right">
+                <iframe id="skinRender" frameborder="0" style="display: none;min-height:450px;max-height:500px; min-width:200px;max-width:220px;"></iframe>
+                <script>
+                    $(document).ready(function () {
+                        $("#skinUrl,#skinUser").on("change", function () {
+                            var url = $("#skinUrl").val();
+                            var user = $("#skinUser").val();
+                            if (url && $("#skinUrl").is(":visible")) {
+                                $("#skinRender").attr("src", "https://skinrender.ga/embed/?skin.url=" + url + "&autoResize=true&shadow=true&camera.position=-15,35,20&controls.pan=false");
+                            } else if (user && $("#skinUser").is(":visible")) {
+                                $("#skinRender").attr("src", "https://skinrender.ga/embed/?skin.name=" + user + "&autoResize=true&shadow=true&camera.position=-15,35,20&controls.pan=false");
+                            }
+                        });
+                        $("#skinRender").on("load", function () {
+                            $("#skinRender").show();
+                        })
+                        $("#skinRender").on("error", function () {
+                            $("#skinRender").hide();
+                        })
+                    });
+                </script>
+            </div>
         </div>
     </div>
 
