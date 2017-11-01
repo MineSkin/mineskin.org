@@ -16,11 +16,13 @@
                         <div class="spinner-layer spinner-blue-only">
                             <div class="circle-clipper left">
                                 <div class="circle"></div>
-                            </div><div class="gap-patch">
-                            <div class="circle"></div>
-                        </div><div class="circle-clipper right">
-                            <div class="circle"></div>
-                        </div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -33,15 +35,34 @@
             </h4>
             <div class="row card-panel">
                 <div class="col s3" style="min-width: 195px; min-height: 415px; z-index:1;">
-                    <div style="min-height: 406px;">
-                        <img src="https://api.mineskin.org/render/skin?url={{skin.data.texture.url}}&skinName={{skin.name}}&options=%26aa=true%26hr={{skinRotation}}" id="skinImage" class="center-align skin-image">
-                    </div>
-                    <div style="padding-top: 20px;" class="text-center">
-                        <div class="btn-group">
-                            <button class="btn btn-primary" title="Rotate Left" ng-click="skinRotation = (skinRotation - 36) % 360" ng-disabled="!skinImageLoaded"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
-                            <button class="btn btn-primary" title="Rotate Right" ng-click="skinRotation = (skinRotation + 36) % 360" ng-disabled="!skinImageLoaded"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                    <div id="skinImageContainer">
+                        <div style="min-height: 406px;">
+                            <img src="https://api.mineskin.org/render/skin?url={{skin.data.texture.url}}&skinName={{skin.name}}&options=%26aa=true%26hr={{skinRotation}}" id="skinImage" class="center-align skin-image">
+                        </div>
+                        <div style="padding-top: 20px;" class="text-center">
+                            <div class="btn-group">
+                                <button class="btn btn-primary" title="Rotate Left" ng-click="skinRotation = (skinRotation - 36) % 360" ng-disabled="!skinImageLoaded"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+                                <button class="btn btn-primary" title="Rotate Right" ng-click="skinRotation = (skinRotation + 36) % 360" ng-disabled="!skinImageLoaded"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                            </div>
                         </div>
                     </div>
+                    <div id="skinRenderContainer" style="display: none;">
+                        <iframe frameborder="0" src="#" id="skinRender" style="min-height:450px;max-height:500px; min-width:200px;max-width:220px;"></iframe>
+                    </div>
+                    <span style="display:none" id="skinId">{{ skin.id }}</span>
+                    <script>
+                        $(document).ready(function () {
+                            $("#skinImage").on("load", function () {
+                                if(!/bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent)) {// disable for crawlers
+                                    $("#skinRender").attr("src", "https://skinrender.ga/embed/?skin=https://api.mineskin.org/render/texture/" + $("#skinId").text() + "&autoResize=true&shadow=true&camera.position=-15,35,20&controls.pan=false");
+                                    $("#skinRender").on("load", function () {
+                                        $("#skinImageContainer").hide();
+                                        $("#skinRenderContainer").show();
+                                    })
+                                }
+                            })
+                        });
+                    </script>
                 </div>
                 <div class="col s9" style="z-index:1;">
                     <div class="row">
