@@ -16,6 +16,7 @@
                                     </a>
                                 </div>
                                 <div ng-show="skinUpload" style="padding-top: 4px;">
+                                    <img src="" ngf-src="skinUpload" id="skinUploadTempImage" style="display:none;">
                                     <img src="" ngf-thumbnail="skinUpload" class="z-depth-1" style="height:128px;margin:2px;image-rendering: pixelated">
                                     <a class="btn" ng-click="skinUpload=null;">X</a>
                                 </div>
@@ -53,6 +54,19 @@
                                 $("#skinRender").attr("src", "https://skinrender.ga/embed/?skin.name=" + user + "&autoResize=true&shadow=true&camera.position=-15,35,20&controls.pan=false");
                             }
                         });
+//                        $("#skinUploadTempImage").on("load", function () {
+//                            var upload = $("#skinUploadTempImage").attr("src");
+//                            if (upload) {
+//                                $.ajax({
+//                                    url: upload
+//                                }).done(function (response) {
+//                                    console.log(response)
+//                                    var base64 = "data:image/png;base64," + btoa(encodeURIComponent(response));
+//                                    console.log(base64)
+//                                    $("#skinRender").attr("src", "https://skinrender.ga/embed/?skin.data=" + base64 + "&autoResize=true&shadow=true&camera.position=-15,35,20&controls.pan=false");
+//                                })
+//                            }
+//                        })
                         $("#skinRender").on("load", function () {
                             $("#skinRender").show();
                         })
