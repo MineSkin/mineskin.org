@@ -78,7 +78,7 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
     //     });
     $stateProvider
         .state("index", {
-            url: "/",
+            url: "/?generateUrl",
             views: {
                 'tab1': {
                     templateUrl: "/pages/generate.html",
@@ -154,7 +154,7 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
             }
         })
         .state("gallery.view", {
-            url: "^/:id",
+            url: "^/{id:[0-9]*}",
             onEnter: ["$state", "$stateParams", "ModalService", function ($state, $stateParams, ModalService) {
                 console.info("onEnter");
                 console.log($stateParams)
@@ -366,6 +366,11 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
             }, 7000 + ($scope.generatorDelay * 1000));
         }, 500);
     };
+
+    if ($stateParams.generateUrl && $stateParams.generateUrl.length > 0) {
+        $scope.skinUrl = $stateParams.generateUrl;
+        $scope.generate();
+    }
 
     $scope.generatorTimeout = 0;
     $scope.generatorDelay = 0;
