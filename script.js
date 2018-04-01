@@ -78,7 +78,7 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
     //     });
     $stateProvider
         .state("index", {
-            url: "/?generateUrl",
+            url: "/?generateUrl&generateName&generatePrivate&generateCallback",
             views: {
                 'tab1': {
                     templateUrl: "/pages/generate.html",
@@ -154,10 +154,11 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
             }
         })
         .state("gallery.view", {
-            url: "^/{id:[0-9]*}",
+            url: "^/{id:[0-9]{1,9}}",
             onEnter: ["$state", "$stateParams", "ModalService", function ($state, $stateParams, ModalService) {
                 console.info("onEnter");
-                console.log($stateParams)
+                console.log($stateParams);
+                if (!$stateParams.id) return;
 
                 ModalService.showModal({
                     templateUrl: "/pages/view.html",
@@ -340,8 +341,8 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
             if (recentSkins.length > 20) recentSkins.pop();
             $localStorage.recentSkins = recentSkins;
 
-            if ($stateParams.callback) {
-                window.location = $stateParams.callback.replace(":id", data.id);
+            if ($stateParams.generateCallback) {
+                window.location = $stateParams.generateCallback.replace(":id:", data.id);
             } else {
                 $state.go("gallery.view", {id: data.id})
             }
@@ -367,6 +368,12 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
         }, 500);
     };
 
+    if ($stateParams.generateName && $stateParams.generateName.length > 0) {
+        $scope.skinName = $stateParams.generateName;
+    }
+    if ($stateParams.generatePrivate) {
+        $scope.privateUpload = $stateParams.generatePrivate;
+    }
     if ($stateParams.generateUrl && $stateParams.generateUrl.length > 0) {
         $scope.skinUrl = $stateParams.generateUrl;
         $scope.generate();
