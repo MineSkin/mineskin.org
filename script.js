@@ -342,7 +342,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
             $localStorage.recentSkins = recentSkins;
 
             if ($stateParams.generateCallback) {
-                window.location = $stateParams.generateCallback.replace(":id:", data.id);
+                window.location = $stateParams.generateCallback.replace(":id", data.id);
             } else {
                 $state.go("gallery.view", {id: data.id})
             }
