@@ -185,6 +185,21 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
                 console.info("onExit")
             }]
         })
+        .state("account", {
+            url: "/account",
+            views: {
+                'tab1': {
+                    templateUrl: "/pages/account.html",
+                    controller: "accountController"
+                }
+            },
+            data: {
+                meta: {
+                    title: "Account",
+                    image: "https://mineskin.org/favicon.png"
+                }
+            }
+        })
 
 
     $locationProvider.html5Mode(true);
@@ -527,6 +542,232 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
             $("#javaGameProfile").trigger("autoresize");
         }, 100);
     });
+}])
+
+mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$timeout", "$stateParams", "$sce", "ngMeta", function ($scope, $http, $cookies, $timeout, $stateParams, $sce, ngMeta) {
+    console.info("accountController")
+
+    $scope.username = "";
+    $scope.password = "";
+    $scope.token = "";
+    $scope.securityAnswer = "";
+    $scope.uuid = "";
+    $scope.user;
+    $scope.userProfile;
+    $scope.myAccount;
+
+    $scope.loggedIn = false;
+    $scope.challengesSolved = false;
+    $scope.accountExists = false;
+    $scope.accountEnabled = false;
+    $scope.accountAdded = false;
+
+    $scope.doLogin = function () {
+        if (!$scope.username || !$scope.password) return;
+
+        $http({
+            url: apiBaseUrl + "/accountManager/auth/login",
+            method: "POST",
+            data: {
+                username: $scope.username,
+                password: $scope.password
+            }
+        }).then(function (response) {
+            if (response.data.error) {
+                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+                return;
+            }
+            if (response.data.success) {
+                $scope.token = response.data.token;
+                $scope.loggedIn = true;
+            }
+        }, function (response) {
+            console.log(response);
+            if (response.data.error) {
+                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+            }
+        });
+    }
+
+    $scope.solveChallenges = function () {
+        if (!$scope.username || !$scope.password || !$scope.securityAnswer || !$scope.token || !$scope.loggedIn) return;
+
+        $http({
+            url: apiBaseUrl + "/accountManager/auth/solveChallenges",
+            method: "POST",
+            data: {
+                token: $scope.token,
+                securityAnswer: $scope.securityAnswer
+            }
+        }).then(function (response) {
+            if (response.data.error || !response.data.success) {
+                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+                return;
+            }
+            if (response.data.success) {
+                $scope.challengesSolved = true;
+
+                $scope.getUser();
+                $scope.getUserProfile();
+            }
+        }, function (response) {
+            console.log(response);
+            if (response.data.error) {
+                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+            }
+        });
+    };
+    $scope.skipChallenges = function () {
+        $scope.challengesSolved = true;
+
+        $scope.getUser();
+        $scope.getUserProfile();
+    }
+
+    $scope.getUser = function () {
+        $http({
+            url: apiBaseUrl + "/accountManager/auth/user?token=" + $scope.token,
+            method: "GET",
+        }).then(function (response) {
+            if (response.data.error) {
+                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+                return;
+            }
+            $scope.user = response.data;
+        }, function (response) {
+            console.log(response);
+            if (response.data.error) {
+                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+            }
+        });
+    }
+
+    $scope.getUserProfile = function () {
+        $http({
+            url: apiBaseUrl + "/accountManager/auth/userProfile?token=" + $scope.token,
+            method: "GET"
+        }).then(function (response) {
+            if (response.data.error) {
+                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+                return;
+            }
+            $scope.userProfile = response.data;
+            $scope.uuid = response.data.uuid;
+
+            $scope.accountStatus();
+        }, function (response) {
+            console.log(response);
+            if (response.data.error) {
+                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+            }
+        });
+    }
+
+    $scope.accountStatus = function () {
+        $http({
+            url: apiBaseUrl + "/accountManager/accountStatus?username=" + $scope.username + "&uuid=" + $scope.uuid,
+            method: "GET"
+        }).then(function (response) {
+            if (response.data.error) {
+                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+                return;
+            }
+            $scope.accountExists = response.data.exists;
+            $scope.accountEnabled = response.data.exists && response.data.enabled;
+
+            if(response.data.exists){
+                $scope.getAccount();
+            }
+        }, function (response) {
+            console.log(response);
+            if (response.data.error) {
+                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+            }
+        });
+    };
+
+    $scope.getAccount = function () {
+        $http({
+            url: apiBaseUrl + "/accountManager/myAccount?username=" + $scope.username + "&token=" + $scope.token,
+            method: "GET"
+        }).then(function (response) {
+            if (response.data.error) {
+                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+                return;
+            }
+            $scope.myAccount=response.data;
+        }, function (response) {
+            console.log(response);
+            if (response.data.error) {
+                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+            }
+        });
+    };
+
+    $scope.submitAccount = function () {
+        $http({
+            url: apiBaseUrl + "/accountManager/confirmAccountSubmission",
+            method: "POST",
+            data: {
+                token: $scope.token,
+                username: $scope.username,
+                password: $scope.password,
+                uuid: $scope.uuid,
+                securityAnswer: $scope.securityAnswer
+            }
+        }).then(function (response) {
+            if (response.data.error) {
+                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+                return;
+            }
+            if (response.data.success) {
+                $scope.accountAdded = true;
+            }
+        }, function (response) {
+            console.log(response);
+            if (response.data.error) {
+                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+            }
+        });
+    }
+
+    $scope.enableAccount = function () {
+        $scope.updateAccountStatus(true)
+    }
+
+    $scope.disableAccount = function () {
+        $scope.updateAccountStatus(false)
+    }
+
+    $scope.updateAccountStatus = function (enabled) {
+        $http({
+            url: apiBaseUrl + "/accountManager/settings/status",
+            method: "POST",
+            data: {
+                token: $scope.token,
+                username: $scope.username,
+                enabled: enabled
+            }
+        }).then(function (response) {
+            if (response.data.error) {
+                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+                return;
+            }
+            if (response.data.success) {
+                $scope.accountEnabled = response.data.enabled;
+            }
+        }, function (response) {
+            console.log(response);
+            if (response.data.error) {
+                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+            }
+        });
+    }
+
+    $scope.deleteAccount = function () {
+        //TODO
+    }
+
 }])
 
 mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state", "$cookies", function ($scope, $timeout, $http, $state, $cookies) {

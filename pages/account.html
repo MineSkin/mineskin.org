@@ -1,0 +1,128 @@
+<div class="row">
+    <br/>
+    <br/>
+    <div class="center col s6 offset-s3">
+        <div class="row">
+            <div ng-show="!loggedIn">
+                <h4>Please log in using your Minecraft account data</h4>
+                <form ng-submit="doLogin()" class="col s12">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="username" type="email" class="validate" ng-model="username" required>
+                            <label for="username">Username (E-Mail)</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="password" type="password" class="validate" ng-model="password" required>
+                            <label for="password">Password</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <button class="btn waves-effect waves-light" type="submit">Login</button>
+                    </div>
+                </form>
+            </div>
+            <div ng-show="loggedIn">
+                <h2>Logged In!</h2>
+                <hr/>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div ng-show="!challengesSolved" ng-hide="!loggedIn">
+                <h4>Please enter the answer to your security questions</h4>
+                <h6>Make sure the answer to every question is the same (<a href="https://account.mojang.com/me/changeSecretQuestions" target="_blank">Click here to change them</a>)</h6>
+                <form ng-submit="solveChallenges()" class="col s12">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="securityAnswer" type="text" class="validate" ng-model="securityAnswer">
+                            <label for="securityAnswer">Security Answer</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <span>If your account doesn't have any security questions enabled, you can <a><strong>skip to the next step</strong></a>.</span>
+                    </div>
+
+                    <div class="row">
+                        <button class="btn waves-effect waves-light" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+            <div ng-show="challengesSolved">
+                <h2>Challenges Completed!</h2>
+                <hr/>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div ng-hide="!challengesSolved || (user&&userProfile)">
+                <h4>Loading user data...</h4>
+            </div>
+            <div ng-show="user && userProfile && userProfile.uuid">
+                <h2>User data loaded!</h2>
+                <div>
+                    <span><strong>Email: </strong> {{ user.username }}<br/></span>
+                    <span><strong>UUID: </strong> {{ userProfile.uuid }}<br/></span>
+                    <span><strong>Name: </strong> {{ userProfile.name }}<br/></span>
+                    <!-- TODO:  show warnings for legacy or suspended accounts -->
+                    <span><strong>Legacy: </strong> {{ user.legacyUser || userProfile.legacyProfile }}<br/></span>
+                    <span><strong>Suspended: </strong> {{ userProfile.suspended }}</span>
+                </div>
+                <hr/>
+            </div>
+        </div>
+        <br/>
+        <div class="row" ng-show="!accountExists"><!-- Account add form -->
+            <div ng-show="!accountAdded" ng-hide="!user || !userProfile || !userProfile.uuid">
+                <h4>Click the button below to add your account to the MineSkin database.</h4>
+                <span><i>By clicking the button, you accept the terms and risks below.</i></span>
+
+                <div class="row">
+                    <button class="btn waves-effect waves-light" type="submit" ng-click="submitAccount()">Add Account!</button>
+                </div>
+
+                <br/>
+                <p>
+                    By adding your account, you agree that MineSkin will have access to your full account data, including username, password, etc..<br/>
+                    Your password <i>will</i> be stored in the MineSkin database but it will be encrypted first and cannot be read by humans (also in the improbable event of a database breach).<br/>
+                    The skin of your account will be changed in irregular intervals in order to generate the skin data for MineSkin.<br/>
+                    You can always remove or temporarily disable your account.<br/>
+                </p>
+            </div>
+            <div ng-show="accountAdded">
+                <h2>Your Account has been added!</h2>
+                <h4>Thank you very much for your contribution to the MineSkin project! <3</h4>
+            </div>
+        </div>
+        <div class="row" ng-show="accountExists"><!-- Account management -->
+            <h4>Manage Account</h4>
+            <div>
+                <br/>
+                <div class="row">
+                    <h6>Account Status</h6>
+                    <div class="row">
+                        <span><strong>Enabled:</strong> {{ accountEnabled }}<br/></span>
+                        <span><strong>Success Rate:</strong> {{ myAccount.successRate*100 }}%<br/></span>
+                    </div>
+                    <div class="col s3 offset-s3">
+                        <button class="btn waves-effect waves-light green" ng-disabled="accountEnabled" ng-click="enableAccount()">Enable Account</button>
+                    </div>
+                    <div class="col s3">
+                        <button class="btn waves-effect waves-light orange" ng-disabled="!accountEnabled" ng-click="disableAccount()">Disable Account</button>
+                    </div>
+                </div>
+                <br/>
+                <br/>
+                <div class="row">
+                    <div class="row">
+                        <button class="btn waves-effect waves-light red" ng-disabled="accountEnabled" ng-click="deleteAccount()">Delete Account</button>
+                        <br/><span ng-show="accountEnabled" style="color:red">Please disable your account first to delete it</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
