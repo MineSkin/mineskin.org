@@ -675,7 +675,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             $scope.accountExists = response.data.exists;
             $scope.accountEnabled = response.data.exists && response.data.enabled;
 
-            if(response.data.exists){
+            if (response.data.exists) {
                 $scope.getAccount();
             }
         }, function (response) {
@@ -695,7 +695,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                 Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
                 return;
             }
-            $scope.myAccount=response.data;
+            $scope.myAccount = response.data;
         }, function (response) {
             console.log(response);
             if (response.data.error) {
@@ -765,7 +765,33 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     }
 
     $scope.deleteAccount = function () {
-        //TODO
+        if (confirm("Are you sure you want to delete the account?")) {
+            $http({
+                url: apiBaseUrl + "/accountManager/deleteAccount",
+                method: "POST",
+                data: {
+                    token: $scope.token,
+                    username: $scope.username,
+                    uuid: $scope.uuid
+                }
+            }).then(function (response) {
+                if (response.data.error) {
+                    Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+                    return;
+                }
+                if (response.data.success) {
+                    Materialize.toast("Account deleted.", 900);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                }
+            }, function (response) {
+                console.log(response);
+                if (response.data.error) {
+                    Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+                }
+            });
+        }
     }
 
 }])

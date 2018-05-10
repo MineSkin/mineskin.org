@@ -1,10 +1,22 @@
 <div class="row">
     <br/>
-    <br/>
     <div class="center col s6 offset-s3">
+        <div class="row">
+            <h1>MineSkin Account Manager</h1>
+            <p>
+                On this site, you can add your own Minecraft account to speed up the MineSkin skin generation.<br/>
+                You can also manage accounts you already registered.<br/>
+            </p>
+        </div>
+        <br/>
+        <br/>
+
         <div class="row">
             <div ng-show="!loggedIn">
                 <h4>Please log in using your Minecraft account data</h4>
+                <span>(This is just to check your account information and will not be stored until you decide to actually add your account.)</span>
+                <br/>
+
                 <form ng-submit="doLogin()" class="col s12">
                     <div class="row">
                         <div class="input-field col s12">
@@ -68,15 +80,15 @@
                     <span><strong>UUID: </strong> {{ userProfile.uuid }}<br/></span>
                     <span><strong>Name: </strong> {{ userProfile.name }}<br/></span>
                     <!-- TODO:  show warnings for legacy or suspended accounts -->
-                    <span><strong>Legacy: </strong> {{ user.legacyUser || userProfile.legacyProfile }}<br/></span>
-                    <span><strong>Suspended: </strong> {{ userProfile.suspended }}</span>
+                    <span><strong>Legacy: </strong> {{ user.legacyUser || userProfile.legacyProfile }}</span> <span ng-show="user.legacyUser || userProfile.legacyProfile" style="color:red">Legacy accounts cannot be used with MineSkin! Please migrate your account first</span><br/>
+                    <span><strong>Suspended: </strong> {{ userProfile.suspended }}</span> <span ng-show="userProfile.suspended" style="color:red">You can't use a suspended account!</span><br/>
                 </div>
                 <hr/>
             </div>
         </div>
         <br/>
         <div class="row" ng-show="!accountExists"><!-- Account add form -->
-            <div ng-show="!accountAdded" ng-hide="!user || !userProfile || !userProfile.uuid">
+            <div ng-show="!accountAdded" ng-hide="!user || !userProfile || !userProfile.uuid || (user.legacyUser || userProfile.legacyProfile || userProfile.suspended)">
                 <h4>Click the button below to add your account to the MineSkin database.</h4>
                 <span><i>By clicking the button, you accept the terms and risks below.</i></span>
 
@@ -95,6 +107,8 @@
             <div ng-show="accountAdded">
                 <h2>Your Account has been added!</h2>
                 <h4>Thank you very much for your contribution to the MineSkin project! <3</h4>
+                <br/>
+                <span><a href="#" onclick="location.reload()">reload the page</a> and login to manage your account</span>
             </div>
         </div>
         <div class="row" ng-show="accountExists"><!-- Account management -->
