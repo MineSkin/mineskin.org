@@ -19,7 +19,9 @@
             <div class="col s12">
                 <div ng-init="galleryInit()">
                     <div ng-show="skins.length === 0">
-                        <h3>Loading...</h3>
+                        <a ng-repeat="x in [].constructor(32) track by $index" class="galleryImage galleryImagePlaceholder">
+                            <img ng-class="{'skull-image': !browser.isFirefox()}" src="/img/loading.svg">
+                        </a>
                     </div>
                     <div>
                         <a ng-repeat="skin in skins" class="galleryImage tooltipped" href="/{{skin.id}}" ui-sref="gallery.view({id:skin.id})" ui-sref-options="{notify:false}" data-position="top" data-delay="20" data-tooltip="{{skin.name || '#' + skin.id}}">
@@ -51,11 +53,11 @@
 
                             </div>
                             <div class="col s4">
-                               <div class="pull-right">
-                                   <button type="button" class="btn btn-primary" ng-click="toggleViewMode()">
-                                       Toggle View
-                                   </button>
-                               </div>
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-primary" ng-click="toggleViewMode()">
+                                        Toggle View
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
