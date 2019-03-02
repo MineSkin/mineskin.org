@@ -154,7 +154,7 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
             }
         })
         .state("gallery.view", {
-            url: "^/{id:[0-9]{1,9}}",
+            url: "^/{id:[0-9]{1,10}}",
             onEnter: ["$state", "$stateParams", "ModalService", "ngMeta", function ($state, $stateParams, ModalService, ngMeta) {
                 console.info("onEnter");
                 console.log($stateParams);
