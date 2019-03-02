@@ -433,13 +433,19 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
             $scope.reloadGallery();
         }, 500);
     };
-    $scope.viewMode = $cookies.get("viewMode") || 0;// 0 = heads only; 1 = full skins
+    $scope.viewMode = parseInt($cookies.get("viewMode") || 0);// 0 = heads only; 1 = full skins
     $scope.resultType = $cookies.get("resultType");
     if ($scope.resultType == undefined) {
         $scope.resultType = "list";
     }
     $scope.toggleViewMode = function () {
         $scope.viewMode = 1 - $scope.viewMode;// Toggle 1/0
+
+        if ($scope.viewMode === 1) {
+            $scope.pagination.itemsPerPage = 12;
+        } else {
+            $scope.pagination.itemsPerPage = 32;
+        }
 
         var now = new $window.Date();
         var expires = new $window.Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
@@ -465,7 +471,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
         page: 0,
         pages: 0,
         totalItems: 0,
-        itemsPerPage: 32,
+        itemsPerPage: $scope.viewMode === 1 ? 12 : 32,
         maxSize: 4
     };
     $scope.skins = [];

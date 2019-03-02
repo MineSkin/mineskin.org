@@ -19,7 +19,7 @@
             <div class="col s12">
                 <div ng-init="galleryInit()">
                     <div ng-show="skins.length === 0">
-                        <a ng-repeat="x in [].constructor(32) track by $index" class="galleryImage galleryImagePlaceholder">
+                        <a ng-repeat="x in [].constructor(viewMode == 1 ? 12 : 32) track by $index" class="galleryImage galleryImagePlaceholder">
                             <img ng-class="{'skull-image': !browser.isFirefox()}" src="/img/loading.svg">
                         </a>
                     </div>
