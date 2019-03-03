@@ -1,4 +1,4 @@
-<div class="modal">
+<div class="modal" id="viewModal">
     <div class="modal-content">
         <style>
             .skin-image {
@@ -120,7 +120,7 @@
                                     <textarea style="min-height: 150px;max-width:100%;" id="giveCommandOld" class="materialize-textarea" readonly>/give @p minecraft:skull 1 3 { SkullOwner:{ Id:{{skin.data.uuid}}, Properties:{ textures:[{ Value:"{{skin.data.texture.value}}", Signature:"{{skin.data.texture.signature}}" }] } }, display:{ Name:"{{ skin.name || '#' + skin.id}}", Lore:[ "Skin #{{skin.id}}", "generated on {{(skin.timestamp*1000 | date : "medium")}}", "via MineSkin.org" ] } }</textarea>
                                     <button class="btn tooltipped" data-clipboard-target="#giveCommandOld"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy</button>
                                 </div>
-                                <div ng-show="useNewGiveCommand" >
+                                <div ng-show="useNewGiveCommand">
                                     <label for="giveCommandNew">Player Head /give Command</label>
                                     <textarea style="min-height: 150px;max-width:100%;" id="giveCommandNew" class="materialize-textarea" readonly>/give @p minecraft:player_head{ SkullOwner:{ Id:{{skin.data.uuid}}, Properties:{ textures:[{ Value:"{{skin.data.texture.value}}", Signature:"{{skin.data.texture.signature}}" }] } }, display:{ Name:"{{ skin.name || '#' + skin.id}}", Lore:[ "Skin #{{skin.id}}", "generated on {{(skin.timestamp*1000 | date : "medium")}}", "via MineSkin.org" ] } }</textarea>
                                     <button class="btn tooltipped" data-clipboard-target="#giveCommandNew"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy</button>
@@ -163,6 +163,10 @@ skin{{skin.id}}.getProperties().put("textures", new Property("textures", "{{skin
             </div>
         </div>
     </div>
+
+    <a href="#" id="viewScrollBtn" style="position: fixed; left: 50%; bottom: 5px; opacity: 0.5; font-size: 50px; text-decoration: none; color: black; text-align: center; transform: translateX(-50%);">
+        <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>
+    </a>
     <script>
         var clipboard = new Clipboard('.btn');
 
@@ -175,6 +179,18 @@ skin{{skin.id}}.getProperties().put("textures", new Property("textures", "{{skin
                 $(btn).tooltip('remove');
             }, 5000);
         }
+
+        $("#viewModal").on("scroll",function (e) {
+            console.log(this);
+            if (this.scrollTop > 10) {
+                $("#viewScrollBtn").hide();
+            }else{
+                $("#viewScrollBtn").show();
+            }
+        });
+        $("#viewScrollBtn").on("click", function (e) {
+            $("#viewModal").animate({scrollTop: 200}, 500, "swing")
+        });
 
         clipboard.on('success', function (e) {
             setTooltip(e.trigger, 'Copied!');
