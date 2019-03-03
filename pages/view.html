@@ -98,7 +98,7 @@
             </div>
 
             <div class="row card-panel">
-                <h5>Vanilla /give Command</h5>
+                <h5 id="vanilla">Vanilla /give Command</h5>
                 <div class="col s12">
                     <div>
                         <div class="row">
@@ -132,7 +132,7 @@
             </div>
 
             <div class="row card-panel">
-                <h5>Java Code</h5>
+                <h5 id="java">Java Code</h5>
                 <div class="col s12">
                     <div>
                         <div class="row">
@@ -143,6 +143,21 @@ GameProfile skin{{skin.id}} = new GameProfile(UUID.fromString("{{skin.data.uuid}
 skin{{skin.id}}.getProperties().put("textures", new Property("textures", "{{skin.data.texture.value}}", "{{skin.data.texture.signature}}"));
             </textarea>
                                 <button class="btn tooltipped" data-clipboard-target="#javaGameProfile"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row card-panel">
+                <h5 id="citizens">Citizens Skin Command</h5>
+                <div class="col s12">
+                    <div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <label for="citizensCommand">Citizens /npc skin Command</label>
+                                <textarea style="min-height: 150px;max-width:100%;" id="citizensCommand" class="materialize-textarea" readonly>/npc skin -t {{ skin.data.uuid }} {{ skin.data.texture.value }} {{ skin.data.texture.signature }}</textarea>
+                                <button class="btn tooltipped" data-clipboard-target="#citizensCommand"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy</button>
                             </div>
                         </div>
                     </div>
