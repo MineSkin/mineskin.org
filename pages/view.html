@@ -205,7 +205,8 @@ skin{{skin.id}}.getProperties().put("textures", new Property("textures", "{{skin
             }
         });
         $("#viewScrollBtn").on("click", function (e) {
-            $("#viewModal").animate({scrollTop: 200}, 500, "swing")
+            $("#viewModal").animate({scrollTop: 200}, 500, "swing");
+            ga("send", "event", "SkinView", "ScrollDown");
         });
 
         clipboard.on('success', function (e) {
