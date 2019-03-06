@@ -198,7 +198,6 @@ skin{{skin.id}}.getProperties().put("textures", new Property("textures", "{{skin
         }
 
         $("#viewModal").on("scroll",function (e) {
-            console.log(this);
             if (this.scrollTop > 10) {
                 $("#viewScrollBtn").hide();
             }else{
@@ -212,6 +211,8 @@ skin{{skin.id}}.getProperties().put("textures", new Property("textures", "{{skin
         clipboard.on('success', function (e) {
             setTooltip(e.trigger, 'Copied!');
             hideTooltip(e.trigger);
+
+            ga("send", "event", "SkinViewData", "CopyData", e.trigger.dataset.clipboardTarget);
         });
 
         clipboard.on('error', function (e) {
