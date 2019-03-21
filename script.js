@@ -573,11 +573,11 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         if (!$scope.username || !$scope.password) return;
 
         $http({
-            url: apiBaseUrl + "/accountManager/auth/login",
+            url: apiBaseUrl + "/accountManager/auth/login?t="+Date.now(),
             method: "POST",
             data: {
                 username: $scope.username,
-                password: $scope.password
+                password: btoa($scope.password)
             }
         }).then(function (response) {
             if (response.data.error) {
@@ -600,7 +600,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         if (!$scope.username || !$scope.password || !$scope.securityAnswer || !$scope.token || !$scope.loggedIn) return;
 
         $http({
-            url: apiBaseUrl + "/accountManager/auth/solveChallenges",
+            url: apiBaseUrl + "/accountManager/auth/solveChallenges?t="+Date.now(),
             method: "POST",
             data: {
                 token: $scope.token,
