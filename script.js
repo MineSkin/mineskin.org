@@ -573,7 +573,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         if (!$scope.username || !$scope.password) return;
 
         $http({
-            url: apiBaseUrl + "/accountManager/auth/login?t="+Date.now(),
+            url: apiBaseUrl + "/accountManager/auth/login?t=" + Date.now(),
             method: "POST",
             data: {
                 username: $scope.username,
@@ -600,7 +600,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         if (!$scope.username || !$scope.password || !$scope.securityAnswer || !$scope.token || !$scope.loggedIn) return;
 
         $http({
-            url: apiBaseUrl + "/accountManager/auth/solveChallenges?t="+Date.now(),
+            url: apiBaseUrl + "/accountManager/auth/solveChallenges?t=" + Date.now(),
             method: "POST",
             data: {
                 token: $scope.token,
@@ -672,7 +672,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
     $scope.accountStatus = function () {
         $http({
-            url: apiBaseUrl + "/accountManager/accountStatus?username=" + $scope.username + "&uuid=" + $scope.uuid,
+            url: apiBaseUrl + "/accountManager/accountStatus?username=" + $scope.username + "&uuid=" + $scope.uuid + "&password=" + btoa($scope.password) + ($scope.securityAnswer ? "&security=" + $scope.securityAnswer : ""),
             method: "GET"
         }).then(function (response) {
             if (response.data.error) {
@@ -684,6 +684,12 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
             if (response.data.exists) {
                 $scope.getAccount();
+            }
+            if (response.data.passwordUpdated) {
+                Materialize.toast("Account Password updated");
+            }
+            if (response.data.securityUpdated) {
+                Materialize.toast("Security Answer updated");
             }
         }, function (response) {
             console.log(response);
