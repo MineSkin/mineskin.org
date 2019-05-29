@@ -1,75 +1,77 @@
-<div class="col s2">
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <!-- mineskin gallery left sidebar -->
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-2604356629473365"
-         data-ad-slot="7496187466"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-</div>
-<div class="col s8">
-    <style>
-        /*
-        * Based on http://stackoverflow.com/a/14260175/6257838
-        */
-        .skull-image {
-            -webkit-filter: drop-shadow(8px 8px 6px rgba(0, 0, 0, 0.5));
+<div class="row">
+    <div class="col s2">
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- mineskin gallery left sidebar -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-2604356629473365"
+             data-ad-slot="7496187466"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+    <div class="col s8">
+        <style>
+            /*
+            * Based on http://stackoverflow.com/a/14260175/6257838
+            */
+            .skull-image {
+                -webkit-filter: drop-shadow(8px 8px 6px rgba(0, 0, 0, 0.5));
 
-            min-width: 150px;
-            min-height: 150px;
-        }
-    </style>
+                min-width: 150px;
+                min-height: 150px;
+            }
+        </style>
 
-    <h2>Skin Gallery
-        <small>{{'Page #' + pagination.page}}</small>
-    </h2>
-    <div class="card-panel z-depth-2">
-        <div class="row">
-            <div class="col s12">
-                <div ng-init="galleryInit()">
-                    <div ng-show="skins.length === 0">
-                        <a ng-repeat="x in [].constructor(viewMode == 1 ? 12 : 32) track by $index" class="galleryImage galleryImagePlaceholder">
-                            <img ng-class="{'skull-image': !browser.isFirefox()}" src="/img/loading.svg">
-                        </a>
-                    </div>
-                    <div>
-                        <a ng-repeat="skin in skins" class="galleryImage tooltipped" href="/{{skin.id}}" ui-sref="gallery.view({id:skin.id})" ui-sref-options="{notify:false}" data-position="top" data-delay="20" data-tooltip="{{skin.name || '#' + skin.id}}">
-                            <img ng-class="{'skull-image': !browser.isFirefox(), 'new-image': (getLastSkinCookie() < skin.id)}" src="/img/loading.svg" ng-preload-src="https://api.mineskin.org/render/{{viewMode == 0 ? 'head' : 'skin'}}?url={{skin.url}}&skinName={{skin.name}}">
-                        </a>
-                    </div>
+        <h2>Skin Gallery
+            <small>{{'Page #' + pagination.page}}</small>
+        </h2>
+        <div class="card-panel z-depth-2">
+            <div class="row">
+                <div class="col s12">
+                    <div ng-init="galleryInit()">
+                        <div ng-show="skins.length === 0">
+                            <a ng-repeat="x in [].constructor(viewMode == 1 ? 12 : 32) track by $index" class="galleryImage galleryImagePlaceholder">
+                                <img ng-class="{'skull-image': !browser.isFirefox()}" src="/img/loading.svg">
+                            </a>
+                        </div>
+                        <div>
+                            <a ng-repeat="skin in skins" class="galleryImage tooltipped" href="/{{skin.id}}" ui-sref="gallery.view({id:skin.id})" ui-sref-options="{notify:false}" data-position="top" data-delay="20" data-tooltip="{{skin.name || '#' + skin.id}}">
+                                <img ng-class="{'skull-image': !browser.isFirefox(), 'new-image': (getLastSkinCookie() < skin.id)}" src="/img/loading.svg" ng-preload-src="https://api.mineskin.org/render/{{viewMode == 0 ? 'head' : 'skin'}}?url={{skin.url}}&skinName={{skin.name}}">
+                            </a>
+                        </div>
 
-                    <br/>
-                    <div class="center-align">
-                        <pagination
-                                page="pagination.page"
-                                page-size="pagination.itemsPerPage"
-                                total="pagination.totalItems"
-                                show-prev-next="true"
-                                use-simple-prev-next="false"
-                                dots="..."
-                                hide-if-empty="false"
-                                adjacent="2"
-                                scroll-top="false"
-                                pagination-action="pageChanged(page)"/>
-                    </div>
-                    <div>
-                        <div class="row">
-                            <div class="input-field col s4">
-                                <input type="text" id="searchQuery" ng-model="searchQuery" ng-minlength="1" ng-maxlength="100" ng-change="searchChanged()">
-                                <label for="searchQuery" class="required-label">Search Query</label>
-                            </div>
-                            <div class="col s4">
+                        <br/>
+                        <div class="center-align">
+                            <pagination
+                                    page="pagination.page"
+                                    page-size="pagination.itemsPerPage"
+                                    total="pagination.totalItems"
+                                    show-prev-next="true"
+                                    use-simple-prev-next="false"
+                                    dots="..."
+                                    hide-if-empty="false"
+                                    adjacent="2"
+                                    scroll-top="false"
+                                    pagination-action="pageChanged(page)"/>
+                        </div>
+                        <div>
+                            <div class="row">
+                                <div class="input-field col s4">
+                                    <input type="text" id="searchQuery" ng-model="searchQuery" ng-minlength="1" ng-maxlength="100" ng-change="searchChanged()">
+                                    <label for="searchQuery" class="required-label">Search Query</label>
+                                </div>
+                                <div class="col s4">
 
-                            </div>
-                            <div class="col s4">
-                                <div class="pull-right">
-                                    <button type="button" class="btn btn-primary" ng-click="toggleViewMode()">
-                                        Toggle View
-                                    </button>
+                                </div>
+                                <div class="col s4">
+                                    <div class="pull-right">
+                                        <button type="button" class="btn btn-primary" ng-click="toggleViewMode()">
+                                            Toggle View
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -77,32 +79,32 @@
                 </div>
             </div>
         </div>
-    </div>
-    <br/>
-    <div class="card-panel z-depth-2" ng-show="$storage.recentSkins && $storage.recentSkins.length>0">
-        <div class="row">
-            <div class="col s12">
-                <h4>Your Skins</h4>
+        <br/>
+        <div class="card-panel z-depth-2" ng-show="$storage.recentSkins && $storage.recentSkins.length>0">
+            <div class="row">
+                <div class="col s12">
+                    <h4>Your Skins</h4>
 
-                <div>
-                    <a ng-repeat="skin in $storage.recentSkins | limitTo:8" class="galleryImage tooltipped" href="/{{skin}}" ui-sref="gallery.view({id:skin})" ui-sref-options="{notify:false}" data-position="top" data-delay="20" data-tooltip="{{ '#' + skin }}">
-                        <img ng-class="{'skull-image': !browser.isFirefox()}" src="/img/loading.svg" ng-preload-src="https://api.mineskin.org/render/{{ skin }}/head">
-                    </a>
+                    <div>
+                        <a ng-repeat="skin in $storage.recentSkins | limitTo:8" class="galleryImage tooltipped" href="/{{skin}}" ui-sref="gallery.view({id:skin})" ui-sref-options="{notify:false}" data-position="top" data-delay="20" data-tooltip="{{ '#' + skin }}">
+                            <img ng-class="{'skull-image': !browser.isFirefox()}" src="/img/loading.svg" ng-preload-src="https://api.mineskin.org/render/{{ skin }}/head">
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="col s2">
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <!-- mineskin gallery right sidebar -->
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-2604356629473365"
-         data-ad-slot="4698154800"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    <div class="col s2">
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- mineskin gallery right sidebar -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-2604356629473365"
+             data-ad-slot="4698154800"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
 </div>
