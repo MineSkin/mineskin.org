@@ -569,6 +569,11 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.accountEnabled = false;
     $scope.accountAdded = false;
 
+    $scope.checkUnderstoodLogin = false;
+    $scope.checkReadTerms = false;
+    $scope.checkAcceptSkins = false;
+    $scope.checkAcceptPassword = false;
+
     $scope.doLogin = function () {
         if (!$scope.username || !$scope.password) return;
 
@@ -726,7 +731,12 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                 username: $scope.username,
                 password: $scope.password,
                 uuid: $scope.uuid,
-                securityAnswer: $scope.securityAnswer
+                securityAnswer: $scope.securityAnswer,
+                checks: {
+                    readTerms: $scope.checkReadTerms,
+                    acceptSkins: $scope.checkAcceptSkins,
+                    acceptPassword: $scope.checkAcceptPassword
+                }
             }
         }).then(function (response) {
             if (response.data.error) {
