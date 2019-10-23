@@ -551,7 +551,7 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
     });
 }])
 
-mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$timeout", "$stateParams", "$sce", "ngMeta", function ($scope, $http, $cookies, $timeout, $stateParams, $sce, ngMeta) {
+mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$timeout", "$stateParams", "$sce", "ngMeta", "$window", function ($scope, $http, $cookies, $timeout, $stateParams, $sce, ngMeta, $window) {
     console.info("accountController")
 
     $scope.username = "";
@@ -568,6 +568,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.accountExists = false;
     $scope.accountEnabled = false;
     $scope.accountAdded = false;
+    $scope.accountLinkedToDiscord = false;
 
     $scope.checkUnderstoodLogin = false;
     $scope.checkReadTerms = false;
@@ -686,6 +687,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             }
             $scope.accountExists = response.data.exists;
             $scope.accountEnabled = response.data.exists && response.data.enabled;
+            $scope.accountLinkedToDiscord = response.data.exists && response.data.discordLinked
 
             if (response.data.exists) {
                 $scope.getAccount();
@@ -761,6 +763,10 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.disableAccount = function () {
         $scope.updateAccountStatus(false)
     }
+
+    $scope.linkDiscord = function () {
+        $window.open(apiBaseUrl + "/accountManager/discord/oauth/start/?username=" + $scope.username + "&uuid=" + $scope.uuid + "&token=" + $scope.token, "_blank");
+    };
 
     $scope.updateAccountStatus = function (enabled) {
         $http({
