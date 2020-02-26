@@ -148,6 +148,10 @@
                         <span><strong>Enabled:</strong> {{ accountEnabled }}<br/></span>
                         <span><strong>Success Rate:</strong> {{ myAccount.successRate*100 }}%<br/></span>
                     </div>
+                    <div class="row" ng-if="accountStats && accountStats.generateCount">
+                        <span ng-if="accountStats.generateCount > 0">Your account has already generated {{ accountStats.generateCount }} skins, yay!</span>
+                        <span ng-if="accountStats.generateCount <= 0">Your account hasn't generated any skins yet :(</span>
+                    </div>
                     <div class="col s3 offset-s3">
                         <button class="btn waves-effect waves-light green" ng-disabled="accountEnabled" ng-click="enableAccount()">Enable Account</button>
                     </div>

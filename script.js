@@ -575,6 +575,8 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.checkAcceptSkins = false;
     $scope.checkAcceptPassword = false;
 
+    $scope.accountStats = {};
+
     $scope.doLogin = function () {
         if (!$scope.username || !$scope.password) return;
 
@@ -691,6 +693,8 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
             if (response.data.exists) {
                 $scope.getAccount();
+
+                $scope.getAccountStats();
             }
             if (response.data.passwordUpdated) {
                 Materialize.toast("Account Password updated");
@@ -784,6 +788,26 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             }
             if (response.data.success) {
                 $scope.accountEnabled = response.data.enabled;
+            }
+        }, function (response) {
+            console.log(response);
+            if (response.data.error) {
+                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+            }
+        });
+    };
+
+    $scope.getAccountStats = function(){
+        $http({
+            url: apiBaseUrl + "/accountManager/accountStats?token="+$scope.token+"&username"+$scope.username+"&uuid="+$scope.uuid,
+            method: "GET"
+        }).then(function (response) {
+            if (response.data.error) {
+                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+                return;
+            }
+            if (response.data.success) {
+                $scope.accountStats = response.data;
             }
         }, function (response) {
             console.log(response);
