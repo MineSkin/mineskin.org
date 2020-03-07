@@ -57,6 +57,22 @@ mineskinApp.directive('selectOnClick', function () {
     };
 });
 
+// based on https://www.javainuse.com/angular/angular2_adsense
+mineskinApp.directive('googleAd', ['$timeout',
+    function ($timeout) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                console.log(attrs);
+                return $timeout(function () {
+                    element.append("<ins class=\"adsbygoogle\" style=\"display:block\" data-ad-client=\"ca-pub-2604356629473365\" data-ad-slot=\""+(attrs.googleAd||'7160666614')+"\" data-ad-format=\"auto\" data-full-width-responsive=\"true\"></ins>");
+                    return (adsbygoogle = window.adsbygoogle || []).push({});
+                })
+            }
+        }
+    }
+]);
+
 mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) {
 
     // $routeProvider
@@ -797,9 +813,9 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         });
     };
 
-    $scope.getAccountStats = function(){
+    $scope.getAccountStats = function () {
         $http({
-            url: apiBaseUrl + "/accountManager/accountStats?token="+$scope.token+"&username"+$scope.username+"&uuid="+$scope.uuid,
+            url: apiBaseUrl + "/accountManager/accountStats?token=" + $scope.token + "&username" + $scope.username + "&uuid=" + $scope.uuid,
             method: "GET"
         }).then(function (response) {
             if (response.data.error) {
