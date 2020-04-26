@@ -815,7 +815,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
     $scope.getAccountStats = function () {
         $http({
-            url: apiBaseUrl + "/accountManager/accountStats?token=" + $scope.token + "&username" + $scope.username + "&uuid=" + $scope.uuid,
+            url: apiBaseUrl + "/accountManager/accountStats?token=" + $scope.token + "&username=" + $scope.username + "&uuid=" + $scope.uuid,
             method: "GET"
         }).then(function (response) {
             if (response.data.error) {
