@@ -66,10 +66,15 @@
                 </div>
                 <div class="col s9" style="z-index:1;">
                     <div class="row">
-                        <div class="input-field col s12">
+                        <div class="input-field col s12 m6">
                             <label for="skinId">Skin ID</label>
                             <input type="text" readonly id="skinId" ng-model="skin.id">
                             <button class="btn tooltipped" data-clipboard-target="#skinId"><i class="fa fa-clipboard" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="input-field col s12 m6">
+                            <label for="skinId">Direct Link</label>
+                            <input type="text" readonly id="skinLink" ng-model="'https://minesk.in/' + skin.id">
+                            <button class="btn tooltipped" data-clipboard-target="#skinLink"><i class="fa fa-clipboard" aria-hidden="true"></i></button>
                         </div>
                     </div>
                     <div class="row">
@@ -179,7 +184,7 @@ skin{{skin.id}}.getProperties().put("textures", new Property("textures", "{{skin
                         <div class="row">
                             <div class="input-field col s12">
                                 <label for="citizensCommand">Citizens /npc skin Command</label>
-                                <textarea style="min-height: 10px;max-width:100%;" id="citizensCommand" class="materialize-textarea" readonly>/npc skin --url https://mineskin.org/{{ skin.id }}</textarea>
+                                <textarea style="min-height: 10px;max-width:100%;" id="citizensCommand" class="materialize-textarea" readonly>/npc skin --url https://minesk.in/{{ skin.id }}</textarea>
                                 <button class="btn tooltipped" data-clipboard-target="#citizensCommand"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy</button>
                             </div>
                         </div>
