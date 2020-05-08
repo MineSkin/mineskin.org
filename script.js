@@ -573,13 +573,16 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.username = "";
     $scope.password = "";
     $scope.token = "";
+    $scope.securityQuestions = [];
     $scope.securityAnswer = "";
+    $scope.securityAnswers = [];
     $scope.uuid = "";
     $scope.user;
     $scope.userProfile;
     $scope.myAccount;
 
     $scope.loggedIn = false;
+    $scope.needToSolveChallenges = true;
     $scope.challengesSolved = false;
     $scope.accountExists = false;
     $scope.accountEnabled = false;
@@ -611,6 +614,8 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             if (response.data.success) {
                 $scope.token = response.data.token;
                 $scope.loggedIn = true;
+
+                $scope.getChallenges();
             }
         }, function (response) {
             console.log(response);
@@ -620,15 +625,45 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         });
     }
 
+    $scope.getChallenges = function () {
+        if(!$scope.token || !$scope.loggedIn) return;
+
+        $http({
+            url: apiBaseUrl + "/accountManager/auth/getChallenges?t=" + Date.now(),
+            method: "POST",
+            data: {
+                token: $scope.token
+            }
+        }).then(function (response) {
+            if (response.data.error || !response.data.success) {
+                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+                return;
+            }
+            if (response.data.success) {
+                $scope.needToSolveChallenges = response.data.needToSolveChallenges;
+                $scope.securityQuestions = response.data.questions || [];
+            }
+        }, function (response) {
+            console.log(response);
+            if (response.data.error) {
+                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+            }
+        });
+    };
+
     $scope.solveChallenges = function () {
-        if (!$scope.username || !$scope.password || !$scope.securityAnswer || !$scope.token || !$scope.loggedIn) return;
+        if (!$scope.username || !$scope.password || !$scope.token || !$scope.loggedIn) return;
+
+        for (var i = 0; i < $scope.securityQuestions.length; i++) {
+            $scope.securityAnswers[i] = $scope.securityQuestions[i].answer;
+        }
 
         $http({
             url: apiBaseUrl + "/accountManager/auth/solveChallenges?t=" + Date.now(),
             method: "POST",
             data: {
                 token: $scope.token,
-                securityAnswer: $scope.securityAnswer
+                securityAnswers: $scope.securityAnswers
             }
         }).then(function (response) {
             if (response.data.error || !response.data.success) {
@@ -696,7 +731,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
     $scope.accountStatus = function () {
         $http({
-            url: apiBaseUrl + "/accountManager/accountStatus?username=" + $scope.username + "&uuid=" + $scope.uuid + "&password=" + btoa($scope.password) + ($scope.securityAnswer ? "&security=" + $scope.securityAnswer : ""),
+            url: apiBaseUrl + "/accountManager/accountStatus?username=" + $scope.username + "&uuid=" + $scope.uuid + "&password=" + btoa($scope.password) + ($scope.securityAnswers ? "&security=" + JSON.stringify($scope.securityAnswers) : ($scope.securityAnswer ? "&security=" + $scope.securityAnswer: "")),
             method: "GET"
         }).then(function (response) {
             if (response.data.error) {
@@ -716,7 +751,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                 Materialize.toast("Account Password updated");
             }
             if (response.data.securityUpdated) {
-                Materialize.toast("Security Answer updated");
+                Materialize.toast("Security Answer(s) updated");
             }
         }, function (response) {
             console.log(response);
@@ -753,7 +788,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                 username: $scope.username,
                 password: $scope.password,
                 uuid: $scope.uuid,
-                securityAnswer: $scope.securityAnswer,
+                securityAnswers: $scope.securityAnswers,
                 checks: {
                     readTerms: $scope.checkReadTerms,
                     acceptSkins: $scope.checkAcceptSkins,
