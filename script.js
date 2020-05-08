@@ -642,6 +642,10 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             if (response.data.success) {
                 $scope.needToSolveChallenges = response.data.needToSolveChallenges;
                 $scope.securityQuestions = response.data.questions || [];
+
+                if (!response.data.needToSolveChallenges) {
+                    $scope.skipChallenges();
+                }
             }
         }, function (response) {
             console.log(response);
