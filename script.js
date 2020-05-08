@@ -460,7 +460,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
         if ($scope.viewMode === 1) {
             $scope.pagination.itemsPerPage = 12;
         } else {
-            $scope.pagination.itemsPerPage = 32;
+            $scope.pagination.itemsPerPage = 28;
         }
 
         var now = new $window.Date();
