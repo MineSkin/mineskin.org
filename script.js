@@ -65,7 +65,7 @@ mineskinApp.directive('googleAd', ['$timeout',
             link: function (scope, element, attrs) {
                 console.log(attrs);
                 return $timeout(function () {
-                    element.append("<ins class=\"adsbygoogle\" style=\"display:block\" data-ad-client=\"ca-pub-2604356629473365\" data-ad-slot=\""+(attrs.googleAd||'7160666614')+"\" data-ad-format=\"auto\" data-full-width-responsive=\"true\"></ins>");
+                    element.append("<ins class=\"adsbygoogle\" style=\"display:block\" data-ad-client=\"ca-pub-2604356629473365\" data-ad-slot=\"" + (attrs.googleAd || '7160666614') + "\" data-ad-format=\"auto\" data-full-width-responsive=\"true\"></ins>");
                     return (adsbygoogle = window.adsbygoogle || []).push({});
                 })
             }
@@ -248,6 +248,9 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
     $scope.skinModel = "steve";
 
     $scope.generating = false;
+    $scope.generateSeconds = 0;
+    $scope.generateTimer = null;
+    $scope.generateProgress = 0;
     $scope.generateAttempt = 0;
 
     $scope.materializeInit('tab1');
@@ -269,8 +272,15 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
         console.log("  User:");
         console.log($scope.skinUser);
 
+        var avgGenSeconds = Math.round($scope.stats.avgGenerateDuration / 1000);
+        $interval.cancel($scope.generateTimer);
+        $scope.generateTimer = $interval(function () {
+            $scope.generateProgress = ($scope.generateSeconds++) / Math.round($scope.stats.avgGenerateDuration / 1000) * 100;
+        }, 1000);
+
         if ($scope.skinUrl) {
             $scope.generating = true;
+            $scope.generateProgress = 0;
             var genAlert = $scope.addAlert("Generating Skin from URL...", "info", 15000);
             setTimeout(function () {
                 $http({
@@ -290,6 +300,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
             }, 500);
         } else if ($scope.skinUpload) {
             $scope.generating = true;
+            $scope.generateProgress = 0;
             var genAlert = $scope.addAlert("Uploading Skin...", "info", 15000);
             setTimeout(function () {
                 Upload.upload({
@@ -310,6 +321,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
             }, 500);
         } else if ($scope.skinUser) {
             $scope.generating = true;
+            $scope.generateProgress = 0;
             var skinUuid;
 
             function generateUser(uuid) {
@@ -356,7 +368,9 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
         }
     };
     $scope.generateSuccess = function (data, genAlert) {
+        $interval.cancel($scope.generateTimer);
         $scope.generating = false;
+        $scope.generateProgress = 100;
         $scope.generateAttempt = 0;
         var successAlert = $scope.addAlert("Skin Generated!", "success", 10000);
         if (genAlert) {
@@ -377,7 +391,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
             } else {
                 $state.go("gallery.view", {id: data.id})
             }
-        }, 1000);
+        }, 1500);
     };
     $scope.generateError = function (message, genAlert) {
         // $scope.generating = false;
@@ -626,7 +640,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     }
 
     $scope.getChallenges = function () {
-        if(!$scope.token || !$scope.loggedIn) return;
+        if (!$scope.token || !$scope.loggedIn) return;
 
         $http({
             url: apiBaseUrl + "/accountManager/auth/getChallenges?t=" + Date.now(),
@@ -735,7 +749,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
     $scope.accountStatus = function () {
         $http({
-            url: apiBaseUrl + "/accountManager/accountStatus?username=" + $scope.username + "&uuid=" + $scope.uuid + "&password=" + btoa($scope.password) + ($scope.securityAnswers && $scope.securityAnswers.length>0 ? "&security=" + JSON.stringify($scope.securityAnswers) : ($scope.securityAnswer ? "&security=" + $scope.securityAnswer: "")),
+            url: apiBaseUrl + "/accountManager/accountStatus?username=" + $scope.username + "&uuid=" + $scope.uuid + "&password=" + btoa($scope.password) + ($scope.securityAnswers && $scope.securityAnswers.length > 0 ? "&security=" + JSON.stringify($scope.securityAnswers) : ($scope.securityAnswer ? "&security=" + $scope.securityAnswer : "")),
             method: "GET"
         }).then(function (response) {
             if (response.data.error) {

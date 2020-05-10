@@ -117,7 +117,7 @@
                     <br/>
                     <span class="help-block" ng-show="generatorTimeout > 0">Please wait {{generatorTimeout}} more second(s)...</span>
                     <div class="progress" ng-show="generating">
-                        <div class="indeterminate"></div>
+                        <div class="indeterminate" ng-class="{indeterminate: generateProgress === 0 || generateProgress >= 100, determinate: generateProgress > 0 && generateProgress < 100}" ng-style="{'width': generateProgress + '%'}"></div>
                     </div>
                 </div>
 
