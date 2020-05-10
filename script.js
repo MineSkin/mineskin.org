@@ -735,7 +735,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
     $scope.accountStatus = function () {
         $http({
-            url: apiBaseUrl + "/accountManager/accountStatus?username=" + $scope.username + "&uuid=" + $scope.uuid + "&password=" + btoa($scope.password) + ($scope.securityAnswers ? "&security=" + JSON.stringify($scope.securityAnswers) : ($scope.securityAnswer ? "&security=" + $scope.securityAnswer: "")),
+            url: apiBaseUrl + "/accountManager/accountStatus?username=" + $scope.username + "&uuid=" + $scope.uuid + "&password=" + btoa($scope.password) + ($scope.securityAnswers && $scope.securityAnswers.length>0 ? "&security=" + JSON.stringify($scope.securityAnswers) : ($scope.securityAnswer ? "&security=" + $scope.securityAnswer: "")),
             method: "GET"
         }).then(function (response) {
             if (response.data.error) {
