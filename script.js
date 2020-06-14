@@ -798,21 +798,24 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     };
 
     $scope.submitAccount = function () {
+        let d = {
+            token: $scope.token,
+            username: $scope.username,
+            password: $scope.password,
+            uuid: $scope.uuid,
+            checks: {
+                readTerms: $scope.checkReadTerms,
+                acceptSkins: $scope.checkAcceptSkins,
+                acceptPassword: $scope.checkAcceptPassword
+            }
+        };
+        if ($scope.securityAnswers) {
+            d.securityAnswers = $scope.securityAnswers;
+        }
         $http({
             url: apiBaseUrl + "/accountManager/confirmAccountSubmission",
             method: "POST",
-            data: {
-                token: $scope.token,
-                username: $scope.username,
-                password: $scope.password,
-                uuid: $scope.uuid,
-                securityAnswers: $scope.securityAnswers,
-                checks: {
-                    readTerms: $scope.checkReadTerms,
-                    acceptSkins: $scope.checkAcceptSkins,
-                    acceptPassword: $scope.checkAcceptPassword
-                }
-            }
+            data: d
         }).then(function (response) {
             if (response.data.error) {
                 Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
