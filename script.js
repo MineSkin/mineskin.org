@@ -809,7 +809,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                 acceptPassword: $scope.checkAcceptPassword
             }
         };
-        if ($scope.securityAnswers) {
+        if ($scope.securityAnswers && $scope.securityAnswers.length > 0) {
             d.securityAnswers = $scope.securityAnswers;
         }
         $http({
