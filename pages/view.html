@@ -146,7 +146,7 @@
                                 </div>
                                 <div ng-show="giveCommandVersion == '1_13'">
                                     <label for="giveCommandNew">Player Head /give Command</label>
-                                    <textarea style="min-height: 150px;max-width:100%;" id="giveCommandNew" class="materialize-textarea" readonly>minecraft:give @p minecraft:player_head{SkullOwner:{Id:{{skin.data.uuid}},Properties:{textures:[{Value:"{{skin.data.texture.value}}",Signature:"{{skin.data.texture.signature}}"}]}},display:{Name:"{\"text\":\"{{ skin.name || '#' + skin.id}}\"}",Lore:["{\"text\":\"Skin #{{skin.id}}\"}","{\"text\":\"generated on {{(skin.timestamp*1000 | date : "medium")}}\"}","{\"text\":\"via MineSkin.org\"}"]}}</textarea>
+                                    <textarea style="min-height: 150px;max-width:100%;" id="giveCommandNew" class="materialize-textarea" readonly>give @p minecraft:player_head{SkullOwner:{Id:{{skin.data.uuid}},Properties:{textures:[{Value:"{{skin.data.texture.value}}",Signature:"{{skin.data.texture.signature}}"}]}},display:{Name:"{\"text\":\"{{ skin.name || '#' + skin.id}}\"}",Lore:["{\"text\":\"Skin #{{skin.id}}\"}","{\"text\":\"generated on {{(skin.timestamp*1000 | date : "medium")}}\"}","{\"text\":\"via MineSkin.org\"}"]}}</textarea>
                                     <button class="btn tooltipped" data-clipboard-target="#giveCommandNew"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy</button>
                                 </div>
                             </div>
