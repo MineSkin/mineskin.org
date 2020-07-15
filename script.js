@@ -1022,6 +1022,8 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
         console.log("MATERIALIZE INIT")
         $timeout(function () {
             $('select').material_select();
+            // https://stackoverflow.com/a/56725559/6257838
+            document.querySelectorAll('.select-wrapper').forEach(t => t.addEventListener('click', e=>e.stopPropagation()))
             $('.tooltipped').tooltip();
             $('ul.tabs').tabs();
 //                        $('ul.tabs').tabs("select_tab",tab);
