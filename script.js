@@ -552,7 +552,7 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
 
     console.log($stateParams);
 
-    $scope.giveCommandVersion = true;
+    $scope.giveCommandVersion = "1_13";
     $scope.skin = undefined;
     $scope.skinRotation = 35;
     $scope.skinImageLoaded = true;
