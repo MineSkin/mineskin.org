@@ -572,13 +572,14 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
     }).then(function (response) {
         $scope.skin = response.data;
 
+        // 1.16 UUID format support
         $scope.skin.data.uuidAsArray = formatInt32UUID(getInt32ForUUID($scope.skin.data.uuid));
 
         ngMeta.setTitle($scope.skin.name || "#" + $scope.skin.id);
         ngMeta.setTag("image", $sce.trustAsResourceUrl(apiBaseUrl + "/render/" + $scope.skin.id + "/head"));
 
         $timeout(function () {
-            Materialize.updateTextFields();
+            materializeBaseInit();
             $("#giveCommand").trigger("autoresize");
             $("#javaGameProfile").trigger("autoresize");
         }, 100);
