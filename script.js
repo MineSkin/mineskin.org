@@ -570,6 +570,8 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
     }).then(function (response) {
         $scope.skin = response.data;
 
+        $scope.skin.data.uuidAsArray = formatInt32UUID(getInt32ForUUID($scope.skin.data.uuid));
+
         ngMeta.setTitle($scope.skin.name || "#" + $scope.skin.id);
         ngMeta.setTag("image", $sce.trustAsResourceUrl(apiBaseUrl + "/render/" + $scope.skin.id + "/head"));
 
@@ -1033,3 +1035,41 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
         }, 100);
     };
 }]);
+
+//// https://github.com/MineSkin/mineskin.org/issues/13 by @SpraxDev
+const uuidView = new DataView(new ArrayBuffer(16));
+
+/**
+ * Takes an UUID and converts it into four int32
+ *
+ * @param {string} uuid Valid UUID (with or without hyphens)
+ *
+ * @returns {number[]}
+ */
+function getInt32ForUUID(uuid) {
+    uuid = uuid.replace(/-/g, '');  // Remove hyphens
+    const result = [];
+
+    uuidView.setBigUint64(0, BigInt(`0x${uuid.substring(0, 16)}`));  // most significant bits (hex)
+    uuidView.setBigUint64(8, BigInt(`0x${uuid.substring(16)}`));     // least significant bits (hex)
+
+    // read int32
+    for (let i = 0; i < 4; i++) {
+        result[i] = uuidView.getInt32(i * 4, false);
+    }
+
+    return result;
+}
+
+/**
+ * Takes an array with four int32 and return a string representation
+ * that can be used for Minecraft 1.16+ commands (nbt)
+ *
+ * @param {number[]} uuidInt32
+ *
+ * @returns {string}
+ */
+function formatInt32UUID(uuidInt32) {
+    return `[I;${uuidInt32[0]},${uuidInt32[1]},${uuidInt32[2]},${uuidInt32[3]}]`;
+}
+///
