@@ -552,7 +552,7 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
 
     console.log($stateParams);
 
-    $scope.materializeBaseInit();
+    materializeBaseInit();
 
     $scope.giveCommandVersion = "1_13";
     $scope.skin = undefined;
@@ -1022,16 +1022,6 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
     $scope.max = Math.max;
     $scope.min = Math.min;
 
-    $scope.materializeBaseInit = function () {
-        $timeout(function () {
-            $('select').material_select();
-            // https://stackoverflow.com/a/56725559/6257838
-            document.querySelectorAll('.select-wrapper').forEach(t => t.addEventListener('click', e=>e.stopPropagation()))
-            $('.tooltipped').tooltip();
-            Materialize.updateTextFields();
-        }, 100);
-    };
-
     $scope.materializeInit = function (tab) {
         console.log("MATERIALIZE INIT")
         $timeout(function () {
@@ -1039,10 +1029,18 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
 //                        $('ul.tabs').tabs("select_tab",tab);
             // 'select_tab' doesn't work, because ui-sref replaces the href attribute
             $("#" + tab + "-trigger").trigger("click");
-            $scope.materializeBaseInit();
+            materializeBaseInit();
         }, 100);
     };
 }]);
+
+function materializeBaseInit() {
+    $('select').material_select();
+    // https://stackoverflow.com/a/56725559/6257838
+    document.querySelectorAll('.select-wrapper').forEach(t => t.addEventListener('click', e=>e.stopPropagation()))
+    $('.tooltipped').tooltip();
+    Materialize.updateTextFields();
+}
 
 //// https://github.com/MineSkin/mineskin.org/issues/13 by @SpraxDev
 const uuidView = new DataView(new ArrayBuffer(16));
