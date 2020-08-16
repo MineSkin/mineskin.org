@@ -137,6 +137,10 @@
                     <div class="progress" ng-show="generating">
                         <div class="indeterminate" ng-class="{indeterminate: generateProgress === 0 || generateProgress >= 100, determinate: generateProgress > 0 && generateProgress < 100}" ng-style="{'width': generateProgress + '%'}"></div>
                     </div>
+                    <div ng-show="generating">
+                        <br/>
+                        <span>Generation in progress! Go grab a coffee and check back in about {{ generateEstimateMinutes }} minutes! ☕</span>
+                    </div>
                     <div ng-show="finished">
                         <br/>
                         <span>Generation finished! Check above for details!</span>

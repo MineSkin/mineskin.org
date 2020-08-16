@@ -498,6 +498,7 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
     $scope.generateInterval = null;
     $scope.generateProgress = 0;
     $scope.generateAttempt = 0;
+    $scope.generateEstimateMinutes = 0;
 
     $scope.$storage = $localStorage;
 
@@ -512,6 +513,8 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
             return 'Skins are still being generated, are you sure you want to leave?';
         };
         console.log($scope.skins);
+
+        $scope.generateEstimateMinutes = Math.round((10 * $scope.skins.length / 60) * 10) / 10;
 
         $scope.tryGenerateNext(0);
     }
