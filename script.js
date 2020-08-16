@@ -516,7 +516,7 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
         };
         console.log($scope.skins);
 
-        $scope.generateEstimateMinutes = Math.round((10 * $scope.skins.length / 60) * 10) / 10;
+        $scope.generateEstimateMinutes = Math.round((15 * $scope.skins.length / 60) * 10) / 10;
 
         $scope.tryGenerateNext(0);
     }
