@@ -508,6 +508,9 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
     $scope.startGenerate = function () {
         if ($scope.generating) return;
         $scope.generating = true;
+        window.onbeforeunload = function(e) {
+            return 'Skins are still being generated, are you sure you want to leave?';
+        };
         console.log($scope.skins);
 
         $scope.tryGenerateNext(0);
@@ -556,6 +559,7 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
         $scope.generating = false;
         $scope.finished = true;
         console.log("Finished!");
+        window.onbeforeunload = null;
     }
 
     $scope.generateNext = function (skin, cb) {
