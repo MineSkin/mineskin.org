@@ -1,0 +1,165 @@
+<div class="container">
+    <h2>Generate Bulk</h2>
+
+    <div class="card-panel z-depth-2">
+        <div class="row">
+            <div>
+                You can use this page instead of the regular generation form to generate a bunch of skin textures at once!<br/>
+                Please note that <strong>the regular delays between generations still apply to each skin, so this might take some time to finish.</strong><br/>
+                You'll also have to <strong>keep your browser open</strong> while the generation runs!<br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12">
+                <h3>Skins & Options</h3>
+
+                <div class="col s12" id="uploadForm">
+                    <div ng-repeat="skin in skins track by $index">
+
+                        <br/>
+                        <div class="row">
+                            <div class="col s12">
+                                <h4>#{{ $index+1 }} <small><a ng-disabled="generating" href="#" ng-click="removeSkinInput($index)">X</a></small></h4>
+                                <div class="row">
+                                    <i ng-hide="skin.info">Info about the generated skin will appear here</i>
+                                    <div ng-show="skin.info">
+                                        <div ng-show="skin.info.data">
+                                            <a href="https://minesk.in/{{ skin.info.data.id }}" target="_blank">minesk.in/{{ skin.info.data.id }}</a><br/>
+                                            <br/>
+                                            <div class="input-field col s12">
+                                                <input readonly type="text" id="skinValue" ng-model="skin.info.data.data.texture.value">
+                                                <label for="skinValue">Skin Value</label>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <input readonly type="text" id="skinSignature" ng-model="skin.info.data.data.texture.signature">
+                                                <label for="skinSignature">Skin Signature</label>
+                                            </div>
+                                        </div>
+                                        <div ng-show="skin.info.error">
+                                            Generation failed!<br/>
+                                            <pre>{{ skin.info.error }}</pre>
+                                        </div>
+                                        <div ng-show="!skin.info.data && !skin.info.error">
+                                            Currently Generating...
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <div class="row">
+                                            <div ng-show="!skin.url && !skin.user" class="input-field file-field col s12">
+                                                <div ngf-drop ng-model="skin.upload" class="drop-box">
+                                                    <div ng-show="!skin.upload">
+                                                        <a ng-disabled="generating" type="file" ngf-select class="btn" id="skinUpload" name="file" ng-model="skin.upload" ngf-pattern="'image/png'" ngf-accept="'image/png'" ngf-max-size="16KB" ngf-dimensions="$width == 64 && ($height == 32 || $height == 64)" ngf-run-all-validations="true" ngf-model-options="{allowInvalid: true}"><i class="fa fa-file-image-o" aria-hidden="true"></i>&nbsp; Select
+                                                            File
+                                                        </a>
+                                                    </div>
+                                                    <div ng-show="skin.upload" style="padding-top: 4px;">
+                                                        <img src="" ngf-src="skin.upload" id="skinUploadTempImage" style="display:none;">
+                                                        <img src="" ngf-thumbnail="skin.upload" class="z-depth-1" style="height:128px;margin:2px;image-rendering: pixelated">
+                                                        <a ng-disabled="generating" class="btn" ng-click="skin.upload=null;">X</a>
+                                                    </div>
+                                                    <ul ng-show="uploadForm.file.$error">
+                                                        <li ng-show="uploadForm.file.$error.dimensions">Image dimensions are {{ skin.upload.$ngfWidth }}x{{ skin.upload.$ngfHeight }}, must be either 64x32 or 64x64</li>
+                                                        <li ng-show="uploadForm.file.$error.maxSize">Image size is {{ skin.upload.size / 1000 | number: 1 }} KB, must be at most 16 KB</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div ng-show="!skin.upload && !skin.user" class="input-field col s12">
+                                                <input ng-disabled="generating" type="url" id="skinUrl" ng-model="skin.url" ng-required="!skin.upload && !skin.user">
+                                                <label for="skinUrl" class="required-label"><i class="fa fa-link" aria-hidden="true"></i>&nbsp; Image URL</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div ng-show="!skin.url && !skin.upload" class="input-field col s12">
+                                                <input ng-disabled="generating" type="text" id="skinUser" ng-model="skin.user" ng-required="!skin.url && !skin.upload" ng-minlength="4" ng-maxlength="36" ng-change="skin.skinName = skin.user">
+                                                <label for="skinUser" class="required-label"><i class="fa fa-user" aria-hidden="true"></i>&nbsp; Minecraft Username</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <div class="input-field col s12">
+                                            <input ng-disabled="generating" type="text" id="skinName" ng-model="skin.skinName">
+                                            <label for="skinName">Skin Name (optional)</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <select ng-disabled="generating"  id="skinModel" ng-disabled="generating" ng-model="skin.skinModel" value="steve">
+                                                <option value="steve">Classic (Steve)</option>
+                                                <option value="slim">Slim (Alex)</option>
+                                            </select>
+                                            <label>Skin Model</label>
+                                        </div>
+                                        <div>
+                                            <div class="switch">
+                                                <label>
+                                                    Public
+                                                    <input ng-disabled="generating" type="checkbox" ng-model="skin.privateUpload">
+                                                    <span class="lever"></span>
+                                                    Private
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="divider"></div>
+                        <br/>
+
+                    </div>
+                    <br/>
+
+                    <a class="btn" ng-click="addSkinInput()">+</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <div google-ad="8719019197"></div>
+
+    <div ng-init="refreshTimeout()" class="card-panel z-depth-2">
+        <h3>Generate</h3>
+
+        <div class="row">
+            <div class="col s12">
+                <div class="center-align">
+                    <button class="btn" ng-disabled="generating || generatorTimeout > 0 || (skins.length < 1)" ng-click="startGenerate()">Generate!</button>
+                    <br/>
+                    <span class="help-block" ng-show="generatorTimeout > 0">Please wait {{generatorTimeout}} more second(s)...</span>
+                    <div class="progress" ng-show="generating">
+                        <div class="indeterminate" ng-class="{indeterminate: generateProgress === 0 || generateProgress >= 100, determinate: generateProgress > 0 && generateProgress < 100}" ng-style="{'width': generateProgress + '%'}"></div>
+                    </div>
+                    <div ng-show="generating">
+                        <br/>
+                        <span>Generation in progress! Go grab a coffee and check back in about {{ generateEstimateMinutes }} minutes! ☕</span><br/>
+                        <br/>
+                        <span>Total: {{ skins.length }}</span><br/>
+                        <span>Successful: {{ successCount }}</span><br/>
+                        <span>Errored: {{ errorCount }}</span><br/>
+                    </div>
+                    <div ng-show="finished">
+                        <br/>
+                        <span>Generation finished! Check above for details!</span>
+                    </div>
+                </div>
+
+
+                <div class="pull-right">
+                    <strong class="pull-right">Share</strong>
+                    <br/>
+                    <link rel="me" href="https://twitter.com/MineSkinOrg">
+                    <a href="https://twitter.com/share" data-show-count="false" twitter></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
