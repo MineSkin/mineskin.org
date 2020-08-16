@@ -499,6 +499,8 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
     $scope.generateProgress = 0;
     $scope.generateAttempt = 0;
     $scope.generateEstimateMinutes = 0;
+    $scope.successCount = 0;
+    $scope.errorCount = 0;
 
     $scope.$storage = $localStorage;
 
@@ -537,6 +539,7 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
                     nextSkin.info.error = err;
 
                     if (success) {
+                        $scope.successCount++;
                         var recentSkins = $scope.$storage.recentSkins;
                         if (!recentSkins) recentSkins = [];
                         recentSkins.unshift(data.id);
@@ -550,6 +553,7 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
                         } else {
                             //skip
                             $scope.tryGenerateNext(nextIndex + 1);
+                            $scope.errorCount++;
                         }
                     }
                 })

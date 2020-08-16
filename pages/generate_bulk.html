@@ -139,7 +139,11 @@
                     </div>
                     <div ng-show="generating">
                         <br/>
-                        <span>Generation in progress! Go grab a coffee and check back in about {{ generateEstimateMinutes }} minutes! ☕</span>
+                        <span>Generation in progress! Go grab a coffee and check back in about {{ generateEstimateMinutes }} minutes! ☕</span><br/>
+                        <br/>
+                        <span>Total: {{ skins.length }}</span><br/>
+                        <span>Successful: {{ successCount }}</span><br/>
+                        <span>Errored: {{ errorCount }}</span><br/>
                     </div>
                     <div ng-show="finished">
                         <br/>
