@@ -398,11 +398,11 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
         setTimeout(function () {
             successAlert.close();
 
-            var recentSkins = $scope.storage.recentSkins;
+            var recentSkins = $scope.$storage.recentSkins;
             if (!recentSkins) recentSkins = [];
             recentSkins.unshift(data.id);
             if (recentSkins.length > 20) recentSkins.pop();
-            $scope.storage.recentSkins = recentSkins;
+            $scope.$storage.recentSkins = recentSkins;
 
             if ($stateParams.generateCallback) {
                 window.location = $stateParams.generateCallback.replace(":id", data.id);
