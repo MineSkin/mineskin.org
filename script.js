@@ -476,6 +476,30 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
         Object.assign({}, skinObjTemplate)
     ];
 
+    $scope.global = {
+        privateUpload: false,
+        upload: undefined,
+        skinName: "",
+        skinModel: "steve"
+    };
+
+    $scope.addFromGlobal = function () {
+        console.log($scope.global);
+
+        let toAddBase = Object.assign({}, skinObjTemplate); // clone
+        toAddBase.privateUpload = $scope.global.privateUpload;
+        toAddBase.skinName = $scope.global.skinName;
+        toAddBase.skinModel = $scope.global.skinModel;
+
+        for(let upload of $scope.global.upload) {
+            let toAdd = Object.assign({}, toAddBase); // clone
+            toAdd.upload = upload;
+            $scope.skins.push(toAdd);
+        }
+
+        $scope.materializeInit("tab1");
+    }
+
     $scope.addSkinInput = function () {
         let last = $scope.skins[$scope.skins.length - 1];
         let toAdd = Object.assign({}, skinObjTemplate); // clone

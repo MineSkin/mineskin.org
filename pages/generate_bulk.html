@@ -13,7 +13,58 @@
             <div class="col s12 m12">
                 <h3>Skins & Options</h3>
 
+                <div class="col s12" id="allOptionsForm">
+                    <h4>Multi-Upload Options</h4>
+
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="row">
+                                <div class="input-field file-field col s12">
+                                    <div ngf-drop ng-model="global.upload" class="drop-box">
+                                        <div ng-show="!global.upload">
+                                            <a ng-disabled="generating" type="file" ngf-select class="btn" id="globalSkinUpload" name="file" ng-model="global.upload" ngf-multiple="true" ngf-pattern="'image/png'" ngf-accept="'image/png'" ngf-max-size="16KB" ngf-dimensions="$width == 64 && ($height == 32 || $height == 64)" ngf-run-all-validations="true" ngf-model-options="{allowInvalid: true}"><i class="fa fa-file-image-o" aria-hidden="true"></i>&nbsp; Select
+                                                Files
+                                            </a>
+                                        </div>
+                                        <div ng-show="global.upload" ng-repeat="upload in global.upload track by $index" style="padding-top: 4px;">
+                                            <img src="" ngf-thumbnail="upload" class="z-depth-1" style="height:128px;margin:2px;image-rendering: pixelated">
+                                        </div>
+                                        <a ng-disabled="generating" class="btn" ng-click="global.upload=null;">X</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input ng-disabled="generating" type="text" id="globalSkinName" ng-model="global.skinName">
+                                    <label for="globalSkinName">Skin Name (optional)</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <select ng-disabled="generating"  id="globalSkinModel" ng-disabled="generating" ng-model="global.skinModel" value="steve">
+                                        <option value="steve">Classic (Steve)</option>
+                                        <option value="slim">Slim (Alex)</option>
+                                    </select>
+                                    <label for="globalSkinModel">Skin Model</label>
+                                </div>
+                                <div>
+                                    <div class="switch">
+                                        <label>
+                                            Public
+                                            <input ng-disabled="generating" type="checkbox" ng-model="global.privateUpload">
+                                            <span class="lever"></span>
+                                            Private
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a ng-disabled="generating" class="btn" ng-click="addFromGlobal()">Add All</a>
+                    </div>
+                </div>
+
                 <div class="col s12" id="uploadForm">
+                    <h4>Individual Skin Options</h4>
                     <div ng-repeat="skin in skins track by $index">
 
                         <br/>
@@ -116,7 +167,7 @@
                     </div>
                     <br/>
 
-                    <a class="btn" ng-click="addSkinInput()">+</a>
+                    <a  ng-disabled="generating"  class="btn" ng-click="addSkinInput()">+</a>
                 </div>
             </div>
         </div>
