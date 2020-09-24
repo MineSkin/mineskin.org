@@ -15,6 +15,9 @@
 
                 <div class="col s12" id="allOptionsForm">
                     <h4>Multi-Upload Options</h4>
+                    <div>
+                        Here you can upload multiple files at once and select options to use for all of the skins.
+                    </div>
 
                     <div class="row">
                         <div class="col s12">
@@ -29,7 +32,7 @@
                                         <div ng-show="global.upload" ng-repeat="upload in global.upload track by $index" style="padding-top: 4px;">
                                             <img src="" ngf-thumbnail="upload" class="z-depth-1" style="height:128px;margin:2px;image-rendering: pixelated">
                                         </div>
-                                        <a ng-disabled="generating" class="btn" ng-click="global.upload=null;">X</a>
+                                        <a ng-show="global.upload" ng-disabled="generating" class="btn" ng-click="global.upload=null;">X</a>
                                     </div>
                                 </div>
                             </div>
@@ -63,8 +66,13 @@
                     </div>
                 </div>
 
+                <br/>
+
                 <div class="col s12" id="uploadForm">
                     <h4>Individual Skin Options</h4>
+                    <div>
+                        This let's you prepare multiple skins with different options for generating.
+                    </div>
                     <div ng-repeat="skin in skins track by $index">
 
                         <br/>
