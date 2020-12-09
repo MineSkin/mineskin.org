@@ -491,7 +491,7 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
         toAddBase.skinName = $scope.global.skinName;
         toAddBase.skinModel = $scope.global.skinModel;
 
-        for(let upload of $scope.global.upload) {
+        for (let upload of $scope.global.upload) {
             let toAdd = Object.assign({}, toAddBase); // clone
             toAdd.upload = upload;
             $scope.skins.push(toAdd);
@@ -535,7 +535,7 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
     $scope.startGenerate = function () {
         if ($scope.generating) return;
         $scope.generating = true;
-        window.onbeforeunload = function(e) {
+        window.onbeforeunload = function (e) {
             return 'Skins are still being generated, are you sure you want to leave?';
         };
         console.log($scope.skins);
@@ -869,7 +869,6 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.securityAnswer = "";
     $scope.securityAnswers = [];
     $scope.uuid = "";
-    $scope.user;
     $scope.userProfile;
     $scope.myAccount;
 
@@ -881,6 +880,14 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.accountEnabled = false;
     $scope.accountAdded = false;
     $scope.accountLinkedToDiscord = false;
+    $scope.sendAccountEmails = false;
+
+    $scope.loginWithMicrosoft = false;
+    $scope.microsoftAccount = false;
+    $scope.canPasteMicrosoftLoginUrl = false;
+    $scope.microsoftLoginUrl = "";
+    $scope.microsoftUserId = "";
+    $scope.xboxUsername = "";
 
     $scope.checkUnderstoodLogin = false;
     $scope.checkReadTerms = false;
@@ -888,6 +895,21 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.checkAcceptPassword = false;
 
     $scope.accountStats = {};
+
+    window.showMicrosoftLogin = function () {
+        $timeout(function () {
+            $scope.loginWithMicrosoft = true;
+        }, 1);
+    };
+
+    $scope.getPreferredAccountServer = function (cb) {
+        $http({
+            url: apiBaseUrl + "/preferredAccountServer",
+            method: "GET"
+        }).then(function (response) {
+            cb(response.data.preferredServer);
+        });
+    };
 
     $scope.doLogin = function () {
         if (!$scope.username || !$scope.password) return;
@@ -916,7 +938,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                 Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
             }
         });
-    }
+    };
 
     $scope.getChallenges = function () {
         if (!$scope.token || !$scope.loggedIn) return;
@@ -970,7 +992,6 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             if (response.data.success) {
                 $scope.challengesSolved = true;
 
-                $scope.getUser();
                 $scope.getUserProfile();
             }
         }, function (response) {
@@ -984,27 +1005,64 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         $scope.challengesSolved = true;
         $scope.skipSecurityChallenges = true;
 
-        $scope.getUser();
         $scope.getUserProfile();
     }
 
-    $scope.getUser = function () {
-        $http({
-            url: apiBaseUrl + "/accountManager/auth/user?token=" + $scope.token,
-            method: "GET",
-        }).then(function (response) {
-            if (response.data.error) {
-                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+    $scope.openMicrosoftLoginWindow = function () {
+        $window.open("https://login.live.com/oauth20_authorize.srf\n" +
+            "?client_id=00000000402b5328\n" +
+            "&response_type=code\n" +
+            "&scope=service%3A%3Auser.auth.xboxlive.com%3A%3AMBI_SSL\n" +
+            "&redirect_uri=https%3A%2F%2Flogin.live.com%2Foauth20_desktop.srf", "",
+            "width=470,height=515,top=50,left=50");
+    };
+
+    $scope.doMicrosoftLogin = function () {
+        if (!$scope.canPasteMicrosoftLoginUrl) {
+            // Needs to login via ms
+            $scope.openMicrosoftLoginWindow();
+            $timeout(function () {
+                $scope.canPasteMicrosoftLoginUrl = true;
+            }, 2000);
+            return;
+        }
+
+        if ($scope.microsoftLoginUrl.length < 5) {
+            $scope.openMicrosoftLoginWindow();
+        } else {
+            if (!$scope.microsoftLoginUrl.startsWith("https://login.live.com/oauth20_desktop.srf?code=")) {
+                Materialize.toast("Invalid login URL. Make sure to paste the entire address.");
                 return;
             }
-            $scope.user = response.data;
-        }, function (response) {
-            console.log(response);
-            if (response.data.error) {
-                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
-            }
-        });
-    }
+            $scope.canPasteMicrosoftLoginUrl = false;
+            Materialize.toast("Logging in...");
+
+            $scope.getPreferredAccountServer(function (server) {
+                console.log("Using account server " + server);
+
+                $http({
+                    url: "https://" + server + ".api.mineskin.org/accountManager/auth/microsoft/login",
+                    method: "POST",
+                    data: {
+                        url: $scope.microsoftLoginUrl
+                    }
+                }).then(function (response) {
+                    if (response.data.error) {
+                        Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+                        return;
+                    }
+
+                    $scope.microsoftAccount = true;
+                    $scope.needToSolveChallenges = false;
+                    $scope.token = response.data.token;
+                    $scope.microsoftUserId = response.data.userId; // random id
+                    $scope.xboxUsername = response.data.username; // random uuid
+
+                    $scope.getUserProfile();
+                });
+            })
+        }
+    };
 
     $scope.getUserProfile = function () {
         $http({
@@ -1061,7 +1119,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
     $scope.getAccount = function () {
         $http({
-            url: apiBaseUrl + "/accountManager/myAccount?username=" + $scope.username + "&token=" + $scope.token,
+            url: apiBaseUrl + "/accountManager/myAccount?uuid=" + $scope.uuid + "&username=" + $scope.username + "&token=" + $scope.token,
             method: "GET"
         }).then(function (response) {
             if (response.data.error) {
@@ -1132,6 +1190,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             data: {
                 token: $scope.token,
                 username: $scope.username,
+                uuid: $scope.uuid,
                 enabled: enabled
             }
         }).then(function (response) {

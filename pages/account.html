@@ -1,6 +1,6 @@
 <div class="row">
     <style>
-        .obviousLabel{
+        .obviousLabel {
             color: black !important;
         }
     </style>
@@ -17,7 +17,7 @@
         <br/>
 
         <div class="row">
-            <div ng-show="!loggedIn">
+            <div ng-show="!loggedIn && !loginWithMicrosoft"><!-- Minecraft Login -->
                 <h4>Please log in using your Minecraft account data</h4>
                 <span>(This is just to check your account information and will not be stored until you decide to actually add your account.)</span>
                 <br/>
@@ -41,6 +41,36 @@
                             <input id="password" type="password" class="validate" ng-disabled="!checkUnderstoodLogin" ng-model="password" required>
                             <label for="password">Password</label>
                         </div>
+                    </div>
+
+                    <div class="row">
+                        <button class="btn waves-effect waves-light" type="submit" ng-disabled="!checkUnderstoodLogin">Login</button>
+                    </div>
+                </form>
+            </div>
+            <div ng-show="!loggedIn && loginWithMicrosoft"><!-- Microsoft Login -->
+                <h4>Please click the button and log in using your Microsoft credentials linked to the account you want to add</h4>
+                <span>(This is just to check your account information and will not be stored until you decide to actually add your account.)</span>
+                <br/>
+
+                <br/>
+                <div>
+                    <input type="checkbox" ng-model="checkUnderstoodLogin" id="checkUnderstoodLoginMs"/>
+                    <label for="checkUnderstoodLoginMs" class="obviousLabel">I understand that I do <b>not have to</b> log in in order to use MineSkin</label>
+                </div>
+                <br/>
+
+                <form ng-submit="doMicrosoftLogin()" class="col s12">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="msLoginUrl" type="url" class="validate" ng-disabled="!canPasteMicrosoftLoginUrl" ng-model="microsoftLoginUrl">
+                            <label for="msLoginUrl">Login URL</label>
+                        </div>
+                    </div>
+
+                    <div>
+                        Click the Login button below first and log in with Microsoft in the popup window.<br/>
+                        Once the popup window reaches a blank page, copy the url from the address bar, paste it above & click Login again.<br/>
                     </div>
 
                     <div class="row">

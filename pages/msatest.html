@@ -1,0 +1,19 @@
+<html>
+    <body>
+        <a id="startLogin">Start</a>
+
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <script>
+            $(document).ready(function () {
+                $("#startLogin").on("click", function () {
+                    window.win = window.open("https://login.live.com/oauth20_authorize.srf\n" +
+                        " ?client_id=00000000402b5328\n" +
+                        " &response_type=code\n" +
+                        " &scope=service%3A%3Auser.auth.xboxlive.com%3A%3AMBI_SSL\n" +
+                        " &redirect_uri=https%3A%2F%2Flogin.live.com%2Foauth20_desktop.srf","","width=470,height=515,top=50,left=50");
+                    console.log(win);
+                });
+            });
+        </script>
+    </body>
+</html>
