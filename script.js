@@ -1030,6 +1030,12 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             "width=470,height=515,top=50,left=50");
     };
 
+    $scope.openMicrosoftLogoutWindow = function () {
+        $window.open("https://login.live.com/oauth20_logout.srf?client_id=ca634a9a-f102-4033-b081-3a4393a6f65d&" +
+            "redirect_uri=https%3A%2F%2Fsisu.xboxlive.com%2Fconnect%2Foauth%2FXboxLive%2Fsignout%3Fstate%3Dlogout", "",
+            "width=470,height=515,top=50,left=50")
+    };
+
     $scope.doMicrosoftLogin = function () {
         if (!$scope.canPasteMicrosoftLoginUrl) {
             // Needs to login via ms

@@ -1,6 +1,7 @@
 <html>
     <body>
         <a id="startLogin">Start</a>
+        <a id="logout">Logout</a>
 
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
         <script>
@@ -12,6 +13,15 @@
                         " &scope=service%3A%3Auser.auth.xboxlive.com%3A%3AMBI_SSL\n" +
                         " &redirect_uri=https%3A%2F%2Flogin.live.com%2Foauth20_desktop.srf","","width=470,height=515,top=50,left=50");
                     console.log(win);
+                });
+
+                $("#logout").on("click", function () {
+                    window.open("https://login.live.com/oauth20_logout.srf?client_id=ca634a9a-f102-4033-b081-3a4393a6f65d&" +
+                        "redirect_uri=https%3A%2F%2Fsisu.xboxlive.com%2Fconnect%2Foauth%2FXboxLive%2Fsignout%3Fstate%3Dlogout", "", "width=470,height=515,top=50,left=50")
+                    // fetch("https://login.live.com/oauth20_logout.srf?client_id=ca634a9a-f102-4033-b081-3a4393a6f65d&" +
+                    //     "redirect_uri=https%3A%2F%2Fsisu.xboxlive.com%2Fconnect%2Foauth%2FXboxLive%2Fsignout%3Fstate%3Dlogout", {
+                    //     mode: "no-cors"
+                    // })
                 });
             });
         </script>
