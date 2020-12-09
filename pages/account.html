@@ -85,7 +85,7 @@
         </div>
         <br/>
         <div class="row">
-            <div ng-show="!challengesSolved && needToSolveChallenges" ng-hide="!loggedIn">
+            <div ng-show="!challengesSolved && needToSolveChallenges" ng-hide="!loggedIn || loginWithMicrosoft">
                 <h4>Please enter the answers to the security questions you set on your Minecraft/Mojang account</h4>
                 <form ng-submit="solveChallenges()" class="col s12">
                     <div class="row">
@@ -112,17 +112,15 @@
         </div>
         <br/>
         <div class="row">
-            <div ng-hide="!challengesSolved || (user&&userProfile)">
+            <div ng-hide="!challengesSolved || userProfile">
                 <h4>Loading user data...</h4>
             </div>
-            <div ng-show="user && userProfile && userProfile.uuid">
+            <div ng-show="userProfile && userProfile.uuid">
                 <h2>User data loaded!</h2>
                 <div>
-                    <span><strong>Email: </strong> {{ user.username }}<br/></span>
                     <span><strong>UUID: </strong> {{ userProfile.uuid }}<br/></span>
                     <span><strong>Name: </strong> {{ userProfile.name }}<br/></span>
-                    <!-- TODO:  show warnings for legacy or suspended accounts -->
-                    <span><strong>Legacy: </strong> {{ user.legacyUser || userProfile.legacyProfile }}</span> <span ng-show="user.legacyUser || userProfile.legacyProfile" style="color:red">Legacy accounts cannot be used with MineSkin! Please migrate your account first</span><br/>
+<!--                    <span><strong>Legacy: </strong> {{ v.legacyUser || userProfile.legacyProfile }}</span> <span ng-show="user.legacyUser || userProfile.legacyProfile" style="color:red">Legacy accounts cannot be used with MineSkin! Please migrate your account first</span><br/>-->
                     <span><strong>Suspended: </strong> {{ userProfile.suspended }}</span> <span ng-show="userProfile.suspended" style="color:red">You can't use a suspended account!</span><br/>
                 </div>
                 <hr/>
@@ -130,7 +128,7 @@
         </div>
         <br/>
         <div class="row" ng-show="!accountExists"><!-- Account add form -->
-            <div ng-show="!accountAdded" ng-hide="!user || !userProfile || !userProfile.uuid || (user.legacyUser || userProfile.legacyProfile || userProfile.suspended)">
+            <div ng-show="!accountAdded" ng-hide="!userProfile || !userProfile.uuid || (userProfile.legacyProfile || userProfile.suspended)">
                 <h4>Click the button below to add your account to the MineSkin database.</h4>
                 <p>
                     By adding your account, you agree that MineSkin will have access to your full account data, including username, password, etc..<br/>

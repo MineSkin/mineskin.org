@@ -1,6 +1,13 @@
 var apiBaseUrl = "https://api.mineskin.org";
 var websiteBaseUrl = "https://mineskin.org";
 
+function apiBase(server = "") {
+    if (!server || server.length === 0) {
+        return "https://api.mineskin.org";
+    }
+    return "https://" + server + ".api.mineskin.org";
+}
+
 var mineskinApp = angular.module("mineskinApp", ["ui.router", "ui.materialize", "ngFileUpload", "ngCookies", "angularModalService", "ngMeta", "ngStorage"]);
 
 mineskinApp.directive("ngPreloadSrc", function () {
@@ -872,6 +879,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.userProfile;
     $scope.myAccount;
 
+    $scope.loginServer = "";
     $scope.loggedIn = false;
     $scope.needToSolveChallenges = true;
     $scope.challengesSolved = false;
@@ -888,6 +896,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.microsoftLoginUrl = "";
     $scope.microsoftUserId = "";
     $scope.xboxUsername = "";
+    $scope.microsoftRefreshToken = "";
 
     $scope.checkUnderstoodLogin = false;
     $scope.checkReadTerms = false;
@@ -903,6 +912,10 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     };
 
     $scope.getPreferredAccountServer = function (cb) {
+        if ($scope.loginServer && $scope.loginServer.length > 1) {
+            cb($scope.loginServer);
+            return;
+        }
         $http({
             url: apiBaseUrl + "/preferredAccountServer",
             method: "GET"
@@ -1039,9 +1052,10 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
             $scope.getPreferredAccountServer(function (server) {
                 console.log("Using account server " + server);
+                $scope.loginServer = server;
 
                 $http({
-                    url: "https://" + server + ".api.mineskin.org/accountManager/auth/microsoft/login",
+                    url: apiBase(server) + "/accountManager/auth/microsoft/login",
                     method: "POST",
                     data: {
                         url: $scope.microsoftLoginUrl
@@ -1052,13 +1066,20 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                         return;
                     }
 
-                    $scope.microsoftAccount = true;
                     $scope.needToSolveChallenges = false;
+                    $scope.microsoftAccount = true;
                     $scope.token = response.data.token;
+                    $scope.microsoftRefreshToken = response.data.refreshToken;
                     $scope.microsoftUserId = response.data.userId; // random id
+                    $scope.username = $scope.microsoftUserId;
                     $scope.xboxUsername = response.data.username; // random uuid
 
-                    $scope.getUserProfile();
+                    $timeout(function () {
+                        $scope.loggedIn = true;
+                        $timeout(function () {
+                            $scope.getUserProfile();
+                        }, 1000);
+                    }, 2000);
                 });
             })
         }
@@ -1087,7 +1108,12 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
     $scope.accountStatus = function () {
         $http({
-            url: apiBaseUrl + "/accountManager/accountStatus?username=" + $scope.username + "&uuid=" + $scope.uuid + "&token=" + $scope.token + "&password=" + btoa($scope.password) + ($scope.securityAnswers && $scope.securityAnswers.length > 0 ? "&security=" + JSON.stringify($scope.securityAnswers) : ($scope.securityAnswer ? "&security=" + $scope.securityAnswer : "")),
+            url: apiBaseUrl + "/accountManager/accountStatus?username=" + $scope.username +
+                "&microsoftAccount=" + $scope.microsoftAccount +
+                "&uuid=" + $scope.uuid +
+                "&token=" + $scope.token +
+                "&password=" + btoa($scope.password) +
+                ($scope.securityAnswers && $scope.securityAnswers.length > 0 ? "&security=" + JSON.stringify($scope.securityAnswers) : ($scope.securityAnswer ? "&security=" + $scope.securityAnswer : "")),
             method: "GET"
         }).then(function (response) {
             if (response.data.error) {
@@ -1096,7 +1122,8 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             }
             $scope.accountExists = response.data.exists;
             $scope.accountEnabled = response.data.exists && response.data.enabled;
-            $scope.accountLinkedToDiscord = response.data.exists && response.data.discordLinked
+            $scope.accountLinkedToDiscord = response.data.exists && response.data.discordLinked;
+            $scope.sendAccountEmails = response.data.sendEmails;
 
             if (response.data.exists) {
                 $scope.getAccount();
@@ -1119,7 +1146,11 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
     $scope.getAccount = function () {
         $http({
-            url: apiBaseUrl + "/accountManager/myAccount?uuid=" + $scope.uuid + "&username=" + $scope.username + "&token=" + $scope.token,
+            url: apiBaseUrl + "/accountManager/myAccount?uuid=" + $scope.uuid +
+                "&username=" + $scope.username +
+                "&token=" + $scope.token +
+                "&microsoftAccount=" + $scope.microsoftAccount
+            ,
             method: "GET"
         }).then(function (response) {
             if (response.data.error) {
@@ -1142,6 +1173,10 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             password: $scope.password,
             uuid: $scope.uuid,
             skipSecurityChallenges: $scope.skipSecurityChallenges,
+            microsoftAccount: $scope.microsoftAccount,
+            microsoftUserId: $scope.microsoftUserId,
+            microsoftRefreshToken: $scope.microsoftRefreshToken,
+            xboxUsername: $scope.xboxUsername,
             checks: {
                 readTerms: $scope.checkReadTerms,
                 acceptSkins: $scope.checkAcceptSkins,
@@ -1152,7 +1187,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             d.securityAnswers = $scope.securityAnswers;
         }
         $http({
-            url: apiBaseUrl + "/accountManager/confirmAccountSubmission",
+            url: apiBase($scope.loginServer) + "/accountManager/confirmAccountSubmission",
             method: "POST",
             data: d
         }).then(function (response) {
@@ -1211,7 +1246,11 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
     $scope.getAccountStats = function () {
         $http({
-            url: apiBaseUrl + "/accountManager/accountStats?token=" + $scope.token + "&username=" + $scope.username + "&uuid=" + $scope.uuid,
+            url: apiBaseUrl + "/accountManager/accountStats?token=" + $scope.token +
+                "&username=" + $scope.username +
+                "&uuid=" + $scope.uuid +
+                "&microsoftAccount" + $scope.microsoftAccount
+            ,
             method: "GET"
         }).then(function (response) {
             if (response.data.error) {
@@ -1237,7 +1276,8 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                 data: {
                     token: $scope.token,
                     username: $scope.username,
-                    uuid: $scope.uuid
+                    uuid: $scope.uuid,
+                    microsoftAccount: $scope.microsoftAccount
                 }
             }).then(function (response) {
                 if (response.data.error) {
