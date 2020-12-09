@@ -1087,7 +1087,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
     $scope.getUserProfile = function () {
         $http({
-            url: apiBaseUrl + "/accountManager/auth/userProfile?token=" + $scope.token,
+            url: apiBase($scope.loginServer) + "/accountManager/auth/userProfile?token=" + $scope.token,
             method: "GET"
         }).then(function (response) {
             if (response.data.error) {
@@ -1108,7 +1108,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
     $scope.accountStatus = function () {
         $http({
-            url: apiBaseUrl + "/accountManager/accountStatus?username=" + $scope.username +
+            url: apiBase($scope.loginServer) + "/accountManager/accountStatus?username=" + $scope.username +
                 "&microsoftAccount=" + $scope.microsoftAccount +
                 "&uuid=" + $scope.uuid +
                 "&token=" + $scope.token +
@@ -1146,7 +1146,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
     $scope.getAccount = function () {
         $http({
-            url: apiBaseUrl + "/accountManager/myAccount?uuid=" + $scope.uuid +
+            url: apiBase($scope.loginServer) + "/accountManager/myAccount?uuid=" + $scope.uuid +
                 "&username=" + $scope.username +
                 "&token=" + $scope.token +
                 "&microsoftAccount=" + $scope.microsoftAccount
@@ -1220,7 +1220,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
     $scope.updateAccountStatus = function (enabled) {
         $http({
-            url: apiBaseUrl + "/accountManager/settings/status",
+            url: apiBase($scope.loginServer) + "/accountManager/settings/status",
             method: "POST",
             data: {
                 token: $scope.token,
@@ -1246,7 +1246,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
     $scope.getAccountStats = function () {
         $http({
-            url: apiBaseUrl + "/accountManager/accountStats?token=" + $scope.token +
+            url: apiBase($scope.loginServer) + "/accountManager/accountStats?token=" + $scope.token +
                 "&username=" + $scope.username +
                 "&uuid=" + $scope.uuid +
                 "&microsoftAccount" + $scope.microsoftAccount
@@ -1271,7 +1271,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.deleteAccount = function () {
         if (confirm("Are you sure you want to delete the account?")) {
             $http({
-                url: apiBaseUrl + "/accountManager/deleteAccount",
+                url: apiBase($scope.loginServer) + "/accountManager/deleteAccount",
                 method: "POST",
                 data: {
                     token: $scope.token,
