@@ -121,6 +121,7 @@
                 <div>
                     <span><strong>UUID: </strong> {{ userProfile.uuid }}<br/></span>
                     <span><strong>Name: </strong> {{ userProfile.name }}<br/></span>
+                    <span><strong>Type: </strong> {{ microsoftAccount ? 'Microsoft' : 'Mojang' }}</span>
 <!--                    <span><strong>Legacy: </strong> {{ v.legacyUser || userProfile.legacyProfile }}</span> <span ng-show="user.legacyUser || userProfile.legacyProfile" style="color:red">Legacy accounts cannot be used with MineSkin! Please migrate your account first</span><br/>-->
                     <span><strong>Suspended: </strong> {{ userProfile.suspended }}</span> <span ng-show="userProfile.suspended" style="color:red">You can't use a suspended account!</span><br/>
                 </div>
