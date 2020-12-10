@@ -1022,11 +1022,11 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     }
 
     $scope.openMicrosoftLoginWindow = function () {
-        $window.open("https://login.live.com/oauth20_authorize.srf\n" +
-            "?client_id=00000000402b5328\n" +
-            "&response_type=code\n" +
-            "&scope=service%3A%3Auser.auth.xboxlive.com%3A%3AMBI_SSL\n" +
-            "&redirect_uri=https%3A%2F%2Flogin.live.com%2Foauth20_desktop.srf", "",
+        $window.open("https://login.live.com/oauth20_authorize.srf" +
+            "?client_id=00000000402b5328" +
+            "&response_type=code" +
+            "&scope=" + encodeURIComponent("service::user.auth.xboxlive.com::MBI_SSL") +
+            "&redirect_uri=" + encodeURIComponent("https://login.live.com/oauth20_desktop.srf"), "",
             "width=470,height=515,top=50,left=50");
     };
 
