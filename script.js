@@ -1,12 +1,5 @@
 var apiBaseUrl = "https://api.mineskin.org";
-var websiteBaseUrl = "https://mineskin.org";
 
-function apiBase(server = "") {
-    if (!server || server.length === 0) {
-        return "https://api.mineskin.org";
-    }
-    return "https://" + server + ".api.mineskin.org";
-}
 
 var mineskinApp = angular.module("mineskinApp", ["ui.router", "ui.materialize", "ngFileUpload", "ngCookies", "angularModalService", "ngMeta", "ngStorage"]);
 
@@ -268,7 +261,9 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
 
     $scope.privateUpload = false;
     $scope.skinName = "";
+    /**@deprecated**/
     $scope.skinModel = "steve";
+    $scope.skinVariant = "classic";
 
     $scope.generating = false;
     $scope.generateSeconds = 0;
@@ -297,20 +292,26 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
         console.log("  User:");
         console.log($scope.skinUser);
 
-        var avgGenSeconds = Math.round($scope.stats.avgGenerateDuration / 1000);
+        let avgGenSeconds = Math.round($scope.stats.avgGenerateDuration / 1000);
         $interval.cancel($scope.generateTimer);
         $scope.generateTimer = $interval(function () {
-            $scope.generateProgress = ($scope.generateSeconds++) / Math.round($scope.stats.avgGenerateDuration / 1000) * 100;
+            $scope.generateProgress = ($scope.generateSeconds++) / avgGenSeconds * 100;
         }, 1000);
 
         if ($scope.skinUrl) {
             $scope.generating = true;
             $scope.generateProgress = 0;
-            var genAlert = $scope.addAlert("Generating Skin from URL...", "info", 15000);
+            let genAlert = $scope.addAlert("Generating Skin from URL...", "info", 15000);
             setTimeout(function () {
                 $http({
-                    url: apiBaseUrl + "/generate/url?url=" + $scope.skinUrl + "&name=" + $scope.skinName + "&model=" + $scope.skinModel + "&visibility=" + ($scope.privateUpload ? 1 : 0),
-                    method: "POST"
+                    url: apiBaseUrl + "/generate/url",
+                    method: "POST",
+                    data: {
+                        url: $scope.skinUrl,
+                        name: $scope.skinName,
+                        variant: $scope.skinVariant,
+                        visibility: $scope.privateUpload ? 1 : 0
+                    }
                 }).then(function (response) {
                     console.log(response);
                     if (!response.data.error) {
@@ -326,12 +327,17 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
         } else if ($scope.skinUpload) {
             $scope.generating = true;
             $scope.generateProgress = 0;
-            var genAlert = $scope.addAlert("Uploading Skin...", "info", 15000);
+            let genAlert = $scope.addAlert("Uploading Skin...", "info", 15000);
             setTimeout(function () {
                 Upload.upload({
-                    url: apiBaseUrl + "/generate/upload?name=" + $scope.skinName + "&model=" + $scope.skinModel + "&visibility=" + ($scope.privateUpload ? 1 : 0),
+                    url: apiBaseUrl + "/generate/upload",
                     method: "POST",
-                    data: {file: $scope.skinUpload}
+                    data: {
+                        file: $scope.skinUpload,
+                        name: $scope.skinName,
+                        variant: $scope.skinVariant,
+                        visibility: $scope.privateUpload ? 1 : 0
+                    }
                 }).then(function (response) {
                     console.log(response);
                     if (!response.data.error) {
@@ -347,14 +353,20 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
         } else if ($scope.skinUser) {
             $scope.generating = true;
             $scope.generateProgress = 0;
-            var skinUuid;
+            let skinUuid;
 
             function generateUser(uuid) {
-                var genAlert = $scope.addAlert("Loading skin data...", "info", 15000);
+                let genAlert = $scope.addAlert("Loading skin data...", "info", 15000);
                 setTimeout(function () {
                     $http({
-                        url: apiBaseUrl + "/generate/user/" + uuid + "?name=" + $scope.skinName + "&model=" + $scope.skinModel + "&visibility=" + ($scope.privateUpload ? 1 : 0),
-                        method: "GET"
+                        url: apiBaseUrl + "/generate/user",
+                        method: "POST",
+                        data: {
+                            uuid: uuid,
+                            name: $scope.skinName,
+                            variant: $scope.skinVariant,
+                            visibility: $scope.privateUpload ? 1 : 0
+                        }
                     }).then(function (response) {
                         console.log(response);
                         if (!response.data.error) {
@@ -375,7 +387,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
                     generateUser(skinUuid);
                 }
             } else {
-                var validateAlert = $scope.addAlert("Validating Username...", "info", 10000);
+                let validateAlert = $scope.addAlert("Validating Username...", "info", 10000);
                 $.ajax({
                     url: apiBaseUrl + "/validate/user/" + $scope.skinUser,
                     success: function (data) {
@@ -487,7 +499,8 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
         privateUpload: false,
         upload: undefined,
         skinName: "",
-        skinModel: "steve"
+        skinModel: "steve",
+        skinVariant: "classic"
     };
 
     $scope.addFromGlobal = function () {
@@ -497,6 +510,7 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
         toAddBase.privateUpload = $scope.global.privateUpload;
         toAddBase.skinName = $scope.global.skinName;
         toAddBase.skinModel = $scope.global.skinModel;
+        toAddBase.skinVariant = $scope.global.skinVariant;
 
         for (let upload of $scope.global.upload) {
             let toAdd = Object.assign({}, toAddBase); // clone
@@ -617,11 +631,17 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
         }
 
         if (skin.url) {
-            var genAlert = $scope.addAlert("Generating Skin from URL...", "info", 15000);
             setTimeout(function () {
                 $http({
-                    url: apiBaseUrl + "/generate/url?url=" + skin.url + "&name=" + skin.skinName + "&model=" + skin.skinModel + "&visibility=" + (skin.privateUpload ? 1 : 0),
-                    method: "POST"
+                    url: apiBaseUrl + "/generate/url",
+                    method: "POST",
+                    data: {
+                        url: skin.url,
+                        name: skin.skinName,
+                        model: skin.skinModel,
+                        variant: skin.skinVariant,
+                        visibility: skin.privateUpload ? 1 : 0
+                    }
                 }).then(function (response) {
                     console.log(response);
                     if (!response.data.error) {
@@ -635,12 +655,17 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
                 });
             }, 500);
         } else if (skin.upload) {
-            var genAlert = $scope.addAlert("Uploading Skin...", "info", 15000);
             setTimeout(function () {
                 Upload.upload({
-                    url: apiBaseUrl + "/generate/upload?name=" + skin.skinName + "&model=" + skin.skinModel + "&visibility=" + (skin.privateUpload ? 1 : 0),
+                    url: apiBaseUrl + "/generate/upload",
                     method: "POST",
-                    data: {file: skin.upload}
+                    data: {
+                        file: skin.upload,
+                        name: skin.skinName,
+                        model: skin.skinModel,
+                        variant: skin.skinVariant,
+                        visibility: skin.privateUpload ? 1 : 0
+                    }
                 }).then(function (response) {
                     console.log(response);
                     if (!response.data.error) {
@@ -654,14 +679,20 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
                 });
             }, 500);
         } else if (skin.user) {
-            var skinUuid;
+            let skinUuid;
 
             function generateUser(uuid) {
-                var genAlert = $scope.addAlert("Loading skin data...", "info", 15000);
                 setTimeout(function () {
                     $http({
-                        url: apiBaseUrl + "/generate/user/" + uuid + "?name=" + skin.skinName + "&model=" + skin.skinModel + "&visibility=" + (skin.privateUpload ? 1 : 0),
-                        method: "GET"
+                        url: apiBaseUrl + "/generate/user",
+                        method: "POST",
+                        data: {
+                            uuid: uuid,
+                            name: skin.skinName,
+                            model: skin.skinModel,
+                            variant: skin.skinVariant,
+                            visibility: skin.privateUpload ? 1 : 0
+                        }
                     }).then(function (response) {
                         console.log(response);
                         if (!response.data.error) {
@@ -684,7 +715,7 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
                     cb("invalid uuid", null, true);
                 }
             } else {
-                var validateAlert = $scope.addAlert("Validating Username...", "info", 10000);
+                let validateAlert = $scope.addAlert("Validating Username...", "info", 10000);
                 $.ajax({
                     url: apiBaseUrl + "/validate/user/" + skin.user,
                     success: function (data) {
@@ -1042,6 +1073,14 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     };
 
     //// INDEPENDENT STUFF
+
+    $scope.doLogin = function () {
+        if ($scope.loginWithMicrosoft) {
+            $scope.loginMicrosoft();
+        } else {
+            $scope.loginMojang();
+        }
+    };
 
     $scope.getPreferredAccountServer = function (cb) {
         if ($scope.accountServer && $scope.accountServer.length > 1) {
