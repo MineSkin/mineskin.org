@@ -915,6 +915,13 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         }, 1);
     };
 
+    window.forceAccountServer = function (server) {
+        $scope.accountServer = {
+            server: server,
+            host: `${ server }.api.mineskin.org`
+        }
+    };
+
     //// MOJANG
 
     $scope.loginMojang = function () {
