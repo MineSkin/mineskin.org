@@ -32,8 +32,8 @@
                 <form ng-submit="doLogin()" class="col s12">
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="username" type="email" class="validate" ng-disabled="!checkUnderstoodLogin" ng-model="username" required>
-                            <label for="username">Username (E-Mail)</label>
+                            <input id="email" type="email" class="validate" ng-disabled="!checkUnderstoodLogin" ng-model="email" required>
+                            <label for="email">E-Mail</label>
                         </div>
                     </div>
                     <div class="row">
@@ -57,7 +57,7 @@
         <div class="row">
             <div ng-show="!challengesSolved && needToSolveChallenges" ng-hide="!loggedIn || loginWithMicrosoft">
                 <h4>Please enter the answers to the security questions you set on your Minecraft/Mojang account</h4>
-                <form ng-submit="solveChallenges()" class="col s12">
+                <form ng-submit="solveMojangChallenges()" class="col s12">
                     <div class="row">
                         <div class="input-field col s12" ng-repeat="question in securityQuestions">
                             <label ng-attr-for="{{ 'securityAnswer' + question.question.id }}">{{ question.question.question }}</label>
@@ -85,13 +85,13 @@
             <div ng-hide="!challengesSolved || userProfile">
                 <h4>Loading user data...</h4>
             </div>
-            <div ng-show="userProfile && userProfile.uuid">
+            <div ng-show="userProfile && userProfile.id">
                 <h2>User data loaded!</h2>
                 <div>
-                    <span><strong>Type: </strong> {{ microsoftAccount ? 'Microsoft' : 'Mojang' }}</span>
-                    <span><strong>UUID: </strong> {{ userProfile.uuid }}<br/></span>
+                    <span><strong>Type: </strong> {{ microsoftAccount ? 'Microsoft' : 'Mojang' }}<br/></span>
+                    <span><strong>UUID: </strong> {{ userProfile.id }}<br/></span>
                     <span><strong>Name: </strong> {{ userProfile.name }}<br/></span>
-                    <span><strong>Suspended: </strong> {{ userProfile.suspended }}</span> <span ng-show="userProfile.suspended" style="color:red">You can't use a suspended account!</span><br/>
+<!--                    <span><strong>Suspended: </strong> {{ userProfile.suspended }}</span> <span ng-show="userProfile.suspended" style="color:red">You can't use a suspended account!</span><br/>-->
                 </div>
                 <hr/>
             </div>
@@ -101,7 +101,7 @@
             <div ng-show="!accountAdded" ng-hide="!userProfile || !userProfile.uuid || (userProfile.legacyProfile || userProfile.suspended)">
                 <h4>Click the button below to add your account to the MineSkin database.</h4>
                 <p>
-                    By adding your account, you agree that MineSkin will have access to your full account data, including username, password, etc..<br/>
+                    By adding your account, you agree that MineSkin will have access to your full account data, including email, password, etc..<br/>
                     Your password <i>will</i> be stored in the MineSkin database but it will be encrypted first and cannot be read by humans (also in the improbable event of a database breach).<br/>
                     The skin of your account will be changed in irregular intervals in order to generate the skin data for MineSkin.<br/>
                     You can always remove or temporarily disable your account.<br/>
@@ -119,7 +119,7 @@
                     </div>
                     <div>
                         <input type="checkbox" ng-model="checkAcceptPassword" id="checkAcceptPassword"/>
-                        <label for="checkAcceptPassword" class="obviousLabel">I understand that MineSkin will have access to my account's credentials (username + password)</label>
+                        <label for="checkAcceptPassword" class="obviousLabel">I understand that MineSkin will have access to my account's credentials (email + password)</label>
                     </div>
                 </div>
                 <br/>

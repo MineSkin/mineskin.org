@@ -945,6 +945,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             $scope.loginWithMicrosoft = true;
         }, 1);
     };
+    window.__scope = $scope;
 
     window.forceAccountServer = function (server) {
         $scope.accountServer = {
@@ -962,6 +963,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             $http({
                 method: "POST",
                 url: `https://${ accountServer.host }/accountManager/mojang/login?t=${ Date.now() }`,
+                withCredentials: true,
                 data: {
                     email: $scope.email,
                     password: btoa($scope.password)
@@ -989,6 +991,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             $http({
                 method: "POST",
                 url: `https://${ accountServer.host }/accountManager/mojang/getChallenges`,
+                withCredentials: true,
                 headers: {
                     "Authorization": `Bearer ${ $scope.token }`
                 }
@@ -1020,6 +1023,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             $http({
                 method: "POST",
                 url: `https://${ accountServer.host }/accountManager/mojang/solveChallenges`,
+                withCredentials: true,
                 headers: {
                     "Authorization": `Bearer ${ $scope.token }`
                 },
@@ -1054,6 +1058,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             $http({
                 method: "POST",
                 url: `https://${ accountServer.host }/accountManager/microsoft/login`,
+                withCredentials: true,
                 data: {
                     email: $scope.email,
                     password: btoa($scope.password)
@@ -1083,7 +1088,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     };
 
     $scope.getPreferredAccountServer = function (cb) {
-        if ($scope.accountServer && $scope.accountServer.length > 1) {
+        if ($scope.accountServer && $scope.accountServer.host) {
             cb($scope.accountServer);
             return;
         }
@@ -1100,7 +1105,8 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.logout = function () {
         $http({
             method: "POST",
-            url: `https://${ $scope.accountServer ? $scope.accountServer.host : 'api.mineskin.org' }/logout`
+            url: `https://${ $scope.accountServer ? $scope.accountServer.host : 'api.mineskin.org' }/logout`,
+            withCredentials: true,
         }).then(logoutResponse => {
             $scope.loggedIn = false;
             $scope.accountServer = undefined;
@@ -1115,6 +1121,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             $http({
                 method: "POST",
                 url: `https://${ accountServer.host }/accountManager/userProfile`,
+                withCredentials: true,
                 headers: {
                     "Authorization": `Bearer ${ $scope.token }`
                 }
@@ -1124,7 +1131,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                     return;
                 }
 
-                $scope.uuid = profileResponse.data.uuid;
+                $scope.uuid = profileResponse.data.id;
                 $scope.userProfile = profileResponse.data;
 
                 $scope.getAccount();
@@ -1149,6 +1156,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             $http({
                 method: "POST",
                 url: `https://${ accountServer.host }/accountManager/myAccount`,
+                withCredentials: true,
                 headers: {
                     "Authorization": `Bearer ${ $scope.token }`
                 },
@@ -1166,9 +1174,9 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
                 $scope.myAccount = accountResponse.data;
                 $scope.accountExists = true;
-                $scope.accountEnabled = accountResponse.data.enabled;
+                $scope.accountEnabled = accountResponse.data.settings.enabled || accountResponse.data.enabled;
                 $scope.accountLinkedToDiscord = accountResponse.data.discordLinked;
-                $scope.sendAccountEmails = accountResponse.data.sendEmails;
+                $scope.sendAccountEmails = accountResponse.data.settings.emails || accountResponse.data.sendEmails;
             }).catch(response => {
                 if (response.status === 404) {
                     // account does not exist
@@ -1200,6 +1208,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             $http({
                 method: "POST",
                 url: `https://${ accountServer.host }/accountManager/confirmAccountSubmission`,
+                withCredentials: true,
                 headers: {
                     "Authorization": `Bearer ${ $scope.token }`
                 },
@@ -1217,11 +1226,16 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     };
 
     $scope.updateAccountSetting = function (setting, key, value, cb) {
-        let data = {};
+        if (!$scope.loggedIn || !$scope.token || !$scope.uuid || !$scope.email) return;
+        let data = {
+            email: $scope.email,
+            uuid: $scope.uuid
+        };
         data[key] = value;
         $http({
             method: "PUT",
             url: `https://${ $scope.accountServer ? $scope.accountServer.host : 'api.mineskin.org' }/accountManager/settings/${ setting }`,
+            withCredentials: true,
             headers: {
                 "Authorization": `Bearer ${ $scope.token }`
             },
@@ -1264,6 +1278,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         $http({
             method: "DELETE",
             url: `https://${ $scope.accountServer ? $scope.accountServer.host : 'api.mineskin.org' }/accountManager/deleteAccount`,
+            withCredentials: true,
             headers: {
                 "Authorization": `Bearer ${ $scope.token }`
             },
