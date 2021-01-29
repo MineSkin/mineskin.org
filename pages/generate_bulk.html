@@ -25,7 +25,8 @@
                                 <div class="input-field file-field col s12">
                                     <div ngf-drop ng-model="global.upload" class="drop-box">
                                         <div ng-show="!global.upload">
-                                            <a ng-disabled="generating" type="file" ngf-select class="btn" id="globalSkinUpload" name="file" ng-model="global.upload" ngf-multiple="true" ngf-pattern="'image/png'" ngf-accept="'image/png'" ngf-max-size="16KB" ngf-dimensions="$width == 64 && ($height == 32 || $height == 64)" ngf-run-all-validations="true" ngf-model-options="{allowInvalid: true}"><i class="fa fa-file-image-o" aria-hidden="true"></i>&nbsp; Select
+                                            <a ng-disabled="generating" type="file" ngf-select class="btn" id="globalSkinUpload" name="file" ng-model="global.upload" ngf-multiple="true" ngf-pattern="'image/png'" ngf-accept="'image/png'" ngf-max-size="16KB" ngf-dimensions="$width == 64 && ($height == 32 || $height == 64)" ngf-run-all-validations="true" ngf-model-options="{allowInvalid: true}"><i
+                                                    class="fa fa-file-image-o" aria-hidden="true"></i>&nbsp; Select
                                                 Files
                                             </a>
                                         </div>
@@ -43,11 +44,11 @@
                                     <label for="globalSkinName">Skin Name (optional)</label>
                                 </div>
                                 <div class="input-field col s12">
-                                    <select ng-disabled="generating"  id="globalSkinModel" ng-disabled="generating" ng-model="global.skinModel" value="steve">
-                                        <option value="steve">Classic (Steve)</option>
+                                    <select ng-disabled="generating" id="globalSkinVariant" ng-disabled="generating" ng-model="global.skinVariant" value="classic">
+                                        <option value="classic">Classic (Steve)</option>
                                         <option value="slim">Slim (Alex)</option>
                                     </select>
-                                    <label for="globalSkinModel">Skin Model</label>
+                                    <label for="globalSkinVariant">Skin Variant</label>
                                 </div>
                                 <div>
                                     <div class="switch">
@@ -110,7 +111,8 @@
                                             <div ng-show="!skin.url && !skin.user" class="input-field file-field col s12">
                                                 <div ngf-drop ng-model="skin.upload" class="drop-box">
                                                     <div ng-show="!skin.upload">
-                                                        <a ng-disabled="generating" type="file" ngf-select class="btn" id="skinUpload" name="file" ng-model="skin.upload" ngf-pattern="'image/png'" ngf-accept="'image/png'" ngf-max-size="16KB" ngf-dimensions="$width == 64 && ($height == 32 || $height == 64)" ngf-run-all-validations="true" ngf-model-options="{allowInvalid: true}"><i class="fa fa-file-image-o" aria-hidden="true"></i>&nbsp; Select
+                                                        <a ng-disabled="generating" type="file" ngf-select class="btn" id="skinUpload" name="file" ng-model="skin.upload" ngf-pattern="'image/png'" ngf-accept="'image/png'" ngf-max-size="16KB" ngf-dimensions="$width == 64 && ($height == 32 || $height == 64)" ngf-run-all-validations="true" ngf-model-options="{allowInvalid: true}"><i
+                                                                class="fa fa-file-image-o" aria-hidden="true"></i>&nbsp; Select
                                                             File
                                                         </a>
                                                     </div>
@@ -148,7 +150,7 @@
                                             <label for="skinName">Skin Name (optional)</label>
                                         </div>
                                         <div class="input-field col s12">
-                                            <select ng-disabled="generating"  id="skinModel" ng-disabled="generating" ng-model="skin.skinModel" value="steve">
+                                            <select ng-disabled="generating" id="skinModel" ng-disabled="generating" ng-model="skin.skinModel" value="steve">
                                                 <option value="steve">Classic (Steve)</option>
                                                 <option value="slim">Slim (Alex)</option>
                                             </select>
@@ -175,7 +177,7 @@
                     </div>
                     <br/>
 
-                    <a  ng-disabled="generating"  class="btn" ng-click="addSkinInput()">+</a>
+                    <a ng-disabled="generating" class="btn" ng-click="addSkinInput()">+</a>
                 </div>
             </div>
         </div>

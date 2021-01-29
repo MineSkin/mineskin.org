@@ -1,12 +1,5 @@
 var apiBaseUrl = "https://api.mineskin.org";
-var websiteBaseUrl = "https://mineskin.org";
 
-function apiBase(server = "") {
-    if (!server || server.length === 0) {
-        return "https://api.mineskin.org";
-    }
-    return "https://" + server + ".api.mineskin.org";
-}
 
 var mineskinApp = angular.module("mineskinApp", ["ui.router", "ui.materialize", "ngFileUpload", "ngCookies", "angularModalService", "ngMeta", "ngStorage"]);
 
@@ -268,7 +261,9 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
 
     $scope.privateUpload = false;
     $scope.skinName = "";
+    /**@deprecated**/
     $scope.skinModel = "steve";
+    $scope.skinVariant = "classic";
 
     $scope.generating = false;
     $scope.generateSeconds = 0;
@@ -297,20 +292,26 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
         console.log("  User:");
         console.log($scope.skinUser);
 
-        var avgGenSeconds = Math.round($scope.stats.avgGenerateDuration / 1000);
+        let avgGenSeconds = Math.round($scope.stats.avgGenerateDuration / 1000);
         $interval.cancel($scope.generateTimer);
         $scope.generateTimer = $interval(function () {
-            $scope.generateProgress = ($scope.generateSeconds++) / Math.round($scope.stats.avgGenerateDuration / 1000) * 100;
+            $scope.generateProgress = ($scope.generateSeconds++) / avgGenSeconds * 100;
         }, 1000);
 
         if ($scope.skinUrl) {
             $scope.generating = true;
             $scope.generateProgress = 0;
-            var genAlert = $scope.addAlert("Generating Skin from URL...", "info", 15000);
+            let genAlert = $scope.addAlert("Generating Skin from URL...", "info", 15000);
             setTimeout(function () {
                 $http({
-                    url: apiBaseUrl + "/generate/url?url=" + $scope.skinUrl + "&name=" + $scope.skinName + "&model=" + $scope.skinModel + "&visibility=" + ($scope.privateUpload ? 1 : 0),
-                    method: "POST"
+                    url: apiBaseUrl + "/generate/url",
+                    method: "POST",
+                    data: {
+                        url: $scope.skinUrl,
+                        name: $scope.skinName,
+                        variant: $scope.skinVariant,
+                        visibility: $scope.privateUpload ? 1 : 0
+                    }
                 }).then(function (response) {
                     console.log(response);
                     if (!response.data.error) {
@@ -326,12 +327,17 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
         } else if ($scope.skinUpload) {
             $scope.generating = true;
             $scope.generateProgress = 0;
-            var genAlert = $scope.addAlert("Uploading Skin...", "info", 15000);
+            let genAlert = $scope.addAlert("Uploading Skin...", "info", 15000);
             setTimeout(function () {
                 Upload.upload({
-                    url: apiBaseUrl + "/generate/upload?name=" + $scope.skinName + "&model=" + $scope.skinModel + "&visibility=" + ($scope.privateUpload ? 1 : 0),
+                    url: apiBaseUrl + "/generate/upload",
                     method: "POST",
-                    data: {file: $scope.skinUpload}
+                    data: {
+                        file: $scope.skinUpload,
+                        name: $scope.skinName,
+                        variant: $scope.skinVariant,
+                        visibility: $scope.privateUpload ? 1 : 0
+                    }
                 }).then(function (response) {
                     console.log(response);
                     if (!response.data.error) {
@@ -347,14 +353,20 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
         } else if ($scope.skinUser) {
             $scope.generating = true;
             $scope.generateProgress = 0;
-            var skinUuid;
+            let skinUuid;
 
             function generateUser(uuid) {
-                var genAlert = $scope.addAlert("Loading skin data...", "info", 15000);
+                let genAlert = $scope.addAlert("Loading skin data...", "info", 15000);
                 setTimeout(function () {
                     $http({
-                        url: apiBaseUrl + "/generate/user/" + uuid + "?name=" + $scope.skinName + "&model=" + $scope.skinModel + "&visibility=" + ($scope.privateUpload ? 1 : 0),
-                        method: "GET"
+                        url: apiBaseUrl + "/generate/user",
+                        method: "POST",
+                        data: {
+                            uuid: uuid,
+                            name: $scope.skinName,
+                            variant: $scope.skinVariant,
+                            visibility: $scope.privateUpload ? 1 : 0
+                        }
                     }).then(function (response) {
                         console.log(response);
                         if (!response.data.error) {
@@ -375,7 +387,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
                     generateUser(skinUuid);
                 }
             } else {
-                var validateAlert = $scope.addAlert("Validating Username...", "info", 10000);
+                let validateAlert = $scope.addAlert("Validating Username...", "info", 10000);
                 $.ajax({
                     url: apiBaseUrl + "/validate/user/" + $scope.skinUser,
                     success: function (data) {
@@ -487,7 +499,8 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
         privateUpload: false,
         upload: undefined,
         skinName: "",
-        skinModel: "steve"
+        skinModel: "steve",
+        skinVariant: "classic"
     };
 
     $scope.addFromGlobal = function () {
@@ -497,6 +510,7 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
         toAddBase.privateUpload = $scope.global.privateUpload;
         toAddBase.skinName = $scope.global.skinName;
         toAddBase.skinModel = $scope.global.skinModel;
+        toAddBase.skinVariant = $scope.global.skinVariant;
 
         for (let upload of $scope.global.upload) {
             let toAdd = Object.assign({}, toAddBase); // clone
@@ -617,11 +631,17 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
         }
 
         if (skin.url) {
-            var genAlert = $scope.addAlert("Generating Skin from URL...", "info", 15000);
             setTimeout(function () {
                 $http({
-                    url: apiBaseUrl + "/generate/url?url=" + skin.url + "&name=" + skin.skinName + "&model=" + skin.skinModel + "&visibility=" + (skin.privateUpload ? 1 : 0),
-                    method: "POST"
+                    url: apiBaseUrl + "/generate/url",
+                    method: "POST",
+                    data: {
+                        url: skin.url,
+                        name: skin.skinName,
+                        model: skin.skinModel,
+                        variant: skin.skinVariant,
+                        visibility: skin.privateUpload ? 1 : 0
+                    }
                 }).then(function (response) {
                     console.log(response);
                     if (!response.data.error) {
@@ -635,12 +655,17 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
                 });
             }, 500);
         } else if (skin.upload) {
-            var genAlert = $scope.addAlert("Uploading Skin...", "info", 15000);
             setTimeout(function () {
                 Upload.upload({
-                    url: apiBaseUrl + "/generate/upload?name=" + skin.skinName + "&model=" + skin.skinModel + "&visibility=" + (skin.privateUpload ? 1 : 0),
+                    url: apiBaseUrl + "/generate/upload",
                     method: "POST",
-                    data: {file: skin.upload}
+                    data: {
+                        file: skin.upload,
+                        name: skin.skinName,
+                        model: skin.skinModel,
+                        variant: skin.skinVariant,
+                        visibility: skin.privateUpload ? 1 : 0
+                    }
                 }).then(function (response) {
                     console.log(response);
                     if (!response.data.error) {
@@ -654,14 +679,20 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
                 });
             }, 500);
         } else if (skin.user) {
-            var skinUuid;
+            let skinUuid;
 
             function generateUser(uuid) {
-                var genAlert = $scope.addAlert("Loading skin data...", "info", 15000);
                 setTimeout(function () {
                     $http({
-                        url: apiBaseUrl + "/generate/user/" + uuid + "?name=" + skin.skinName + "&model=" + skin.skinModel + "&visibility=" + (skin.privateUpload ? 1 : 0),
-                        method: "GET"
+                        url: apiBaseUrl + "/generate/user",
+                        method: "POST",
+                        data: {
+                            uuid: uuid,
+                            name: skin.skinName,
+                            model: skin.skinModel,
+                            variant: skin.skinVariant,
+                            visibility: skin.privateUpload ? 1 : 0
+                        }
                     }).then(function (response) {
                         console.log(response);
                         if (!response.data.error) {
@@ -684,7 +715,7 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
                     cb("invalid uuid", null, true);
                 }
             } else {
-                var validateAlert = $scope.addAlert("Validating Username...", "info", 10000);
+                let validateAlert = $scope.addAlert("Validating Username...", "info", 10000);
                 $.ajax({
                     url: apiBaseUrl + "/validate/user/" + skin.user,
                     success: function (data) {
@@ -694,7 +725,7 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
                             generateUser(skinUuid);
                         } else {
                             $scope.addAlert("Username is not valid", "danger", 10000);
-                            cb("invalid username", null, true);
+                            cb("invalid email", null, true);
                         }
                         validateAlert.close();
                     }
@@ -869,21 +900,31 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
 mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$timeout", "$stateParams", "$sce", "ngMeta", "$window", function ($scope, $http, $cookies, $timeout, $stateParams, $sce, ngMeta, $window) {
     console.info("accountController")
 
-    $scope.username = "";
+    // Login
+
+    $scope.email = "";
     $scope.password = "";
+
+    $scope.accountServer = "";
+
+    $scope.loggedIn = false;
     $scope.token = "";
+    $scope.loginProfile = {};
+
+    // Challenges
+
     $scope.securityQuestions = [];
-    $scope.securityAnswer = "";
     $scope.securityAnswers = [];
+    $scope.needToSolveChallenges = true;
+    $scope.challengesSolved = false;
+    $scope.skipSecurityChallenges = false;
+
+    // Profile
+
     $scope.uuid = "";
     $scope.userProfile;
     $scope.myAccount;
 
-    $scope.loginServer = "";
-    $scope.loggedIn = false;
-    $scope.needToSolveChallenges = true;
-    $scope.challengesSolved = false;
-    $scope.skipSecurityChallenges = false;
     $scope.accountExists = false;
     $scope.accountEnabled = false;
     $scope.accountAdded = false;
@@ -891,417 +932,383 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.sendAccountEmails = false;
 
     $scope.loginWithMicrosoft = false;
-    $scope.microsoftAccount = false;
-    $scope.canPasteMicrosoftLoginUrl = false;
-    $scope.microsoftLoginUrl = "";
-    $scope.microsoftUserId = "";
-    $scope.xboxUsername = "";
-    $scope.microsoftRefreshToken = "";
 
     $scope.checkUnderstoodLogin = false;
     $scope.checkReadTerms = false;
     $scope.checkAcceptSkins = false;
     $scope.checkAcceptPassword = false;
 
-    $scope.accountStats = {};
-
-    window.showMicrosoftLogin = function () {
+    // Temp thing for testing
+    // TODO: add switch to page for properly switching account type
+    window.useMicrosoftLogin = function () {
         $timeout(function () {
             $scope.loginWithMicrosoft = true;
         }, 1);
     };
+    window.__scope = $scope;
 
-    $scope.getPreferredAccountServer = function (cb) {
-        if ($scope.loginServer && $scope.loginServer.length > 1) {
-            cb($scope.loginServer);
-            return;
+    window.forceAccountServer = function (server) {
+        $scope.accountServer = {
+            server: server,
+            host: `${ server }.api.mineskin.org`
         }
-        $http({
-            url: apiBaseUrl + "/preferredAccountServer",
-            method: "GET"
-        }).then(function (response) {
-            cb(response.data.preferredServer);
-        });
     };
 
-    $scope.doLogin = function () {
-        if (!$scope.username || !$scope.password) return;
+    //// MOJANG
 
-        $http({
-            url: apiBaseUrl + "/accountManager/auth/login?t=" + Date.now(),
-            method: "POST",
-            data: {
-                username: $scope.username,
-                password: btoa($scope.password)
-            }
-        }).then(function (response) {
-            if (response.data.error) {
-                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
-                return;
-            }
-            if (response.data.success) {
-                $scope.token = response.data.token;
+    $scope.loginMojang = function () {
+        if (!$scope.email || !$scope.password) return;
+
+        $scope.getPreferredAccountServer(accountServer => {
+            $http({
+                method: "POST",
+                url: `https://${ accountServer.host }/accountManager/mojang/login?t=${ Date.now() }`,
+                withCredentials: true,
+                data: {
+                    email: $scope.email,
+                    password: btoa($scope.password)
+                }
+            }).then(loginResponse => {
+                if (loginResponse.data["error"] || !loginResponse.data["success"]) {
+                    $scope.handleResponseError(loginResponse);
+                    return;
+                }
+
+                $scope.token = loginResponse.data["token"];
+                $scope.loginProfile = loginResponse.data["profile"];
                 $scope.loggedIn = true;
 
-                $scope.getChallenges();
-            }
-        }, function (response) {
-            console.log(response);
-            if (response.data.error) {
-                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
-            }
+                $scope.getMojangChallenges();
+            }).catch(response => $scope.handleResponseError(response));
         });
     };
 
-    $scope.getChallenges = function () {
+    $scope.getMojangChallenges = function () {
         if (!$scope.token || !$scope.loggedIn) return;
 
-        $http({
-            url: apiBaseUrl + "/accountManager/auth/getChallenges?t=" + Date.now(),
-            method: "POST",
-            data: {
-                token: $scope.token
-            }
-        }).then(function (response) {
-            if (response.data.error || !response.data.success) {
-                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
-                return;
-            }
-            if (response.data.success) {
-                $scope.needToSolveChallenges = response.data.needToSolveChallenges;
-                $scope.securityQuestions = response.data.questions || [];
+        $scope.getPreferredAccountServer(accountServer => {
 
-                if (!response.data.needToSolveChallenges) {
-                    $scope.skipChallenges();
+            $http({
+                method: "POST",
+                url: `https://${ accountServer.host }/accountManager/mojang/getChallenges`,
+                withCredentials: true,
+                headers: {
+                    "Authorization": `Bearer ${ $scope.token }`
                 }
-            }
-        }, function (response) {
-            console.log(response);
-            if (response.data.error) {
-                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
-            }
-        });
+            }).then(challengesResponse => {
+                if (challengesResponse.data["error"] || !challengesResponse.data["success"]) {
+                    $scope.handleResponseError(challengesResponse);
+                    return;
+                }
+
+                $scope.needToSolveChallenges = challengesResponse.data["needToSolveChallenges"];
+                $scope.securityQuestions = challengesResponse.data["questions"];
+
+                if (!$scope.needToSolveChallenges) {
+                    $scope.skipMojangChallenges();
+                }
+            }).catch(response => $scope.handleResponseError(response));
+
+        })
     };
 
-    $scope.solveChallenges = function () {
-        if (!$scope.username || !$scope.password || !$scope.token || !$scope.loggedIn) return;
+    $scope.solveMojangChallenges = function () {
+        if (!$scope.token || !$scope.loggedIn) return;
 
-        for (var i = 0; i < $scope.securityQuestions.length; i++) {
+        for (let i = 0; i < $scope.securityQuestions.length; i++) {
             $scope.securityAnswers[i] = $scope.securityQuestions[i].answer;
         }
 
-        $http({
-            url: apiBaseUrl + "/accountManager/auth/solveChallenges?t=" + Date.now(),
-            method: "POST",
-            data: {
-                token: $scope.token,
-                securityAnswers: $scope.securityAnswers
-            }
-        }).then(function (response) {
-            if (response.data.error || !response.data.success) {
-                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
-                return;
-            }
-            if (response.data.success) {
-                $scope.challengesSolved = true;
+        $scope.getPreferredAccountServer(accountServer => {
+            $http({
+                method: "POST",
+                url: `https://${ accountServer.host }/accountManager/mojang/solveChallenges`,
+                withCredentials: true,
+                headers: {
+                    "Authorization": `Bearer ${ $scope.token }`
+                },
+                data: {
+                    securityAnswers: $scope.securityAnswers
+                }
+            }).then(solveResponse => {
+                if (solveResponse.data["error"] || !solveResponse.data["success"]) {
+                    $scope.handleResponseError(solveResponse);
+                    return;
+                }
 
+                $scope.challengesSolved = true;
                 $scope.getUserProfile();
-            }
-        }, function (response) {
-            console.log(response);
-            if (response.data.error) {
-                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
-            }
-        });
+            }).catch(response => $scope.handleResponseError(response));
+        })
     };
-    $scope.skipChallenges = function () {
+
+    $scope.skipMojangChallenges = function () {
         $scope.challengesSolved = true;
         $scope.skipSecurityChallenges = true;
 
         $scope.getUserProfile();
     }
 
-    $scope.openMicrosoftLoginWindow = function () {
-        $window.open("https://login.live.com/oauth20_authorize.srf" +
-            "?client_id=00000000402b5328" +
-            "&response_type=code" +
-            "&scope=" + encodeURIComponent("service::user.auth.xboxlive.com::MBI_SSL") +
-            "&redirect_uri=" + encodeURIComponent("https://login.live.com/oauth20_desktop.srf"), "",
-            "width=470,height=515,top=50,left=50");
+    //// MICROSOFT
+
+    $scope.loginMicrosoft = function () {
+        if (!$scope.email || !$scope.password) return;
+
+        $scope.getPreferredAccountServer(accountServer => {
+            $http({
+                method: "POST",
+                url: `https://${ accountServer.host }/accountManager/microsoft/login`,
+                withCredentials: true,
+                data: {
+                    email: $scope.email,
+                    password: btoa($scope.password)
+                }
+            }).then(loginResponse => {
+                if (loginResponse.data["error"] || !loginResponse.data["success"]) {
+                    $scope.handleResponseError(loginResponse);
+                    return;
+                }
+
+                $scope.token = loginResponse.data["token"];
+                $scope.loggedIn = true;
+
+                $scope.getUserProfile();
+            }).catch(response => $scope.handleResponseError(response));
+        });
     };
 
-    $scope.openMicrosoftLogoutWindow = function () {
-        $window.open("https://login.live.com/oauth20_logout.srf?client_id=ca634a9a-f102-4033-b081-3a4393a6f65d&" +
-            "redirect_uri=https%3A%2F%2Fsisu.xboxlive.com%2Fconnect%2Foauth%2FXboxLive%2Fsignout%3Fstate%3Dlogout", "",
-            "width=470,height=515,top=50,left=50")
+    //// INDEPENDENT STUFF
+
+    $scope.doLogin = function () {
+        if ($scope.loginWithMicrosoft) {
+            $scope.loginMicrosoft();
+        } else {
+            $scope.loginMojang();
+        }
     };
 
-    $scope.doMicrosoftLogin = function () {
-        if (!$scope.canPasteMicrosoftLoginUrl) {
-            // Needs to login via ms
-            $scope.openMicrosoftLoginWindow();
-            $timeout(function () {
-                $scope.canPasteMicrosoftLoginUrl = true;
-            }, 2000);
+    $scope.getPreferredAccountServer = function (cb) {
+        if ($scope.accountServer && $scope.accountServer.host) {
+            cb($scope.accountServer);
             return;
         }
+        $http({
+            method: "GET",
+            url: apiBaseUrl + "/preferredAccountServer"
+        }).then(function (response) {
+            $scope.loginServer = response.data.preferredServer;
+            console.log("Using account server " + (response.data.preferredServer));
+            cb($scope.accountServer);
+        });
+    };
 
-        if ($scope.microsoftLoginUrl.length < 5) {
-            $scope.openMicrosoftLoginWindow();
-        } else {
-            if (!$scope.microsoftLoginUrl.startsWith("https://login.live.com/oauth20_desktop.srf?code=")) {
-                Materialize.toast("Invalid login URL. Make sure to paste the entire address.");
-                return;
-            }
-            $scope.canPasteMicrosoftLoginUrl = false;
-            Materialize.toast("Logging in...");
-
-            $scope.getPreferredAccountServer(function (server) {
-                console.log("Using account server " + server);
-                $scope.loginServer = server;
-
-                $http({
-                    url: apiBase(server) + "/accountManager/auth/microsoft/login",
-                    method: "POST",
-                    data: {
-                        url: $scope.microsoftLoginUrl
-                    }
-                }).then(function (response) {
-                    if (response.data.error) {
-                        Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
-                        return;
-                    }
-
-                    $scope.needToSolveChallenges = false;
-                    $scope.microsoftAccount = true;
-                    $scope.token = response.data.token;
-                    $scope.microsoftRefreshToken = response.data.refreshToken;
-                    $scope.microsoftUserId = response.data.userId; // random id
-                    $scope.username = $scope.microsoftUserId;
-                    $scope.xboxUsername = response.data.username; // random uuid
-
-                    $timeout(function () {
-                        $scope.loggedIn = true;
-                        $timeout(function () {
-                            $scope.getUserProfile();
-                        }, 1000);
-                    }, 2000);
-                });
-            })
-        }
+    $scope.logout = function () {
+        $http({
+            method: "POST",
+            url: `https://${ $scope.accountServer ? $scope.accountServer.host : 'api.mineskin.org' }/logout`,
+            withCredentials: true,
+        }).then(logoutResponse => {
+            $scope.loggedIn = false;
+            $scope.accountServer = undefined;
+            window.location.reload();
+        })
     };
 
     $scope.getUserProfile = function () {
-        $http({
-            url: apiBase($scope.loginServer) + "/accountManager/auth/userProfile?token=" + $scope.token,
-            method: "GET"
-        }).then(function (response) {
-            if (response.data.error) {
-                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
-                return;
-            }
-            $scope.userProfile = response.data;
-            $scope.uuid = response.data.uuid;
+        if (!$scope.loggedIn || !$scope.token) return;
 
-            $scope.accountStatus();
-        }, function (response) {
-            console.log(response);
-            if (response.data.error) {
-                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
-            }
-        });
-    }
+        $scope.getPreferredAccountServer(accountServer => {
+            $http({
+                method: "POST",
+                url: `https://${ accountServer.host }/accountManager/userProfile`,
+                withCredentials: true,
+                headers: {
+                    "Authorization": `Bearer ${ $scope.token }`
+                }
+            }).then(profileResponse => {
+                if (profileResponse.data["error"]) {
+                    $scope.handleResponseError(profileResponse);
+                    return;
+                }
 
-    $scope.accountStatus = function () {
-        $http({
-            url: apiBase($scope.loginServer) + "/accountManager/accountStatus?username=" + $scope.username +
-                "&microsoftAccount=" + $scope.microsoftAccount +
-                "&uuid=" + $scope.uuid +
-                "&token=" + $scope.token +
-                "&password=" + btoa($scope.password) +
-                ($scope.securityAnswers && $scope.securityAnswers.length > 0 ? "&security=" + JSON.stringify($scope.securityAnswers) : ($scope.securityAnswer ? "&security=" + $scope.securityAnswer : "")),
-            method: "GET"
-        }).then(function (response) {
-            if (response.data.error) {
-                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
-                return;
-            }
-            $scope.accountExists = response.data.exists;
-            $scope.accountEnabled = response.data.exists && response.data.enabled;
-            $scope.accountLinkedToDiscord = response.data.exists && response.data.discordLinked;
-            $scope.sendAccountEmails = response.data.sendEmails;
+                $scope.uuid = profileResponse.data.id;
+                $scope.userProfile = profileResponse.data;
 
-            if (response.data.exists) {
                 $scope.getAccount();
-
-                $scope.getAccountStats();
-            }
-            if (response.data.passwordUpdated) {
-                Materialize.toast("Account Password updated");
-            }
-            if (response.data.securityUpdated) {
-                Materialize.toast("Security Answer(s) updated");
-            }
-        }, function (response) {
-            console.log(response);
-            if (response.data.error) {
-                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
-            }
-        });
+            }).catch(response => $scope.handleResponseError(response));
+        })
     };
 
     $scope.getAccount = function () {
-        $http({
-            url: apiBase($scope.loginServer) + "/accountManager/myAccount?uuid=" + $scope.uuid +
-                "&username=" + $scope.username +
-                "&token=" + $scope.token +
-                "&microsoftAccount=" + $scope.microsoftAccount
-            ,
-            method: "GET"
-        }).then(function (response) {
-            if (response.data.error) {
-                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
-                return;
+        if (!$scope.loggedIn || !$scope.token || !$scope.uuid) return;
+
+        $scope.getPreferredAccountServer(accountServer => {
+            let data = {
+                uuid: $scope.uuid,
+                email: $scope.email
+            };
+            if ($scope.password) {
+                data.password = btoa($scope.password)
             }
-            $scope.myAccount = response.data;
-        }, function (response) {
-            console.log(response);
-            if (response.data.error) {
-                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+            if ($scope.securityAnswers) {
+                data.securityAnswers = $scope.securityAnswers;
             }
+            $http({
+                method: "POST",
+                url: `https://${ accountServer.host }/accountManager/myAccount`,
+                withCredentials: true,
+                headers: {
+                    "Authorization": `Bearer ${ $scope.token }`
+                },
+                data: data
+            }).then(accountResponse => {
+                if (accountResponse.data["error"]) {
+                    if (accountResponse.status === 404) {
+                        // account does not exist
+                        $scope.accountExists = false;
+                    } else {
+                        $scope.handleResponseError(accountResponse);
+                    }
+                    return;
+                }
+
+                $scope.myAccount = accountResponse.data;
+                $scope.accountExists = true;
+                $scope.accountEnabled = accountResponse.data.settings.enabled || accountResponse.data.enabled;
+                $scope.accountLinkedToDiscord = accountResponse.data.discordLinked;
+                $scope.sendAccountEmails = accountResponse.data.settings.emails || accountResponse.data.sendEmails;
+            }).catch(response => {
+                if (response.status === 404) {
+                    // account does not exist
+                    $scope.accountExists = false;
+                } else {
+                    $scope.handleResponseError(response)
+                }
+            });
         });
     };
 
     $scope.submitAccount = function () {
-        let d = {
-            token: $scope.token,
-            username: $scope.username,
-            password: $scope.password,
-            uuid: $scope.uuid,
-            skipSecurityChallenges: $scope.skipSecurityChallenges,
-            microsoftAccount: $scope.microsoftAccount,
-            microsoftUserId: $scope.microsoftUserId,
-            microsoftRefreshToken: $scope.microsoftRefreshToken,
-            xboxUsername: $scope.xboxUsername,
-            checks: {
-                readTerms: $scope.checkReadTerms,
-                acceptSkins: $scope.checkAcceptSkins,
-                acceptPassword: $scope.checkAcceptPassword
-            }
-        };
-        if ($scope.securityAnswers && $scope.securityAnswers.length > 0) {
-            d.securityAnswers = $scope.securityAnswers;
-        }
-        $http({
-            url: apiBase($scope.loginServer) + "/accountManager/confirmAccountSubmission",
-            method: "POST",
-            data: d
-        }).then(function (response) {
-            if (response.data.error) {
-                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
-                return;
-            }
-            if (response.data.success) {
-                $scope.accountAdded = true;
-            }
-        }, function (response) {
-            console.log(response);
-            if (response.data.error) {
-                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
-            }
-        });
-    }
+        if (!$scope.loggedIn || !$scope.token || !$scope.uuid || !$scope.password) return;
 
-    $scope.enableAccount = function () {
-        $scope.updateAccountStatus(true)
-    }
-
-    $scope.disableAccount = function () {
-        $scope.updateAccountStatus(false)
-    }
-
-    $scope.linkDiscord = function () {
-        $window.open(apiBaseUrl + "/accountManager/discord/oauth/start/?username=" + $scope.username + "&uuid=" + $scope.uuid + "&token=" + $scope.token, "_blank");
-    };
-
-    $scope.updateAccountStatus = function (enabled) {
-        $http({
-            url: apiBase($scope.loginServer) + "/accountManager/settings/status",
-            method: "POST",
-            data: {
-                token: $scope.token,
-                username: $scope.username,
+        $scope.getPreferredAccountServer(accountServer => {
+            let data = {
+                email: $scope.email,
+                password: btoa($scope.password),
                 uuid: $scope.uuid,
-                enabled: enabled
-            }
-        }).then(function (response) {
-            if (response.data.error) {
-                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
-                return;
-            }
-            if (response.data.success) {
-                $scope.accountEnabled = response.data.enabled;
-            }
-        }, function (response) {
-            console.log(response);
-            if (response.data.error) {
-                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
-            }
-        });
-    };
 
-    $scope.getAccountStats = function () {
-        $http({
-            url: apiBase($scope.loginServer) + "/accountManager/accountStats?token=" + $scope.token +
-                "&username=" + $scope.username +
-                "&uuid=" + $scope.uuid +
-                "&microsoftAccount" + $scope.microsoftAccount
-            ,
-            method: "GET"
-        }).then(function (response) {
-            if (response.data.error) {
-                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
-                return;
-            }
-            if (response.data.success) {
-                $scope.accountStats = response.data;
-            }
-        }, function (response) {
-            console.log(response);
-            if (response.data.error) {
-                Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
-            }
-        });
-    }
+                securityAnswers: $scope.securityAnswers,
 
-    $scope.deleteAccount = function () {
-        if (confirm("Are you sure you want to delete the account?")) {
-            $http({
-                url: apiBase($scope.loginServer) + "/accountManager/deleteAccount",
-                method: "POST",
-                data: {
-                    token: $scope.token,
-                    username: $scope.username,
-                    uuid: $scope.uuid,
-                    microsoftAccount: $scope.microsoftAccount
+                checks: {
+                    readTerms: $scope.checkReadTerms,
+                    acceptSkins: $scope.checkAcceptSkins,
+                    acceptPassword: $scope.checkAcceptPassword
                 }
-            }).then(function (response) {
-                if (response.data.error) {
-                    Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
+            };
+            $http({
+                method: "POST",
+                url: `https://${ accountServer.host }/accountManager/confirmAccountSubmission`,
+                withCredentials: true,
+                headers: {
+                    "Authorization": `Bearer ${ $scope.token }`
+                },
+                data: data
+            }).then(submitResponse => {
+                if (submitResponse.data["error"] || !submitResponse.data["success"]) {
+                    $scope.handleResponseError(submitResponse);
                     return;
                 }
-                if (response.data.success) {
-                    Materialize.toast("Account deleted.", 900);
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000);
+
+                $scope.accountAdded = true;
+                Materialize.toast(submitResponse.data.msg);
+            }).catch(response => $scope.handleResponseError(response));
+        });
+    };
+
+    $scope.updateAccountSetting = function (setting, key, value, cb) {
+        if (!$scope.loggedIn || !$scope.token || !$scope.uuid || !$scope.email) return;
+        let data = {
+            email: $scope.email,
+            uuid: $scope.uuid
+        };
+        data[key] = value;
+        $http({
+            method: "PUT",
+            url: `https://${ $scope.accountServer ? $scope.accountServer.host : 'api.mineskin.org' }/accountManager/settings/${ setting }`,
+            withCredentials: true,
+            headers: {
+                "Authorization": `Bearer ${ $scope.token }`
+            },
+            data: data
+        }).then(settingResponse => {
+            if (settingResponse.data["error"] || !settingResponse.data["success"]) {
+                $scope.handleResponseError(settingResponse);
+                if (cb) {
+                    cb(undefined/*new value*/, false/*updated*/);
                 }
-            }, function (response) {
-                console.log(response);
-                if (response.data.error) {
-                    Materialize.toast("Error: " + (response.data.errorMessage || response.data.msg || response.data.error));
-                }
+                return;
+            }
+
+            if (cb) {
+                cb(value/*new value*/, settingResponse.data["success"]/*updated*/);
+            }
+        }).catch(response => $scope.handleResponseError(response));
+    };
+
+    $scope.enableAccount = function () {
+        $scope.updateAccountSetting('status', 'enabled', true, (v, u) => {
+            $scope.accountEnabled = typeof v !== "undefined" ? v : $scope.accountEnabled;
+        });
+    };
+
+    $scope.disableAccount = function () {
+        $scope.updateAccountSetting('status', 'enabled', false, (v, u) => {
+            $scope.accountEnabled = typeof v !== "undefined" ? v : $scope.accountEnabled;
+        });
+    };
+
+    $scope.linkDiscord = function () {
+        if (!$scope.loggedIn || !$scope.token || !$scope.uuid) return;
+        $window.open(`https://${ $scope.accountServer ? $scope.accountServer.host : 'api.mineskin.org' }/accountManager/discord/oauth/start?email=${ $scope.email }&uuid=${ $scope.uuid }`, "_blank");
+    };
+
+    $scope.deleteAccount = function () {
+        if (!$scope.loggedIn || !$scope.token || !$scope.uuid || !$scope.accountExists || $scope.accountEnabled) return;
+
+        $http({
+            method: "DELETE",
+            url: `https://${ $scope.accountServer ? $scope.accountServer.host : 'api.mineskin.org' }/accountManager/deleteAccount`,
+            withCredentials: true,
+            headers: {
+                "Authorization": `Bearer ${ $scope.token }`
+            },
+            data: {
+                email: $scope.email,
+                uuid: $scope.uuid
+            }
+        }).then(deleteResponse => {
+            if (deleteResponse.data["error"] || !deleteResponse.data["success"]) {
+                $scope.handleResponseError(deleteResponse);
+                return;
+            }
+
+            $scope.accountAdded = false;
+            $scope.accountExists = false;
+            Materialize.toast(deleteResponse.data.msg);
+            setTimeout(() => {
+                window.location.reload();
             });
+        }).catch(response => $scope.handleResponseError(response));
+    };
+
+    /// UTIL
+
+    $scope.handleResponseError = function (response) {
+        if (response.data) {
+            console.warn(response.data);
+            Materialize.toast("Error: " + (response.data.msg || response.data.error));
+        } else {
+            console.warn(response.data);
         }
     }
 
