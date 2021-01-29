@@ -133,7 +133,7 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
                     controller: ["$scope", "$http", "$interval", function ($scope, $http, $interval) {
                         $scope.refreshStats = function () {
                             $http({
-                                url: apiBaseUrl + "/get/stats/details",
+                                url: apiBaseUrl + "/get/stats",
                                 method: "GET"
                             }).then(function (response) {
                                 $scope.stats = response.data;
@@ -1366,10 +1366,7 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
         delay: 0
     };
     $scope.refreshStats = function (details) {
-        var statsUrl = apiBaseUrl + "/get/stats";
-        if (details) {
-            statsUrl += "/details";
-        }
+        let statsUrl = apiBaseUrl + "/get/stats";
         $http({
             url: statsUrl,
             method: "GET"
