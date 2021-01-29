@@ -171,6 +171,13 @@
                         <br/><span ng-show="accountEnabled" style="color:red">Please disable your account first to delete it</span>
                     </div>
                 </div>
+                <br/>
+                <br/>
+                <div class="row">
+                    <div class="row">
+                        <button class="btn waves-effect waves-light orange" ng-disabled="!loggedIn" ng-click="logout()">Logout</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
