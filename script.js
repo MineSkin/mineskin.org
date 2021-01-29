@@ -1314,8 +1314,10 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
 }])
 
-mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state", "$cookies", function ($scope, $timeout, $http, $state, $cookies) {
+mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state", "$cookies", "$window", function ($scope, $timeout, $http, $state, $cookies, $window) {
     apiBaseUrl = $cookies.get("apiBaseUrl") || apiBaseUrl;
+
+    window.__scope = $scope;
 
     /* +Alerts */
     $scope.alerts = [];
@@ -1377,10 +1379,10 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
         });
     };
     $scope.windowFocused = false;
-    $scope.onfocus = function () {
+    $window.onfocus = function () {
         $scope.windowFocused = true;
     };
-    $scope.onblur = function () {
+    $window.onblur = function () {
         $scope.windowFocused = false;
     };
     /* -Stats */
