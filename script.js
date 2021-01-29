@@ -907,6 +907,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
     $scope.accountServer = "";
 
+    $scope.loggingIn = false;
     $scope.loggedIn = false;
     $scope.token = "";
     $scope.loginProfile = {};
@@ -959,6 +960,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.loginMojang = function () {
         if (!$scope.email || !$scope.password) return;
 
+        $scope.loggingIn = true;
         Materialize.toast("Logging in via Mojang...");
 
         $scope.getPreferredAccountServer(accountServer => {
@@ -979,6 +981,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                 $scope.token = loginResponse.data["token"];
                 $scope.loginProfile = loginResponse.data["profile"];
                 $scope.loggedIn = true;
+                $scope.loggingIn = false;
 
                 $scope.getMojangChallenges();
             }).catch(response => $scope.handleResponseError(response));
@@ -1056,6 +1059,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.loginMicrosoft = function () {
         if (!$scope.email || !$scope.password) return;
 
+        $scope.loggingIn = true;
         Materialize.toast("Logging in via Microsoft...");
 
         $scope.getPreferredAccountServer(accountServer => {
@@ -1075,6 +1079,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
                 $scope.token = loginResponse.data["token"];
                 $scope.loggedIn = true;
+                $scope.loggingIn = false;
 
                 $scope.getUserProfile();
             }).catch(response => $scope.handleResponseError(response));
@@ -1089,6 +1094,9 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         } else {
             $scope.loginMojang();
         }
+        $timeout(function () {
+            $scope.loggingIn = false;
+        }, 20000);
     };
 
     $scope.getPreferredAccountServer = function (cb) {
