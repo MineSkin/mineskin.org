@@ -1096,8 +1096,8 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             method: "GET",
             url: apiBaseUrl + "/accountManager/preferredAccountServer"
         }).then(function (response) {
-            $scope.accountServer = response.data.preferredServer;
-            console.log("Using account server " + (response.data.preferredServer));
+            $scope.accountServer = response.data;
+            console.log("Using account server " + (response.data));
             cb($scope.accountServer);
         });
     };
