@@ -17,10 +17,19 @@
         <br/>
 
         <div class="row">
-            <div ng-show="!loggedIn"><!-- Minecraft Login -->
-                <h4>Please log in using your Minecraft account data</h4>
+            <div ng-show="!loggedIn"><!-- Login -->
+                <h4>Please log in using your {{ loginWithMicrosoft ? 'Microsoft' : 'Mojang' }} account data</h4>
                 <span>(This is just to check your account information and will not be stored until you decide to actually add your account.)</span>
                 <br/>
+
+                <span ng-show="loginWithMicrosoft">
+                    You might receive an email notification from Microsoft regarding unusual login activity shortly after logging in below. <br/>
+                    Please review the activity and specify that it was you on their activity website.<br/>
+                </span>
+
+                <span>
+                    If you have questions or concerns, feel free to ask on <a href="https://yeleha.co/discord" target="_blank">the Discord</a>!
+                </span>
 
                 <br/>
                 <div>
