@@ -201,8 +201,8 @@ skin{{skin.id}}.getProperties().put("textures", new Property("textures", "{{skin
                     {{skin.views}} views
                 </div>
                 <div class="pull-right">
-                    <div ng-show="skin.accountId > 0 && skin.timestamp > 0" class="text-muted">
-                        Generated on {{(skin.timestamp*1000 | date : "medium")}} by account #{{skin.accountId}} {{ (skin.timestamp>1504564600?"in "+(skin.duration/1000.0)+"s":"") }}
+                    <div ng-show="skin.timestamp > 0" class="text-muted">
+                        Generated on {{(skin.timestamp*1000 | date : "medium")}}<span ng-show="skin.accountId > 0"> by account #{{skin.accountId}}</span> {{ (skin.timestamp>1504564600?"in "+(skin.duration/1000.0)+"s":"") }}
                     </div>
                 </div>
             </div>
