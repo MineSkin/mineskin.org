@@ -1117,7 +1117,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.logout = function () {
         $http({
             method: "POST",
-            url: `https://${ $scope.accountServer ? $scope.accountServer.host : 'api.mineskin.org' }/logout`,
+            url: `https://${ $scope.accountServer ? $scope.accountServer.host : 'api.mineskin.org' }/accountManager/logout`,
             withCredentials: true,
         }).then(logoutResponse => {
             $scope.loggedIn = false;
