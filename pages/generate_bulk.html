@@ -151,11 +151,12 @@
                                             <label for="skinName">Skin Name (optional)</label>
                                         </div>
                                         <div class="input-field col s12">
-                                            <select ng-disabled="generating" id="skinModel" ng-disabled="generating" ng-model="skin.skinModel" value="steve">
+                                            <select ng-disabled="generating" id="skinVariant" ng-disabled="generating" ng-model="skin.skinVariant" value="">
+                                                <option value="">Automatic</option>
                                                 <option value="steve">Classic (Steve)</option>
                                                 <option value="slim">Slim (Alex)</option>
                                             </select>
-                                            <label>Skin Model</label>
+                                            <label>Skin Variant</label>
                                         </div>
                                         <div>
                                             <div class="switch">

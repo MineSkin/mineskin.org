@@ -488,7 +488,8 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
         user: undefined,
         privateUpload: false,
         skinName: "",
-        skinModel: "steve"
+        skinModel: "steve",
+        skinVariant: ""
     }
 
     $scope.skins = [
@@ -527,6 +528,7 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
         if (last) {
             toAdd.privateUpload = last.privateUpload;
             toAdd.skinModel = last.skinModel;
+            toAdd.skinVariant = last.skinVariant;
         }
         $scope.skins.push(toAdd);
         $scope.materializeInit("tab1");
