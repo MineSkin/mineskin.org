@@ -263,7 +263,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
     $scope.skinName = "";
     /**@deprecated**/
     $scope.skinModel = "steve";
-    $scope.skinVariant = "classic";
+    $scope.skinVariant = "";
 
     $scope.generating = false;
     $scope.generateSeconds = 0;
@@ -500,7 +500,7 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
         upload: undefined,
         skinName: "",
         skinModel: "steve",
-        skinVariant: "classic"
+        skinVariant: ""
     };
 
     $scope.addFromGlobal = function () {

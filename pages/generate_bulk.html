@@ -44,7 +44,8 @@
                                     <label for="globalSkinName">Skin Name (optional)</label>
                                 </div>
                                 <div class="input-field col s12">
-                                    <select ng-disabled="generating" id="globalSkinVariant" ng-disabled="generating" ng-model="global.skinVariant" value="classic">
+                                    <select ng-disabled="generating" id="globalSkinVariant" ng-disabled="generating" ng-model="global.skinVariant" value="">
+                                        <option value="">Automatic</option>
                                         <option value="classic">Classic (Steve)</option>
                                         <option value="slim">Slim (Alex)</option>
                                     </select>
