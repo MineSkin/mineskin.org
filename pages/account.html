@@ -109,7 +109,7 @@
         </div>
         <br/>
         <div class="row" ng-show="!accountExists"><!-- Account add form -->
-            <div ng-show="!accountAdded" ng-hide="!userProfile || !userProfile.uuid || (userProfile.legacyProfile || userProfile.suspended)">
+            <div ng-show="!accountAdded" ng-hide="!userProfile || !userProfile.id">
                 <h4>Click the button below to add your account to the MineSkin database.</h4>
                 <p>
                     By adding your account, you agree that MineSkin will have access to your full account data, including email, password, etc..<br/>
