@@ -389,7 +389,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
             } else {
                 let validateAlert = $scope.addAlert("Validating Username...", "info", 10000);
                 $.ajax({
-                    url: apiBaseUrl + "/validate/user/" + $scope.skinUser,
+                    url: apiBaseUrl + "/validate/name/" + $scope.skinUser,
                     success: function (data) {
                         if (data.valid) {
                             $scope.addAlert("Username is valid", "success", 1000);
@@ -719,7 +719,7 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
             } else {
                 let validateAlert = $scope.addAlert("Validating Username...", "info", 10000);
                 $.ajax({
-                    url: apiBaseUrl + "/validate/user/" + skin.user,
+                    url: apiBaseUrl + "/validate/name/" + skin.user,
                     success: function (data) {
                         if (data.valid) {
                             $scope.addAlert("Username is valid", "success", 1000);
