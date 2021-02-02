@@ -21,12 +21,14 @@
                 <h4>Please log in using your {{ loginWithMicrosoft ? 'Microsoft' : 'Mojang' }} account data</h4>
                 <span>(This is just to check your account information and will not be stored until you decide to actually add your account.)</span>
                 <br/>
+                <br/>
 
                 <span ng-show="loginWithMicrosoft">
                     You might receive an email notification from Microsoft regarding unusual login activity shortly after logging in below. <br/>
                     Please review the activity and specify that it was you on their activity website.<br/>
                 </span>
 
+                <br/>
                 <span>
                     If you have questions or concerns, feel free to ask on <a href="https://yeleha.co/discord" target="_blank">the Discord</a>!
                 </span>
@@ -37,6 +39,20 @@
                 <div>
                     <input type="checkbox" ng-model="checkUnderstoodLogin" id="checkUnderstoodLogin"/>
                     <label for="checkUnderstoodLogin" class="obviousLabel">I understand that I do <b>not have to</b> log in in order to use MineSkin</label>
+                </div>
+                <br/>
+
+                <br/>
+                <div>
+                    Account Type
+                    <div class="switch">
+                        <label>
+                            Mojang
+                            <input type="checkbox" ng-model="loginWithMicrosoft">
+                            <span class="lever"></span>
+                            Microsoft
+                        </label>
+                    </div>
                 </div>
                 <br/>
 
