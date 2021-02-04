@@ -466,7 +466,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
 
     $scope.refreshTimeout = function () {
         $.ajax({
-            url: apiBaseUrl + "/get/delay",
+            url: apiBaseUrl + "/get/delay?t=" + Math.floor(Date.now() / 10000),
             success: function (data) {
                 $scope.generatorDelay = data.delay;
                 $scope.generatorTimeout = data.nextRelative;
