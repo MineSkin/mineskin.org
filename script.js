@@ -472,7 +472,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
                 $scope.generatorTimeout = data.nextRelative;
 
                 if ($scope.generatorTimeout >= 0.1) {
-                    $timeout($scope.refreshTimeout(), 1000);
+                    $timeout($scope.refreshTimeout(), 10000);
                 }
             }
         });
