@@ -466,13 +466,13 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
 
     $scope.refreshTimeout = function () {
         $.ajax({
-            url: apiBaseUrl + "/get/delay?t=" + Math.floor(Date.now() / 10000),
+            url: apiBaseUrl + "/get/delay?t=" + Math.floor(Date.now() / 1000),
             success: function (data) {
                 $scope.generatorDelay = data.delay;
-                $scope.generatorTimeout = data.nextRelative;
+                $scope.generatorTimeout = Math.round(data.nextRelative);
 
                 if ($scope.generatorTimeout >= 0.1) {
-                    $timeout(() => $scope.refreshTimeout(), 10000);
+                    $timeout(() => $scope.refreshTimeout(), $scope.generatorTimeout * 1000);
                 }
             }
         });
@@ -746,10 +746,10 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
             url: apiBaseUrl + "/get/delay?t=" + Math.floor(Date.now() / 1000),
             success: function (data) {
                 $scope.generatorDelay = data.delay;
-                $scope.generatorTimeout = data.nextRelative;
+                $scope.generatorTimeout = Math.round(data.nextRelative);
 
                 if ($scope.generatorTimeout >= 0.1) {
-                    $timeout(() => $scope.refreshTimeout(), 20000);
+                    $timeout(() => $scope.refreshTimeout(), $scope.generatorTimeout * 1000);
                 }
             }
         });
