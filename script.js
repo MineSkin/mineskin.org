@@ -472,11 +472,12 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
                 $scope.generatorTimeout = data.nextRelative;
 
                 if ($scope.generatorTimeout >= 0.1) {
-                    $timeout($scope.refreshTimeout(), 10000);
+                    $timeout(() => $scope.refreshTimeout(), 10000);
                 }
             }
         });
     };
+    $scope.refreshTimeout();
 }]);
 
 mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http", "$timeout", "$interval", "$stateParams", "$localStorage", function ($scope, Upload, $state, $http, $timeout, $interval, $stateParams, $localStorage) {
@@ -748,11 +749,12 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
                 $scope.generatorTimeout = data.nextRelative;
 
                 if ($scope.generatorTimeout >= 0.1) {
-                    $timeout($scope.refreshTimeout(), 10000);
+                    $timeout(() => $scope.refreshTimeout(), 20000);
                 }
             }
         });
     };
+    $scope.refreshTimeout();
 }]);
 
 mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", "$cookies", "$window", "$state", "$timeout", "$sce", "ngMeta", "$localStorage", function ($scope, $stateParams, $http, $cookies, $window, $state, $timeout, $sce, ngMeta, $localStorage) {
