@@ -191,10 +191,23 @@
                     </div>
                 </div>
                 <br>
+                <br/>
                 <div class="row">
-                    Make sure to <a href="https://yeleha.co/discord" target="_blank">join the Discord</a> before linking!
-                    <br/>
-                    <button class="btn waves-effect waves-light blue" ng-disabled="accountLinkedToDiscord" ng-click="linkDiscord()">Link Account to Discord</button>
+                    Get notified about account issues
+                    <div class="row">
+                        Send notifications to this account's email
+                        <div class="switch">
+                            <label>
+                                <input type="checkbox" ng-model="sendAccountEmails" ng-click="updateEmailSetting()">
+                                <span class="lever"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        Make sure to <a href="https://yeleha.co/discord" target="_blank">join the Discord</a> before linking!
+                        <br/>
+                        <button class="btn waves-effect waves-light blue" ng-disabled="accountLinkedToDiscord" ng-click="linkDiscord()">Link Account to Discord</button>
+                    </div>
                 </div>
                 <br/>
                 <br/>

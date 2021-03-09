@@ -1283,6 +1283,12 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         });
     };
 
+    $scope.updateEmailSetting = function () {
+        $scope.updateAccountSetting('emails', 'emails', $scope.sendAccountEmails, (v, u) => {
+            $scope.sendAccountEmails = typeof v !== "undefined" ? v : $scope.sendAccountEmails
+        });
+    };
+
     $scope.linkDiscord = function () {
         if (!$scope.loggedIn || !$scope.token || !$scope.uuid) return;
         $window.open(`https://${ $scope.accountServer ? $scope.accountServer.host : 'api.mineskin.org' }/accountManager/discord/oauth/start?email=${ $scope.email }&uuid=${ $scope.uuid }`, "_blank");
