@@ -27,12 +27,6 @@
                 <h4>Please log in using your {{ loginWithMicrosoft ? 'Microsoft' : 'Mojang' }} account data</h4>
                 <span>(This is just to check your account information and will not be stored until you decide to actually add your account.)</span>
                 <br/>
-                <br/>
-
-                <span ng-show="loginWithMicrosoft">
-                    You might receive an email notification from Microsoft regarding unusual login activity shortly after logging in below. <br/>
-                    Please <a href="https://account.live.com/Activity" target="_blank">review the activity and specify that it was you on their activity website.</a><br/>
-                </span>
 
                 <br/>
                 <span>
@@ -60,6 +54,13 @@
                         </label>
                     </div>
                 </div>
+                <br/>
+
+                <span ng-show="loginWithMicrosoft">
+                    You might receive an email notification from Microsoft regarding unusual login activity shortly after logging in below. <br/>
+                    Please <a href="https://account.live.com/Activity" target="_blank">review the activity and specify that it was you on their activity website.</a><br/>
+                    (If the login fails and you're sure it was the correct credentials, check that page too)<br/>
+                </span>
                 <br/>
 
                 <form ng-submit="doLogin()" class="col s12">
