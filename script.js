@@ -977,6 +977,13 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                     password: btoa($scope.password)
                 }
             }).then(loginResponse => {
+                if (loginResponse.data["switchToServer"]) {
+                    console.log("Switching account server to", loginResponse.data["switchToServer"]);
+                    $scope.accountServer = loginResponse.data["switchToServer"];
+                    $scope.loginMojang();
+                    return;
+                }
+
                 if (loginResponse.data["error"] || !loginResponse.data["success"]) {
                     $scope.handleResponseError(loginResponse);
                     return;
@@ -1076,6 +1083,13 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                     password: btoa($scope.password)
                 }
             }).then(loginResponse => {
+                if (loginResponse.data["switchToServer"]) {
+                    console.log("Switching account server to", loginResponse.data["switchToServer"]);
+                    $scope.accountServer = loginResponse.data["switchToServer"];
+                    $scope.loginMicrosoft();
+                    return;
+                }
+
                 if (loginResponse.data["error"] || !loginResponse.data["success"]) {
                     $scope.handleResponseError(loginResponse);
                     return;
