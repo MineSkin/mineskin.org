@@ -744,6 +744,9 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
     $scope.refreshTimeout = function () {
         $.ajax({
             url: apiBaseUrl + "/get/delay?t=" + Math.floor(Date.now() / 1000),
+            headers: {
+                "Authorization": "Bearer d175f64d0601005779e4fc3497ffb7c8fbbc00b90610052939a7ac173ccf3317"
+            },
             success: function (data) {
                 $scope.generatorDelay = data.delay;
                 $scope.generatorTimeout = Math.round(data.nextRelative);
