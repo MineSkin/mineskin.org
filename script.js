@@ -321,6 +321,9 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
                 $http({
                     url: apiBaseUrl + "/generate/url",
                     method: "POST",
+                    headers: {
+                        "Authorization": "Bearer d175f64d0601005779e4fc3497ffb7c8fbbc00b90610052939a7ac173ccf3317"
+                    },
                     data: {
                         url: $scope.skinUrl,
                         name: $scope.skinName,
@@ -347,6 +350,9 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
                 Upload.upload({
                     url: apiBaseUrl + "/generate/upload",
                     method: "POST",
+                    headers: {
+                        "Authorization": "Bearer d175f64d0601005779e4fc3497ffb7c8fbbc00b90610052939a7ac173ccf3317"
+                    },
                     data: {
                         file: $scope.skinUpload,
                         name: $scope.skinName,
@@ -376,6 +382,9 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
                     $http({
                         url: apiBaseUrl + "/generate/user",
                         method: "POST",
+                        headers: {
+                            "Authorization": "Bearer d175f64d0601005779e4fc3497ffb7c8fbbc00b90610052939a7ac173ccf3317"
+                        },
                         data: {
                             uuid: uuid,
                             name: $scope.skinName,
@@ -482,6 +491,9 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
     $scope.refreshTimeout = function () {
         $.ajax({
             url: apiBaseUrl + "/get/delay?t=" + Math.floor(Date.now() / 1000),
+            headers: {
+                "Authorization": "Bearer d175f64d0601005779e4fc3497ffb7c8fbbc00b90610052939a7ac173ccf3317"
+            },
             success: function (data) {
                 $scope.generatorDelay = data.delay;
                 $scope.generatorTimeout = Math.round(data.nextRelative);
@@ -1394,7 +1406,7 @@ mineskinApp.controller("apiKeyController", ["$scope", "$http", "$cookies", "$tim
 
         $http({
             method: "GET",
-            url: `https://nugget.api.mineskin.org/apikey?key=${ $scope.apiKey }`
+            url: `https://api.mineskin.org/apikey?key=${ $scope.apiKey }`
         }).then(keyResponse => {
             $scope.server = keyResponse.data.server;
             $scope.apiKey = keyResponse.data.key;
