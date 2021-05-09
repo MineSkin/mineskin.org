@@ -1,0 +1,92 @@
+<div class="row">
+    <div class="col s6 offset-s3">
+        <div class="row">
+            <h1>API Key Manager</h1>
+
+            <div>
+                <div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select ng-change="loadExistingKeyInfo()" ng-model="keyAction">
+                                <option selected value="create">Create a new API Key</option>
+                                <option value="update">Update an Existing API Key</option>
+                                <option value="delete">Delete an API Key</option>
+                            </select>
+                            <label>Action</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="row" ng-show="keyAction === 'create' && !ownerState">
+                    <br/>
+                    <a class="btn cyan" href="https://api.mineskin.org/apikey/discord/oauth/start">Login with Discord</a>
+                    <br/>
+                </div>
+
+                <br/>
+
+                <div ng-show="(keyAction === 'create' && apiKey) || keyAction === 'update' || keyAction === 'delete'">
+                    <span ng-show="keyAction === 'create'">
+                        Make sure to save these, you won't be able to see them again!
+                    </span>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input ng-change="loadExistingKeyInfo()" ng-model="apiKey" ng-readonly="keyAction === 'create'" type="text">
+                            <label>API Key</label>
+                            <span class="helper-text"><small>Used for Requests</small></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input ng-model="apiSecret" ng-readonly="keyAction === 'create'" type="text">
+                            <label>Key Secret</label>
+                            <span class="helper-text"><small>Used for Editing this Key</small></span>
+                        </div>
+                    </div>
+                </div>
+
+                <br/>
+
+                <div ng-show="(keyAction === 'create' && ownerState) || (keyAction === 'update' && apiKey)">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input ng-model="keyName" type="text">
+                            <label>Name</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea class="materialize-textarea" ng-disabled="keyIps" ng-model="keyOrigins"></textarea>
+                            <label>Allowed Origins (one per line)</label>
+                            <span class="helper-text"><small>For Web Requests - https://mineskin.org, https://inventivetalent.dev, ...</small></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea class="materialize-textarea" ng-disabled="keyOrigins" ng-model="keyIps"></textarea>
+                            <label>Allowed IPs (one per line)</label>
+                            <span class="helper-text"><small>For Server Requests - 1.2.3.4, 127.0.0.1, ...</small></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea class="materialize-textarea" ng-model="keyAgents"></textarea>
+                            <label>Allowed User-Agents (one per line)</label>
+                            <span class="helper-text"><small>MineSkin, MyCoolApp, ...</small></span>
+                        </div>
+                    </div>
+                </div>
+
+                <br/>
+                <br/>
+
+                <button class="btn green" ng-click="create()" ng-disabled="!ownerState || !keyName" ng-show="keyAction === 'create'">Create</button>
+                <button class="btn blue" ng-click="update()" ng-disabled="!apiKey || !apiSecret" ng-show="keyAction === 'update'">Update</button>
+                <button class="btn red" ng-click="delete()" ng-disabled="!apiKey || !apiSecret" ng-show="keyAction === 'delete'">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
