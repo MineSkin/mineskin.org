@@ -1387,7 +1387,7 @@ mineskinApp.controller("apiKeyController", ["$scope", "$http", "$cookies", "$tim
 
     $scope.materializeInit('tab1');
 
-    $scope.ownerState = location.search ? atob(location.search.substr(1)) : undefined;
+    $scope.ownerState = location.search ? atob(decodeURIComponent(location.search.substr(1))) : undefined;
     $scope.server = $scope.ownerState ? $scope.ownerState.split(":")[0] : undefined;
     $scope.owner = $scope.ownerState ? $scope.ownerState.split(":")[1] : undefined;
 
