@@ -167,12 +167,32 @@
                     <div>
                         <div class="row">
                             <div class="input-field col s12">
-                                <label for="javaGameProfile">Java Game Profile</label>
-                                <textarea style="min-height: 150px;max-width:100%;" id="javaGameProfile" class="materialize-textarea" readonly>// Skin #{{skin.id}} generated on {{(skin.timestamp*1000 | date : "medium")}} via MineSkin.org - https://minesk.in/{{skin.id}}
+                                <select ng-model="javaCodeAPI">
+                                    <option value="paper" selected>Paper API</option>
+                                    <option value="mojang">Mojang API</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div ng-show="javaCodeAPI == 'mojang'">
+                                <div class="input-field col s12">
+                                    <label for="javaGameProfile">Java (Mojang API/AuthLib Game Profile)</label>
+                                    <textarea style="min-height: 150px;max-width:100%;" id="javaGameProfile" class="materialize-textarea" readonly>// Skin #{{skin.id}} generated on {{(skin.timestamp*1000 | date : "medium")}} via MineSkin.org - https://minesk.in/{{skin.id}}
 GameProfile skin{{skin.id}} = new GameProfile(UUID.fromString("{{skin.data.uuid}}"), "skin{{skin.id}}");
 skin{{skin.id}}.getProperties().put("textures", new Property("textures", "{{skin.data.texture.value}}", "{{skin.data.texture.signature}}"));
-            </textarea>
-                                <button class="btn tooltipped" data-clipboard-target="#javaGameProfile"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy</button>
+                                    </textarea>
+                                    <button class="btn tooltipped" data-clipboard-target="#javaGameProfile"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy</button>
+                                </div>
+                            </div>
+                            <div ng-show="javaCodeAPI == 'paper'">
+                                <div class="input-field col s12">
+                                    <label for="javaPlayerProfile">Java (Paper API/Player Profile)</label>
+                                    <textarea style="min-height: 150px;max-width:100%;" id="javaPlayerProfile" class="materialize-textarea" readonly>// Skin #{{skin.id}} generated on {{(skin.timestamp*1000 | date : "medium")}} via MineSkin.org - https://minesk.in/{{skin.id}}
+PlayerProfile skin{{skin.id}} = Bukkit.createProfile(UUID.fromString("{{skin.data.uuid}}"), "skin{{skin.id}}");
+skin{{skin.id}}.setProperty(new ProfileProperty("textures", "{{skin.data.texture.value}}", "{{skin.data.texture.signature}}"));
+                                    </textarea>
+                                    <button class="btn tooltipped" data-clipboard-target="#javaPlayerProfile"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy</button>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -900,6 +900,7 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
     materializeBaseInit();
 
     $scope.giveCommandVersion = "1_13";
+    $scope.javaCodeAPI = "paper";
     $scope.skin = undefined;
     $scope.skinRotation = 35;
     $scope.skinImageLoaded = true;
@@ -927,6 +928,7 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
             materializeBaseInit();
             $("#giveCommand").trigger("autoresize");
             $("#javaGameProfile").trigger("autoresize");
+            $("#javaPlayerProfile").trigger("autoresize");
         }, 100);
     });
 }])
