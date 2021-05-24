@@ -804,7 +804,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
             $timeout.cancel($scope.searchTimeout);
         }
         $scope.searchTimeout = $timeout(function () {
-            $state.transitionTo('gallery', {page: $stateParams.page, query: $scope.searchQuery}, {notify: false});
+            $state.transitionTo('gallery', {page: 1, query: $scope.searchQuery}, {notify: false});
             $scope.reloadGallery();
         }, 500);
     };
