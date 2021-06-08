@@ -899,8 +899,10 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
 
     materializeBaseInit();
 
+    //TODO: remember these preferences
     $scope.giveCommandVersion = "1_13";
     $scope.javaCodeAPI = "paper";
+
     $scope.skin = undefined;
     $scope.skinRotation = 35;
     $scope.skinImageLoaded = true;
@@ -1348,6 +1350,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             url: `https://${ $scope.accountServer ? $scope.accountServer.host : 'api.mineskin.org' }/accountManager/deleteAccount`,
             withCredentials: true,
             headers: {
+                "Content-Type": "application/json;charset=utf-8",
                 "Authorization": `Bearer ${ $scope.token }`
             },
             data: {
