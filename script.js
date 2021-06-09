@@ -860,6 +860,14 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
             console.log(response);
             $timeout(function () {
                 $scope.skins = response.data.skins;
+                if ($scope.skins.length === 0) {
+                    $scope.skins.push({
+                        id: 404,
+                        uuid: "40404040404040404040404040404040",
+                        time: 1081051444,
+                        url: "http://textures.minecraft.net/texture/7c37db4dfa8d891d26624ec9b2ec23cea0cdaccac1123b502f6a6737f3cf7"
+                    })
+                }
                 $scope.pagination.page = response.data.page.index;
                 $scope.pagination.pages = response.data.page.amount;
                 $scope.pagination.totalItems = response.data.page.total;
