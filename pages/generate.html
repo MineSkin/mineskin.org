@@ -35,7 +35,7 @@
                     </div>
                     <div class="row">
                         <div ng-show="!skinUrl && !skinUpload" class="input-field col s12">
-                            <input type="text" id="skinUser" ng-model="skinUser" ng-required="!skinUrl && !skinUpload" ng-minlength="4" ng-maxlength="36" ng-change="skinName = skinUser">
+                            <input id="skinUser" ng-change="skinName = skinUser" ng-maxlength="36" ng-minlength="2" ng-model="skinUser" ng-required="!skinUrl && !skinUpload" type="text">
                             <label for="skinUser" class="required-label"><i class="fa fa-user" aria-hidden="true"></i>&nbsp; Minecraft Username</label>
                         </div>
                     </div>
