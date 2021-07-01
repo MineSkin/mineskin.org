@@ -186,7 +186,7 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
             }
         })
         .state("gallery.view", {
-            url: "^/{id:[0-9]{1,10}}",
+            url: "^/{id:[0-9a-z]{1,32}}",
             onEnter: ["$state", "$stateParams", "ModalService", "ngMeta", function ($state, $stateParams, ModalService, ngMeta) {
                 console.info("onEnter");
                 console.log($stateParams);
@@ -922,8 +922,14 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
 //                        $scope.skinImageLoaded = true;
 //                    })
 //                });
+    let url;
+    if ($stateParams.id.length > 10) {
+        url = "/get/uuid/" + $stateParams.id;
+    } else {
+        url = "/get/id/" + $stateParams.id;
+    }
     $http({
-        url: apiBaseUrl + "/get/id/" + $stateParams.id,
+        url: apiBaseUrl + url,
         method: "GET"
     }).then(function (response) {
         $scope.skin = response.data;
