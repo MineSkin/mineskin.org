@@ -443,12 +443,12 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
 
             var recentSkins = $scope.$storage.recentSkins;
             if (!recentSkins) recentSkins = [];
-            recentSkins.unshift(data.id);
+            recentSkins.unshift(data.uuid);
             if (recentSkins.length > 20) recentSkins.pop();
             $scope.$storage.recentSkins = recentSkins;
 
             if ($stateParams.generateCallback) {
-                window.location = $stateParams.generateCallback.replace(":id", data.id);
+                window.location = $stateParams.generateCallback.replace(":id", data.id).replace(":uuid", data.uuid);
             } else {
                 $state.go("gallery.view", {id: data.uuid})
             }
