@@ -617,7 +617,7 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
                         $scope.successCount++;
                         var recentSkins = $scope.$storage.recentSkins;
                         if (!recentSkins) recentSkins = [];
-                        recentSkins.unshift(data.id);
+                        recentSkins.unshift(data.uuid);
                         if (recentSkins.length > 50) recentSkins.pop();
                         $scope.$storage.recentSkins = recentSkins;
 

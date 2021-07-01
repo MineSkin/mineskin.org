@@ -29,7 +29,7 @@
                             </a>
                         </div>
                         <div>
-                            <a ng-repeat="skin in skins" class="galleryImage tooltipped" href="/{{skin.id}}" ui-sref="gallery.view({id:skin.id})" ui-sref-options="{notify:false}" data-position="top" data-delay="20" data-tooltip="{{skin.name || '#' + skin.id}}">
+                            <a class="galleryImage tooltipped" data-delay="20" data-position="top" data-tooltip="{{skin.name || skin.uuid.substr(0, 8)}}" href="/{{skin.uuid}}" ng-repeat="skin in skins" ui-sref="gallery.view({id:skin.uuid})" ui-sref-options="{notify:false}">
                                 <img ng-class="{'skull-image': !browser.isFirefox(), 'new-image': (getLastSkinCookie() < skin.id)}" src="/img/loading.svg" ng-preload-src="https://api.mineskin.org/render/{{viewMode == 0 ? 'head' : 'skin'}}?url={{skin.url}}&skinName={{skin.name}}">
                             </a>
                         </div>
@@ -77,7 +77,7 @@
                     <h4>Your Skins</h4>
 
                     <div>
-                        <a ng-repeat="skin in $storage.recentSkins | limitTo:8" class="galleryImage tooltipped" href="/{{skin}}" ui-sref="gallery.view({id:skin})" ui-sref-options="{notify:false}" data-position="top" data-delay="20" data-tooltip="{{ '#' + skin }}">
+                        <a class="galleryImage tooltipped" data-delay="20" data-position="top" data-tooltip="{{ skin.substr(0, 8) }}" href="/{{skin}}" ng-repeat="skin in $storage.recentSkins | limitTo:8" ui-sref="gallery.view({id:skin})" ui-sref-options="{notify:false}">
                             <img ng-class="{'skull-image': !browser.isFirefox()}" src="/img/loading.svg" ng-preload-src="https://api.mineskin.org/render/{{ skin }}/head">
                         </a>
                     </div>
