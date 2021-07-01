@@ -450,7 +450,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
             if ($stateParams.generateCallback) {
                 window.location = $stateParams.generateCallback.replace(":id", data.id);
             } else {
-                $state.go("gallery.view", {id: data.id})
+                $state.go("gallery.view", {id: data.uuid})
             }
         }, 1500);
     };
