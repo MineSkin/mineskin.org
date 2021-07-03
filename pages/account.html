@@ -124,7 +124,7 @@
             <div ng-show="userProfile && userProfile.id">
                 <h2>User data loaded!</h2>
                 <div>
-                    <span><strong>Type: </strong> {{ microsoftAccount ? 'Microsoft' : 'Mojang' }}<br/></span>
+                    <span><strong>Type: </strong> {{ myAccount.type }}<br/></span>
                     <span><strong>UUID: </strong> {{ userProfile.id }}<br/></span>
                     <span><strong>Name: </strong> {{ userProfile.name }}<br/></span>
 <!--                    <span><strong>Suspended: </strong> {{ userProfile.suspended }}</span> <span ng-show="userProfile.suspended" style="color:red">You can't use a suspended account!</span><br/>-->
