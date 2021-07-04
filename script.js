@@ -958,6 +958,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.password = "";
 
     $scope.accountServer = "";
+    $scope.accountType = undefined;
 
     $scope.loggingIn = false;
     $scope.loggedIn = false;
@@ -1014,6 +1015,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
         $scope.loggingIn = true;
         Materialize.toast("Logging in via Mojang...");
+        $scope.accountType = "mojang";
 
         $scope.getPreferredAccountServer(accountServer => {
             $http({
@@ -1120,6 +1122,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
         $scope.loggingIn = true;
         Materialize.toast("Logging in via Microsoft...");
+        $scope.accountType = "microsoft";
 
         $scope.getPreferredAccountServer(accountServer => {
             $http({
@@ -1172,7 +1175,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         }
         $http({
             method: "GET",
-            url: apiBaseUrl + "/accountManager/preferredAccountServer"
+            url: apiBaseUrl + "/accountManager/preferredAccountServer?type=" + $scope.accountServer
         }).then(function (response) {
             $scope.accountServer = response.data;
             console.log("Using account server " + JSON.stringify(response.data));
