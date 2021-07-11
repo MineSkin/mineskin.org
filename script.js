@@ -937,8 +937,8 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
         // 1.16 UUID format support
         $scope.skin.data.uuidAsArray = formatInt32UUID(getInt32ForUUID($scope.skin.data.uuid));
 
-        ngMeta.setTitle($scope.skin.name || "#" + $scope.skin.id);
-        ngMeta.setTag("image", $sce.trustAsResourceUrl(apiBaseUrl + "/render/" + $scope.skin.id + "/head"));
+        ngMeta.setTitle($scope.skin.name || $scope.skin.uuid.substr(0, 8));
+        ngMeta.setTag("image", $sce.trustAsResourceUrl(apiBaseUrl + "/render/" + $scope.skin.uuid + "/head"));
 
         $timeout(function () {
             materializeBaseInit();
