@@ -986,19 +986,13 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.sendAccountEmails = false;
 
     $scope.loginWithMicrosoft = false;
+    $scope.loginWithMojang = false;
 
     $scope.checkUnderstoodLogin = false;
     $scope.checkReadTerms = false;
     $scope.checkAcceptSkins = false;
     $scope.checkAcceptPassword = false;
 
-    // Temp thing for testing
-    // TODO: add switch to page for properly switching account type
-    window.useMicrosoftLogin = function () {
-        $timeout(function () {
-            $scope.loginWithMicrosoft = true;
-        }, 1);
-    };
     window.__scope = $scope;
 
     window.forceAccountServer = function (server) {
@@ -1016,6 +1010,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         $scope.loggingIn = true;
         Materialize.toast("Logging in via Mojang...");
         $scope.accountType = "mojang";
+        $scope.loginWithMojang = true;
 
         $scope.getPreferredAccountServer(accountServer => {
             $http({
@@ -1117,12 +1112,39 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
     //// MICROSOFT
 
+    $scope.startMicrosoftFlow = function () {
+        $scope.loggingIn = true;
+        Materialize.toast("Logging in via Microsoft...");
+        $scope.accountType = "microsoft";
+        $scope.loginWithMicrosoft = true;
+
+        $scope.getPreferredAccountServer(accountServer => {
+            const oauthWindow = window.open(`https://${ accountServer.host }/accountManager/microsoft/oauth/start`, "", "width=1000,height=620,left=500,top=200,scrollbars=no,resizable=yes,toolbar=no,menubar=no,location=no");
+
+            let oauthCloseTimer;
+
+            function oauthWindowClosed() {
+                console.log("auth window closed")
+
+                $scope.finalizeMicrosoftLogin();
+            }
+
+            oauthCloseTimer = setInterval(function () {
+                if (oauthWindow.closed) {
+                    oauthWindowClosed();
+                    clearInterval(oauthCloseTimer);
+                }
+            }, 500);
+        });
+    }
+
     $scope.loginMicrosoft = function () {
         if (!$scope.email || !$scope.password) return;
 
         $scope.loggingIn = true;
         Materialize.toast("Logging in via Microsoft...");
         $scope.accountType = "microsoft";
+        $scope.loginWithMicrosoft = true;
 
         $scope.getPreferredAccountServer(accountServer => {
             $http({
@@ -1146,14 +1168,31 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                     return;
                 }
 
-                $scope.token = loginResponse.data["token"];
+                $scope.finalizeMicrosoftLogin();
+            }).catch(response => $scope.handleResponseError(response));
+        });
+    };
+
+    $scope.finalizeMicrosoftLogin = function () {
+        $scope.getPreferredAccountServer(accountServer => {
+            $http({
+                method: "POST",
+                url: `https://${ accountServer.host }/accountManager/microsoft/login/finalize?t=${ Date.now() }`,
+                withCredentials: true
+            }).then(finalLoginResponse => {
+                if (finalLoginResponse.data["error"] || !finalLoginResponse.data["success"]) {
+                    $scope.handleResponseError(finalLoginResponse);
+                    return;
+                }
+
+                $scope.token = finalLoginResponse.data["token"];
                 $scope.loggedIn = true;
                 $scope.loggingIn = false;
 
                 $scope.getUserProfile();
             }).catch(response => $scope.handleResponseError(response));
         });
-    };
+    }
 
     //// INDEPENDENT STUFF
 
@@ -1225,9 +1264,11 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
         $scope.getPreferredAccountServer(accountServer => {
             let data = {
-                uuid: $scope.uuid,
-                email: $scope.email
+                uuid: $scope.uuid
             };
+            if ($scope.email) {
+                data.email = $scope.email;
+            }
             if ($scope.password) {
                 data.password = btoa($scope.password)
             }
@@ -1270,15 +1311,11 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     };
 
     $scope.submitAccount = function () {
-        if (!$scope.loggedIn || !$scope.token || !$scope.uuid || !$scope.password) return;
+        if (!$scope.loggedIn || !$scope.token || !$scope.uuid) return;
 
         $scope.getPreferredAccountServer(accountServer => {
             let data = {
-                email: $scope.email,
-                password: btoa($scope.password),
                 uuid: $scope.uuid,
-
-                securityAnswers: $scope.securityAnswers,
 
                 checks: {
                     readTerms: $scope.checkReadTerms,
@@ -1286,6 +1323,15 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                     acceptPassword: $scope.checkAcceptPassword
                 }
             };
+            if ($scope.email) {
+                data.email = $scope.email;
+            }
+            if ($scope.password) {
+                data.password = $scope.password;
+            }
+            if ($scope.securityAnswers) {
+                data.securityAnswers = $scope.securityAnswers;
+            }
             $http({
                 method: "POST",
                 url: `https://${ accountServer.host }/accountManager/confirmAccountSubmission`,
@@ -1307,11 +1353,13 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     };
 
     $scope.updateAccountSetting = function (setting, key, value, cb) {
-        if (!$scope.loggedIn || !$scope.token || !$scope.uuid || !$scope.email) return;
+        if (!$scope.loggedIn || !$scope.token || !$scope.uuid) return;
         let data = {
-            email: $scope.email,
             uuid: $scope.uuid
         };
+        if ($scope.email) {
+            data.email = $scope.email;
+        }
         data[key] = value;
         $http({
             method: "PUT",
@@ -1362,6 +1410,12 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.deleteAccount = function () {
         if (!$scope.loggedIn || !$scope.token || !$scope.uuid || !$scope.accountExists || $scope.accountEnabled) return;
 
+        let data = {
+            uuid: $scope.uuid
+        }
+        if ($scope.email) {
+            data.email = $scope.email;
+        }
         $http({
             method: "DELETE",
             url: `https://${ $scope.accountServer ? $scope.accountServer.host : 'api.mineskin.org' }/accountManager/deleteAccount`,
@@ -1370,10 +1424,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                 "Content-Type": "application/json;charset=utf-8",
                 "Authorization": `Bearer ${ $scope.token }`
             },
-            data: {
-                email: $scope.email,
-                uuid: $scope.uuid
-            }
+            data: data
         }).then(deleteResponse => {
             if (deleteResponse.data["error"] || !deleteResponse.data["success"]) {
                 $scope.handleResponseError(deleteResponse);
@@ -1468,7 +1519,7 @@ mineskinApp.controller("apiKeyController", ["$scope", "$http", "$cookies", "$tim
             $scope.keyIps = keyResponse.data.ips.join("\n");
             $scope.keyAgents = keyResponse.data.agents.join("\n");
 
-            $("html, body").animate({ scrollTop: 0 }, "slow");
+            $("html, body").animate({scrollTop: 0}, "slow");
         }).catch(response => $scope.handleResponseError(response));
     };
 
