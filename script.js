@@ -1398,7 +1398,16 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
     $scope.updateEmailSetting = function () {
         $scope.updateAccountSetting('emails', 'emails', $scope.sendAccountEmails, (v, u) => {
-            $scope.sendAccountEmails = typeof v !== "undefined" ? v : $scope.sendAccountEmails
+            $scope.sendAccountEmails = typeof v !== "undefined" ? v : $scope.sendAccountEmails;
+            // ask for email if it's not set and sending emails is enabled
+            if(!$scope.email && $scope.sendAccountEmails) {
+                $scope.email = prompt("Email Address");
+                if ($scope.email) {
+                    $scope.updateAccountSetting('email', 'email', $scope.email, (v, u) => {
+                        Materialize.toast("Email updated");
+                    });
+                }
+            }
         });
     };
 
