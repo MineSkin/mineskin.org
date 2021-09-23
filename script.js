@@ -1327,7 +1327,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                 data.email = $scope.email;
             }
             if ($scope.password) {
-                data.password = $scope.password;
+                data.password = btoa($scope.password);
             }
             if ($scope.securityAnswers) {
                 data.securityAnswers = $scope.securityAnswers;
