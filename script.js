@@ -1121,7 +1121,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         $scope.getPreferredAccountServer(accountServer => {
             let url = `https://${ accountServer.host }/accountManager/microsoft/oauth/start`;
             if ($scope.email) {
-                url += `&email=${ $scope.email }`;
+                url += `?email=${ $scope.email }`;
             }
             const oauthWindow = window.open(url, "", "width=1000,height=620,left=500,top=200,scrollbars=no,resizable=yes,toolbar=no,menubar=no,location=no");
 
