@@ -1119,7 +1119,11 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         $scope.loginWithMicrosoft = true;
 
         $scope.getPreferredAccountServer(accountServer => {
-            const oauthWindow = window.open(`https://${ accountServer.host }/accountManager/microsoft/oauth/start`, "", "width=1000,height=620,left=500,top=200,scrollbars=no,resizable=yes,toolbar=no,menubar=no,location=no");
+            let url = `https://${ accountServer.host }/accountManager/microsoft/oauth/start`;
+            if ($scope.email) {
+                url += `&email=${ $scope.email }`;
+            }
+            const oauthWindow = window.open(url, "", "width=1000,height=620,left=500,top=200,scrollbars=no,resizable=yes,toolbar=no,menubar=no,location=no");
 
             let oauthCloseTimer;
 
@@ -1138,6 +1142,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         });
     }
 
+    // @deprecated (non-oauth version)
     $scope.loginMicrosoft = function () {
         if (!$scope.email || !$scope.password) return;
 
@@ -1186,6 +1191,9 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                 }
 
                 $scope.token = finalLoginResponse.data["token"];
+                if (!$scope.email && finalLoginResponse.data["email"]) {
+                    $scope.email = finalLoginResponse.data["email"];
+                }
                 $scope.loggedIn = true;
                 $scope.loggingIn = false;
 

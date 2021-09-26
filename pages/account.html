@@ -69,26 +69,22 @@
                         Two-step verification is not supported, unfortunately. Please <a href="https://account.live.com/proofs/Manage/additional" target="_blank">disable it</a> on the account you'd like to add here.<br/>
                     </span>
                     <br/>
-                    <form ng-hide="loginWithMojang">
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input class="validate" id="email" ng-disabled="!checkUnderstoodLogin" ng-model="email" required type="email">
+                            <label for="email">Microsoft/Mojang Account E-Mail</label>
+                        </div>
+                    </div>
+
+                    <form ng-hide="loginWithMojang || !email">
                         <br/>
                         <a href="#" ng-click="startMicrosoftFlow()">
                             <img alt="Sign in with Microsoft" src="https://docs.microsoft.com/en-us/azure/active-directory/develop/media/howto-add-branding-in-azure-ad-apps/ms-symbollockup_signin_light.svg">
                         </a>
                     </form>
 
-                    <br/>
-                    <hr ng-hide="loginWithMicrosoft || loginWithMojang"/>
-                    <br/>
-
-                    <form class="col s12" ng-hide="loginWithMicrosoft" ng-submit="doLogin()">
-                        <strong>Sign in with Mojang</strong>
-
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input class="validate" id="email" ng-disabled="!checkUnderstoodLogin" ng-model="email" required type="email">
-                                <label for="email">E-Mail</label>
-                            </div>
-                        </div>
+                    <form class="col s12" ng-hide="!email" ng-submit="doLogin()">
                         <div class="row">
                             <div class="input-field col s12">
                                 <input class="validate" id="password" ng-disabled="!checkUnderstoodLogin" ng-model="password" required type="password">
@@ -97,7 +93,7 @@
                         </div>
 
                         <div class="row">
-                            <button class="btn waves-effect waves-light" ng-disabled="!checkUnderstoodLogin || loggingIn" type="submit">Login</button>
+                            <button class="btn waves-effect waves-light" ng-disabled="!checkUnderstoodLogin || loggingIn" type="submit">Sign in with Mojang</button>
                         </div>
                     </form>
                 </div>
