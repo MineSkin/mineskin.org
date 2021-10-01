@@ -49,7 +49,7 @@
                     <div id="skinRenderContainer" style="display: none;">
                         <iframe frameborder="0" src="#" id="skinRender" style="min-height:450px;max-height:500px; min-width:200px;max-width:220px;"></iframe>
                     </div>
-                    <span style="display:none" id="skinRenderId">{{ skin.id }}</span>
+                    <span id="skinRenderId" style="display:none">{{ skin.uuid }}</span>
                     <script>
                         $(document).ready(function () {
                             $("#skinImage").on("load", function () {
@@ -137,17 +137,17 @@
                             <div class="input-field col s12">
                                 <div ng-show="giveCommandVersion == '1_12'">
                                     <label for="giveCommand1_12">Skull /give Command</label>
-                                    <textarea style="min-height: 150px;max-width:100%;" id="giveCommand1_12" class="materialize-textarea" readonly>/give @p minecraft:skull 1 3 {SkullOwner:{Id:{{skin.data.uuid}},Properties:{textures:[{Value:"{{skin.data.texture.value}}",Signature:"{{skin.data.texture.signature}}"}]}},display:{Name:"{{ skin.name || '#' + skin.id}}",Lore:["Skin #{{skin.id}}","generated on {{(skin.timestamp*1000 | date : "medium")}}","via MineSkin.org","https://minesk.in/{{skin.id}}"]}}</textarea>
+                                    <textarea class="materialize-textarea" id="giveCommand1_12" readonly style="min-height: 150px;max-width:100%;">/give @p minecraft:skull 1 3 {SkullOwner:{Id:{{skin.data.uuid}},Properties:{textures:[{Value:"{{skin.data.texture.value}}",Signature:"{{skin.data.texture.signature}}"}]}},display:{Name:"{{ skin.name || skin.uuid.substr(0, 8)}}",Lore:["Skin {{skin.uuid.substr(0, 8)}}","generated on {{(skin.timestamp*1000 | date : "medium")}}","via MineSkin.org","https://minesk.in/{{skin.uuid}}"]}}</textarea>
                                     <button class="btn tooltipped" data-clipboard-target="#giveCommand1_12"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy</button>
                                 </div>
                                 <div ng-show="giveCommandVersion == '1_13'">
                                     <label for="giveCommand1_13">Player Head /give Command</label>
-                                    <textarea style="min-height: 150px;max-width:100%;" id="giveCommand1_13" class="materialize-textarea" readonly>give @p minecraft:player_head{SkullOwner:{Id:{{skin.data.uuid}},Properties:{textures:[{Value:"{{skin.data.texture.value}}",Signature:"{{skin.data.texture.signature}}"}]}},display:{Name:"{\"text\":\"{{ skin.name || '#' + skin.id}}\"}",Lore:["{\"text\":\"Skin #{{skin.id}}\"}","{\"text\":\"generated on {{(skin.timestamp*1000 | date : "medium")}}\"}","{\"text\":\"via MineSkin.org\"}","{\"text\":\"https://minesk.in/{{skin.id}}\"}"]}}</textarea>
+                                    <textarea class="materialize-textarea" id="giveCommand1_13" readonly style="min-height: 150px;max-width:100%;">give @p minecraft:player_head{SkullOwner:{Id:{{skin.data.uuid}},Properties:{textures:[{Value:"{{skin.data.texture.value}}",Signature:"{{skin.data.texture.signature}}"}]}},display:{Name:"{\"text\":\"{{ skin.name || skin.uuid.substr(0, 8)}}\"}",Lore:["{\"text\":\"Skin {{skin.uuid.substr(0, 8)}}\"}","{\"text\":\"generated on {{(skin.timestamp*1000 | date : "medium")}}\"}","{\"text\":\"via MineSkin.org\"}","{\"text\":\"https://minesk.in/{{skin.uuid}}\"}"]}}</textarea>
                                     <button class="btn tooltipped" data-clipboard-target="#giveCommand1_13"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy</button>
                                 </div>
                                 <div ng-show="giveCommandVersion == '1_16'">
                                     <label for="giveCommand1_16">Player Head /give Command</label>
-                                    <textarea style="min-height: 150px;max-width:100%;" id="giveCommand1_16" class="materialize-textarea" readonly>give @p minecraft:player_head{SkullOwner:{Id:{{skin.data.uuidAsArray}},Properties:{textures:[{Value:"{{skin.data.texture.value}}",Signature:"{{skin.data.texture.signature}}"}]}},display:{Name:"{\"text\":\"{{ skin.name || '#' + skin.id}}\"}",Lore:["{\"text\":\"Skin #{{skin.id}}\"}","{\"text\":\"generated on {{(skin.timestamp*1000 | date : "medium")}}\"}","{\"text\":\"via MineSkin.org\"}","{\"text\":\"https://minesk.in/{{skin.id}}\"}"]}}</textarea>
+                                    <textarea class="materialize-textarea" id="giveCommand1_16" readonly style="min-height: 150px;max-width:100%;">give @p minecraft:player_head{SkullOwner:{Id:{{skin.data.uuidAsArray}},Properties:{textures:[{Value:"{{skin.data.texture.value}}",Signature:"{{skin.data.texture.signature}}"}]}},display:{Name:"{\"text\":\"{{ skin.name || skin.uuid.substr(0, 8)}}\"}",Lore:["{\"text\":\"Skin {{skin.uuid.substr(0, 8)}}\"}","{\"text\":\"generated on {{(skin.timestamp*1000 | date : "medium")}}\"}","{\"text\":\"via MineSkin.org\"}","{\"text\":\"https://minesk.in/{{skin.uuid}}\"}"]}}</textarea>
                                     <button class="btn tooltipped" data-clipboard-target="#giveCommand1_16"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy</button>
                                 </div>
                             </div>
@@ -172,9 +172,9 @@
                             <div ng-show="javaCodeAPI == 'mojang'">
                                 <div class="input-field col s12">
                                     <label for="javaGameProfile">Java (Mojang API/AuthLib Game Profile)</label>
-                                    <textarea style="min-height: 150px;max-width:100%;" id="javaGameProfile" class="materialize-textarea" readonly>// Skin #{{skin.id}} generated on {{(skin.timestamp*1000 | date : "medium")}} via MineSkin.org - https://minesk.in/{{skin.id}}
-GameProfile skin{{skin.id}} = new GameProfile(UUID.fromString("{{skin.data.uuid}}"), "skin{{skin.id}}");
-skin{{skin.id}}.getProperties().put("textures", new Property("textures", "{{skin.data.texture.value}}", "{{skin.data.texture.signature}}"));
+                                    <textarea class="materialize-textarea" id="javaGameProfile" readonly style="min-height: 150px;max-width:100%;">// Skin {{skin.uuid.substr(0, 8)}} generated on {{(skin.timestamp*1000 | date : "medium")}} via MineSkin.org - https://minesk.in/{{skin.uuid}}
+GameProfile skin{{skin.uuid.substr(0, 8)}} = new GameProfile(UUID.fromString("{{skin.data.uuid}}"), "skin{{skin.uuid.substr(0, 8)}}");
+skin{{skin.uuid.substr(0, 8)}}.getProperties().put("textures", new Property("textures", "{{skin.data.texture.value}}", "{{skin.data.texture.signature}}"));
                                     </textarea>
                                     <button class="btn tooltipped" data-clipboard-target="#javaGameProfile"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy</button>
                                 </div>
@@ -182,9 +182,9 @@ skin{{skin.id}}.getProperties().put("textures", new Property("textures", "{{skin
                             <div ng-show="javaCodeAPI == 'paper'">
                                 <div class="input-field col s12">
                                     <label for="javaPlayerProfile">Java (Paper API/Player Profile)</label>
-                                    <textarea style="min-height: 150px;max-width:100%;" id="javaPlayerProfile" class="materialize-textarea" readonly>// Skin #{{skin.id}} generated on {{(skin.timestamp*1000 | date : "medium")}} via MineSkin.org - https://minesk.in/{{skin.id}}
-PlayerProfile skin{{skin.id}} = Bukkit.createProfile(UUID.fromString("{{skin.data.uuid}}"), "skin{{skin.id}}");
-skin{{skin.id}}.setProperty(new ProfileProperty("textures", "{{skin.data.texture.value}}", "{{skin.data.texture.signature}}"));
+                                    <textarea class="materialize-textarea" id="javaPlayerProfile" readonly style="min-height: 150px;max-width:100%;">// Skin {{skin.uuid.substr(0, 8)}} generated on {{(skin.timestamp*1000 | date : "medium")}} via MineSkin.org - https://minesk.in/{{skin.uuid}}
+PlayerProfile skin{{skin.uuid.substr(0, 8)}} = Bukkit.createProfile(UUID.fromString("{{skin.data.uuid}}"), "skin{{skin.uuid.substr(0, 8)}}");
+skin{{skin.uuid.substr(0, 8)}}.setProperty(new ProfileProperty("textures", "{{skin.data.texture.value}}", "{{skin.data.texture.signature}}"));
                                     </textarea>
                                     <button class="btn tooltipped" data-clipboard-target="#javaPlayerProfile"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy</button>
                                 </div>
@@ -210,12 +210,12 @@ skin{{skin.id}}.setProperty(new ProfileProperty("textures", "{{skin.data.texture
                             <div class="input-field col s12">
                                 <div ng-show="modCommand == 'citizens'">
                                     <label for="citizensCommand">Citizens /npc skin Command</label>
-                                    <textarea class="materialize-textarea" id="citizensCommand" readonly style="min-height: 10px;max-width:100%;">/npc skin --url https://minesk.in/{{ skin.id }}</textarea>
+                                    <textarea class="materialize-textarea" id="citizensCommand" readonly style="min-height: 10px;max-width:100%;">/npc skin --url https://minesk.in/{{ skin.uuid }}</textarea>
                                     <button class="btn tooltipped" data-clipboard-target="#citizensCommand"><i aria-hidden="true" class="fa fa-clipboard"></i> Copy</button>
                                 </div>
                                 <div ng-show="modCommand == 'taterzens'">
                                     <label for="taterzensCommand">Taterzens /npc edit skin Command</label>
-                                    <textarea class="materialize-textarea"  id="taterzensCommand" readonly style="min-height: 10px;max-width:100%;">/npc edit skin https://minesk.in/{{ skin.id }}</textarea>
+                                    <textarea class="materialize-textarea"  id="taterzensCommand" readonly style="min-height: 10px;max-width:100%;">/npc edit skin https://minesk.in/{{ skin.uuid }}</textarea>
                                     <button class="btn tooltipped" data-clipboard-target="#taterzensCommand"><i aria-hidden="true" class="fa fa-clipboard"></i> Copy</button>
                                 </div>
                             </div>
@@ -228,7 +228,7 @@ skin{{skin.id}}.setProperty(new ProfileProperty("textures", "{{skin.data.texture
 
             <div class="row">
                 <div class="pull-left">
-                    {{skin.views}} views
+                    {{ skin.views }} views
                 </div>
                 <div class="pull-right">
                     <div ng-show="skin.timestamp > 0" class="text-muted">
