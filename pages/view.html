@@ -195,14 +195,23 @@ skin{{skin.id}}.setProperty(new ProfileProperty("textures", "{{skin.data.texture
             </div>
 
             <div class="row card-panel">
-                <h5 id="citizens">Citizens Skin Command</h5>
+                <h5 id="mods">Plugin/Mod Commands</h5>
                 <div class="col s12">
                     <div>
                         <div class="row">
                             <div class="input-field col s12">
-                                <label for="citizensCommand">Citizens /npc skin Command</label>
-                                <textarea style="min-height: 10px;max-width:100%;" id="citizensCommand" class="materialize-textarea" readonly>/npc skin --url https://minesk.in/{{ skin.id }}</textarea>
-                                <button class="btn tooltipped" data-clipboard-target="#citizensCommand"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy</button>
+                                <select ng-model="modCommand">
+                                    <option value="citizens">Citizens</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <div ng-show="modCommand == 'citizens'">
+                                    <label for="citizensCommand">Citizens /npc skin Command</label>
+                                    <textarea class="materialize-textarea" id="citizensCommand" readonly style="min-height: 10px;max-width:100%;">/npc skin --url https://minesk.in/{{ skin.id }}</textarea>
+                                    <button class="btn tooltipped" data-clipboard-target="#citizensCommand"><i aria-hidden="true" class="fa fa-clipboard"></i> Copy</button>
+                                </div>
                             </div>
                         </div>
                     </div>

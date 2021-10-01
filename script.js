@@ -910,6 +910,7 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
     //TODO: remember these preferences
     $scope.giveCommandVersion = "1_13";
     $scope.javaCodeAPI = "paper";
+    $scope.modCommand = "citizens";
 
     $scope.skin = undefined;
     $scope.skinRotation = 35;
