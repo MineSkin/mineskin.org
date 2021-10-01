@@ -908,7 +908,7 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
     materializeBaseInit();
 
     //TODO: remember these preferences
-    $scope.giveCommandVersion = "1_13";
+    $scope.giveCommandVersion = "1_16";
     $scope.javaCodeAPI = "paper";
     $scope.modCommand = "citizens";
 
