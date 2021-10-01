@@ -202,6 +202,7 @@ skin{{skin.id}}.setProperty(new ProfileProperty("textures", "{{skin.data.texture
                             <div class="input-field col s12">
                                 <select ng-model="modCommand">
                                     <option value="citizens">Citizens</option>
+                                    <option value="taterzens">Taterzens</option>
                                 </select>
                             </div>
                         </div>
@@ -211,6 +212,11 @@ skin{{skin.id}}.setProperty(new ProfileProperty("textures", "{{skin.data.texture
                                     <label for="citizensCommand">Citizens /npc skin Command</label>
                                     <textarea class="materialize-textarea" id="citizensCommand" readonly style="min-height: 10px;max-width:100%;">/npc skin --url https://minesk.in/{{ skin.id }}</textarea>
                                     <button class="btn tooltipped" data-clipboard-target="#citizensCommand"><i aria-hidden="true" class="fa fa-clipboard"></i> Copy</button>
+                                </div>
+                                <div ng-show="modCommand == 'taterzens'">
+                                    <label for="taterzensCommand">Taterzens /npc edit skin Command</label>
+                                    <textarea class="materialize-textarea"  id="taterzensCommand" readonly style="min-height: 10px;max-width:100%;">/npc edit skin https://minesk.in/{{ skin.id }}</textarea>
+                                    <button class="btn tooltipped" data-clipboard-target="#taterzensCommand"><i aria-hidden="true" class="fa fa-clipboard"></i> Copy</button>
                                 </div>
                             </div>
                         </div>
