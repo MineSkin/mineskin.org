@@ -19,18 +19,18 @@
         </div>
 
         <div style="text-align: center; font-size: 20px;" ng-show="stats">
-            <strong>MineSkin</strong> has already generated <strong>{{stats.total | number}}</strong> skins in total,<br/>
-            <strong>{{stats.unique | number}}</strong> of which are completely unique!<br/>
+            <strong>MineSkin</strong> has already generated <strong>{{stats.skin.total | number}}</strong> skins in total,<br/>
+            <strong>{{stats.skin.unique | number}}</strong> of which are completely unique!<br/>
             <br/>
-            In only the last 24 hours, MineSkin generated <strong>{{stats.lastDay | number}}</strong> skins,<br/>
-            which adds up to <strong>{{stats.lastMonth | number}}</strong> in the last month and <strong>{{stats.lastYear | number}}</strong> last year,<br/>
-            and <strong>{{stats.lastHour | number}}</strong> in just the last 60 minutes!<br/>
+            In only the last 24 hours, MineSkin generated <strong>{{stats.generate.time.day | number}}</strong> skins,<br/>
+            which adds up to <strong>{{stats.generate.time.month | number}}</strong> in the last month and <strong>{{stats.generate.time.year | number}}</strong> last year,<br/>
+            and <strong>{{stats.generate.time.hour | number}}</strong> in just the last 60 minutes!<br/>
             <br/>
-            <strong>{{stats.genUpload / stats.unique * 100 | number: 0}}%</strong> of skins were uploaded,<br/>
-            <strong>{{stats.genUrl / stats.unique * 100 | number: 0}}%</strong> were generated from a URL<br/>
-            and <strong>{{stats.genUser / stats.unique * 100 | number: 0}}%</strong> have been generated from other Minecraft players.<br/>
+            <strong>{{stats.generate.source.upload / stats.skin.unique * 100 | number: 0}}%</strong> of skins were uploaded,<br/>
+            <strong>{{stats.generate.source.url / stats.skin.unique * 100 | number: 0}}%</strong> were generated from a URL<br/>
+            and <strong>{{stats.generate.source.user / stats.skin.unique * 100 | number: 0}}%</strong> have been generated from other Minecraft players.<br/>
             <br/>
-            All the generated skins have been viewed <strong>{{stats.views | number}}</strong> times in total.<br/>
+            All the generated skins have been viewed <strong>{{stats.skin.views | number}}</strong> times in total.<br/>
             <br/>
         </div>
     </div>
