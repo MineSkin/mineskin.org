@@ -72,6 +72,24 @@ mineskinApp.directive('googleAd', ['$timeout',
     }
 ]);
 
+mineskinApp.directive('scrollDetect', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            let docViewTop = $(window).scrollTop();
+            let docViewBottom = docViewTop + $(window).height();
+
+            let elemTop = $(element).offset().top;
+            let elemBottom = elemTop + $(element).height();
+
+            let inView = ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+            if (inView) {
+                scope.$apply(attrs.scrollDetect);
+            }
+        }
+    }
+});
+
 mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) {
 
     // $routeProvider

@@ -61,9 +61,9 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
         maxSize: 4
     };
     $scope.skins = [];
-    $scope.reloadGallery = function () {
-        console.log("reload gallery #" + $scope.pagination.page);
-        $scope.skins = [];
+    $scope.loadMore = function () {
+        $scope.pagination.page++;
+        console.log("load more " + $scope.pagination.page);
         $http({
             url: apiBaseUrl + "/get/" + $scope.resultType + "/" + $scope.pagination.page + "?size=" + $scope.pagination.itemsPerPage + ($scope.searchQuery ? "&filter=" + $scope.searchQuery : ""),
             method: "GET"
@@ -85,6 +85,12 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
                 newLoad = false;
             });
         });
+    };
+    $scope.reloadGallery = function () {
+        console.log("reload gallery");
+        $scope.skins = [];
+        $scope.pagination.page = 0;
+        $scope.loadMore();
     };
     $scope.galleryInit = function () {
         // Set page after init, so the pagination gets updated
