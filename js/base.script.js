@@ -203,11 +203,12 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
                 }
             }
         })
-        .state("gallery", {
+        .state("gallery_legacy", {
             url: "/gallery/:page?query",
-            params: {
-                page: {value: "1"}
-            },
+            redirectTo: "gallery"
+        })
+        .state("gallery", {
+            url: "/gallery?query",
             views: {
                 'tab1': {},
                 'tab2': {
