@@ -77,6 +77,10 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
         }
     };
 
+    $scope.backToTop = function () {
+        $("html,body").animate({scrollTop: 0}, 1000);
+    }
+
     $scope.navigateTo = function (path) {
         $location.path(path);
     };
