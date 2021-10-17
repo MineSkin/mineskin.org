@@ -70,7 +70,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
         }).then(function (response) {
             console.log(response);
             $timeout(function () {
-                $scope.skins = response.data.skins;
+                $scope.skins = $scope.skins.concat($scope.skins, response.data.skins);
                 if ($scope.skins.length === 0) {
                     $scope.skins.push({
                         id: 404,

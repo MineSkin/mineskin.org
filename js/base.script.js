@@ -72,23 +72,25 @@ mineskinApp.directive('googleAd', ['$timeout',
     }
 ]);
 
-mineskinApp.directive('scrollDetect', function () {
+mineskinApp.directive('scrolly', ['$window', function ($window) {
     return {
         restrict: 'A',
         link: function (scope, element, attrs) {
-            let docViewTop = $(window).scrollTop();
-            let docViewBottom = docViewTop + $(window).height();
-
-            let elemTop = $(element).offset().top;
-            let elemBottom = elemTop + $(element).height();
-
-            let inView = ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
-            if (inView) {
-                scope.$apply(attrs.scrollDetect);
-            }
+            let raw = element[0];
+            let timeout = false;
+            angular.element($window).bind('scroll', function () {
+                if (timeout) return;
+                if ($window.scrollY + $window.innerHeight >= raw.offsetTop - 200) {
+                    timeout = true;
+                    scope.$apply(attrs.scrolly);
+                    setTimeout(() => {
+                        timeout = false;
+                    }, 200);
+                }
+            })
         }
     }
-});
+}])
 
 mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) {
 

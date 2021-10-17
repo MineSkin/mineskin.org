@@ -16,9 +16,7 @@
             }
         </style>
 
-        <h2>Skin Gallery
-            <small>{{'Page #' + pagination.page}}</small>
-        </h2>
+        <h2>Skin Gallery</h2>
         <div class="card-panel z-depth-2">
             <div class="row">
                 <div class="col s12">
@@ -53,7 +51,7 @@
                                data-position="top"
                                data-tooltip="{{skin.name || skin.uuid.substr(0, 8)}}"
                                href="/{{skin.uuid}}"
-                               ng-repeat="skin in skins"
+                               ng-repeat="skin in skins track by $index"
                                ui-sref="gallery.view({id:skin.uuid})"
                                ui-sref-options="{notify:false}">
                                 <img ng-class="{'skull-image': !browser.isFirefox(), 'new-image': (getLastSkinCookie() < skin.id)}"
@@ -61,8 +59,7 @@
                             </a>
                         </div>
 
-                        <div scroll-detect="loadMore()">
-                        </div>
+                        <a ng-click="loadMore()" scrolly="loadMore()">load more</a>
                     </div>
                 </div>
             </div>
