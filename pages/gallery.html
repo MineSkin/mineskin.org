@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col s2">
         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <div google-ad="7496187466"></div>
+        <div google-ad="7496187466" scroll-with-view></div>
     </div>
     <div class="col s8">
         <style>
@@ -16,61 +16,59 @@
             }
         </style>
 
-        <h2>Skin Gallery
-            <small>{{'Page #' + pagination.page}}</small>
-        </h2>
+        <h2>Skin Gallery</h2>
         <div class="card-panel z-depth-2">
             <div class="row">
                 <div class="col s12">
                     <div ng-init="galleryInit()">
-                        <div ng-show="skins.length === 0">
-                            <a ng-repeat="x in [].constructor(viewMode == 1 ? 12 : 32) track by $index" class="galleryImage galleryImagePlaceholder">
-                                <img ng-class="{'skull-image': !browser.isFirefox()}" src="/img/loading.svg">
-                            </a>
-                        </div>
-                        <div>
-                            <a class="galleryImage tooltipped" data-delay="20" data-position="top" data-tooltip="{{skin.name || skin.uuid.substr(0, 8)}}" href="/{{skin.uuid}}" ng-repeat="skin in skins" ui-sref="gallery.view({id:skin.uuid})" ui-sref-options="{notify:false}">
-                                <img ng-class="{'skull-image': !browser.isFirefox(), 'new-image': (getLastSkinCookie() < skin.id)}" src="/img/loading.svg" ng-preload-src="https://api.mineskin.org/render/{{viewMode == 0 ? 'head' : 'skin'}}?url={{skin.url}}&skinName={{skin.name}}">
-                            </a>
-                        </div>
-
-                        <br/>
-                        <div class="center-align">
-                            <pagination
-                                    page="pagination.page"
-                                    page-size="pagination.itemsPerPage"
-                                    total="pagination.totalItems"
-                                    show-prev-next="true"
-                                    use-simple-prev-next="false"
-                                    dots="..."
-                                    hide-if-empty="false"
-                                    adjacent="2"
-                                    scroll-top="false"
-                                    pagination-action="pageChanged(page)"/>
-                        </div>
                         <div>
                             <div class="row">
-                                <div class="input-field col s4">
-                                    <input type="text" id="searchQuery" ng-model="searchQuery" ng-minlength="1" ng-maxlength="100" ng-change="searchChanged()">
-                                    <label for="searchQuery" class="required-label">Search Query</label>
+                                <div class="input-field col s4" style="margin-top:0">
+                                    <input id="searchQuery" ng-change="searchChanged()" ng-maxlength="100" ng-minlength="1" ng-model="searchQuery" type="text">
+                                    <label class="required-label" for="searchQuery">Search Query</label>
                                 </div>
                                 <div class="col s4">
 
                                 </div>
                                 <div class="col s4">
                                     <div class="pull-right">
-                                        <button type="button" class="btn btn-primary" ng-click="toggleViewMode()">
+                                        <button class="btn btn-primary" ng-click="toggleViewMode()" type="button">
                                             Toggle View
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <div ng-show="skins.length === 0">
+                            <a ng-repeat="x in [].constructor(viewMode == 1 ? 12 : 32) track by $index" class="galleryImage galleryImagePlaceholder">
+                                <img ng-class="{'skull-image': !browser.isFirefox()}" src="/img/loading.svg">
+                            </a>
+                        </div>
+                        <div class="center-align">
+                            <a class="galleryImage tooltipped"
+                               data-delay="20"
+                               data-position="top"
+                               data-tooltip="{{skin.name || skin.uuid.substr(0, 8)}}"
+                               href="/{{skin.uuid}}"
+                               ng-repeat="skin in skins track by $index"
+                               ui-sref="gallery.view({id:skin.uuid})"
+                               ui-sref-options="{notify:false}">
+                                <img ng-class="{'skull-image': !browser.isFirefox(), 'new-image': (getLastSkinCookie() < skin.id)}"
+                                     ng-preload-src="https://api.mineskin.org/render/{{viewMode == 0 ? 'head' : 'skin'}}?url={{skin.url}}&skinName={{skin.name}}" src="/img/loading.svg">
+                            </a>
+                        </div>
+
+                        <div class="center-align">
+                            <br/>
+                            <a href="" ng-click="loadMore()" scrolly="loadMore()">load more</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <br/>
+        <!-- TODO: add this back, maybe
         <div class="card-panel z-depth-2" ng-show="$storage.recentSkins && $storage.recentSkins.length>0">
             <div class="row">
                 <div class="col s12">
@@ -84,9 +82,13 @@
                 </div>
             </div>
         </div>
+        -->
     </div>
     <div class="col s2">
         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <div google-ad="4698154800"></div>
+        <div google-ad="4698154800" scroll-with-view></div>
     </div>
 </div>
+<a href="" ng-click="backToTop()" style="position: fixed; bottom: 20px; right: 20px; opacity: 0.5; font-size: 50px; text-decoration: none; color: black; ">
+    <i aria-hidden="true" class="fa fa-arrow-circle-up"></i>
+</a>
