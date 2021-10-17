@@ -92,6 +92,24 @@ mineskinApp.directive('scrolly', ['$window', function ($window) {
     }
 }])
 
+mineskinApp.directive('scrollWithView', ['$window', function ($window) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            let timeout = false;
+            element.css("transition", "margin-top 100ms ease")
+            angular.element($window).bind('scroll', function () {
+                if (timeout) return;
+                timeout = true;
+                element.css("margin-top", $window.scrollY + 20);
+                setTimeout(() => {
+                    timeout = false;
+                }, 10);
+            })
+        }
+    }
+}])
+
 mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) {
 
     // $routeProvider
