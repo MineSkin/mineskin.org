@@ -85,7 +85,7 @@ mineskinApp.directive('scrolly', ['$window', function ($window) {
                     scope.$apply(attrs.scrolly);
                     setTimeout(() => {
                         timeout = false;
-                    }, 200);
+                    }, 500);
                 }
             })
         }
