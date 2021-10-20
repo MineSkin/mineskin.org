@@ -140,7 +140,7 @@
             <div ng-show="userProfile && userProfile.id">
                 <h2>User data loaded!</h2>
                 <div>
-                    <span><strong>Type: </strong> {{ myAccount.type }}<br/></span>
+                    <span><strong>Type: </strong> {{ myAccount.type || accountType }}<br/></span>
                     <span ng-if="myAccount.gamerTag"><strong>Gamertag: </strong> {{ myAccount.gamerTag }}<br/></span>
                     <span><strong>UUID: </strong> {{ userProfile.id }}<br/></span>
                     <span><strong>Name: </strong> {{ userProfile.name }}<br/></span>
