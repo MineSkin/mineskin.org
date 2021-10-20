@@ -200,7 +200,7 @@
                     <h6>Account Status</h6>
                     <div class="row">
                         <span><strong>Enabled:</strong> {{ accountEnabled }}<br/></span>
-                        <span><strong>Skins Generated:</strong> {{ myAccount.successCount || 0 }}</span>
+                        <span><strong>Skins Generated:</strong> {{ myAccount.successCount || 0 }}<br/></span>
                         <span><strong>Success Rate:</strong> {{ myAccount.successRate*100 }}%<br/></span>
                     </div>
                     <div class="row" ng-if="accountStats && accountStats.generateCount">
