@@ -256,7 +256,7 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
             }]
         })
         .state("account", {
-            url: "/account",
+            url: "/account?email",
             views: {
                 'tab1': {
                     templateUrl: "/pages/account.html",

@@ -3,7 +3,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
     // Login
 
-    $scope.email = "";
+    $scope.email = $stateParams.email || "";
     $scope.password = "";
 
     $scope.accountServer = "";
