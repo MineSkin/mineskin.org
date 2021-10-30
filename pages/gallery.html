@@ -10,6 +10,7 @@
             */
             .skull-image {
                 -webkit-filter: drop-shadow(8px 8px 6px rgba(0, 0, 0, 0.5));
+                filter: drop-shadow(8px 8px 6px rgba(0, 0, 0, 0.5));
 
                 min-width: 150px;
                 min-height: 150px;
@@ -46,7 +47,7 @@
                         <!-- Loading Placeholder -->
                         <div ng-show="skins.length === 0">
                             <a ng-repeat="x in [].constructor(viewMode == 1 ? 12 : 32) track by $index" class="galleryImage galleryImagePlaceholder">
-                                <img ng-class="{'skull-image': !browser.isFirefox()}" src="/img/loading.svg">
+                                <img class="skull-image" src="/img/loading.svg">
                             </a>
                         </div>
                         <!-- Regular Gallery -->
@@ -59,7 +60,7 @@
                                ng-repeat="skin in skins track by $index"
                                ui-sref="gallery.view({id:skin.uuid})"
                                ui-sref-options="{notify:false}">
-                                <img ng-class="{'skull-image': !browser.isFirefox(), 'new-image': (getLastSkinCookie() < skin.id)}"
+                                <img class="skull-image" ng-class="{'new-image': (getLastSkinCookie() < skin.id)}"
                                      ng-preload-src="https://api.mineskin.org/render/{{viewMode == 0 ? 'head' : 'skin'}}?url={{skin.url}}&skinName={{skin.name}}" src="/img/loading.svg">
                             </a>
 
@@ -78,7 +79,7 @@
                                ng-repeat="skin in $storage.recentSkins track by $index"
                                ui-sref="gallery.view({id:skin.uuid})"
                                ui-sref-options="{notify:false}">
-                                <img ng-class="{'skull-image': !browser.isFirefox()}" ng-preload-src="https://api.mineskin.org/render/{{ skin }}/head" src="/img/loading.svg">
+                                <img class="skull-image" ng-preload-src="https://api.mineskin.org/render/{{ skin }}/head" src="/img/loading.svg">
                             </a>
                         </div>
 
