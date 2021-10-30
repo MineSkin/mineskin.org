@@ -35,17 +35,22 @@
                                         <button class="btn btn-primary" ng-click="toggleViewMode()" type="button">
                                             Toggle View
                                         </button>
+                                        <button class="btn btn-primary" ng-click="toggleOwnSkins()" ng-show="$storage.recentSkins && $storage.recentSkins.length>0" type="button">
+                                            Show {{ viewMode===2?'Gallery':'Own Skins' }}
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Loading Placeholder -->
                         <div ng-show="skins.length === 0">
                             <a ng-repeat="x in [].constructor(viewMode == 1 ? 12 : 32) track by $index" class="galleryImage galleryImagePlaceholder">
                                 <img ng-class="{'skull-image': !browser.isFirefox()}" src="/img/loading.svg">
                             </a>
                         </div>
-                        <div class="center-align">
+                        <!-- Regular Gallery -->
+                        <div class="center-align" ng-if="viewMode !== 2">
                             <a class="galleryImage tooltipped"
                                data-delay="20"
                                data-position="top"
@@ -56,6 +61,19 @@
                                ui-sref-options="{notify:false}">
                                 <img ng-class="{'skull-image': !browser.isFirefox(), 'new-image': (getLastSkinCookie() < skin.id)}"
                                      ng-preload-src="https://api.mineskin.org/render/{{viewMode == 0 ? 'head' : 'skin'}}?url={{skin.url}}&skinName={{skin.name}}" src="/img/loading.svg">
+                            </a>
+                        </div>
+                        <!-- Own Skins -->
+                        <div class="center-align" ng-if="viewMode === 2">
+                            <a class="galleryImage tooltipped ownSkin"
+                               data-delay="20"
+                               data-position="top"
+                               data-tooltip="{{skin.substr(0, 8)}}"
+                               href="/{{skin.uuid}}"
+                               ng-repeat="skin in $storage.recentSkins track by $index"
+                               ui-sref="gallery.view({id:skin.uuid})"
+                               ui-sref-options="{notify:false}">
+                                <img ng-class="{'skull-image': !browser.isFirefox()}" ng-preload-src="https://api.mineskin.org/render/{{ skin }}/head" src="/img/loading.svg">
                             </a>
                         </div>
 

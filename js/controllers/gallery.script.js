@@ -19,7 +19,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
             $scope.reloadGallery();
         }, 500);
     };
-    $scope.viewMode = parseInt($cookies.get("viewMode") || 0);// 0 = heads only; 1 = full skins
+    $scope.viewMode = parseInt($cookies.get("viewMode") || 0);// 0 = heads only; 1 = full skins; 2 = own skins
     $scope.resultType = $cookies.get("resultType");
     if ($scope.resultType == undefined) {
         $scope.resultType = "list";
@@ -30,18 +30,28 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
         if ($scope.viewMode === 1) {
             $scope.pagination.itemsPerPage = 12;
         } else {
-            $scope.pagination.itemsPerPage = 28;
+            $scope.pagination.itemsPerPage = 32;
         }
 
-        var now = new $window.Date();
-        var expires = new $window.Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
-
+        let now = new $window.Date();
+        let expires = new $window.Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
         $cookies.put("viewMode", $scope.viewMode, {
             expires: expires
         });
 
         $state.reload();
     };
+    $scope.toggleOwnSkins = function () {
+        $scope.viewMode = $scope.viewMode >= 2 ? 0 : 2;
+
+        let now = new $window.Date();
+        let expires = new $window.Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
+        $cookies.put("viewMode", $scope.viewMode, {
+            expires: expires
+        });
+
+        $state.reload();
+    }
     $scope.resultTypeChanged = function () {
         var now = new $window.Date();
         var expires = new $window.Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
