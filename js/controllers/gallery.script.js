@@ -1,6 +1,8 @@
 mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", "$cookies", "$window", "$state", "$timeout", "$sce", "ngMeta", "$localStorage", function ($scope, $stateParams, $http, $cookies, $window, $state, $timeout, $sce, ngMeta, $localStorage) {
     console.info("galleryController")
 
+    window.__scope = $scope;
+
     $scope.materializeInit('tab2');
 
     $scope.$storage = $localStorage;
@@ -73,7 +75,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
     $scope.skins = [];
     $scope.loadMore = function () {
         $scope.pagination.page++;
-        if ($scope.pagination.page > $scope.pagination.pages) return;
+        if ($scope.pagination.page > $scope.pagination.pages + 1) return;
         console.log("load more " + $scope.pagination.page);
         $http({
             url: apiBaseUrl + "/get/" + $scope.resultType + "/" + $scope.pagination.page + "?size=" + $scope.pagination.itemsPerPage + ($scope.searchQuery ? "&filter=" + $scope.searchQuery : ""),
