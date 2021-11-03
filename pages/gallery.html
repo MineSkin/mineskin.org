@@ -63,11 +63,6 @@
                                 <img class="skull-image" ng-class="{'new-image': (getLastSkinCookie() < skin.id)}"
                                      ng-preload-src="https://api.mineskin.org/render/{{viewMode == 0 ? 'head' : 'skin'}}?url={{skin.url}}&skinName={{skin.name}}" src="/img/loading.svg">
                             </a>
-
-                            <div class="center-align">
-                                <br/>
-                                <a href="" ng-click="loadMore()" scrolly="loadMore()">load more</a>
-                            </div>
                         </div>
                         <!-- Own Skins -->
                         <div class="center-align" ng-if="viewMode === 2">
@@ -83,6 +78,10 @@
                             </a>
                         </div>
 
+                        <div class="center-align">
+                            <br/>
+                            <a href="" ng-click="loadMore()" scrolly="loadMore()">load more</a>
+                        </div>
                     </div>
                 </div>
             </div>
