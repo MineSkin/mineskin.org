@@ -356,6 +356,17 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                 $scope.accountEnabled = accountResponse.data.settings.enabled || accountResponse.data.enabled;
                 $scope.accountLinkedToDiscord = accountResponse.data.discordLinked;
                 $scope.sendAccountEmails = accountResponse.data.settings.emails || accountResponse.data.sendEmails;
+
+                $timeout(function () {
+                    if ($scope.myAccount.hadErrors) {
+                        Materialize.toast("Account Errors Cleared");
+                    }
+                }, 800);
+                $timeout(function () {
+                    if ($scope.myAccount.hadSentMessage) {
+                        Materialize.toast("Account Info Updated! Thank You!");
+                    }
+                }, 1200);
             }).catch(response => {
                 if (response.status === 404) {
                     // account does not exist
