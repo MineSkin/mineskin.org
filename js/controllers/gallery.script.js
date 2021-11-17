@@ -72,10 +72,12 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
         itemsPerPage: $scope.viewMode === 1 ? 12 : 32,
         maxSize: 4
     };
+    $scope.loading = true;
     $scope.skins = [];
     $scope.loadMore = function () {
         $scope.pagination.page++;
         if ($scope.pagination.page > $scope.pagination.pages + 1) return;
+        $scope.loading = true;
         console.log("load more " + $scope.pagination.page);
         $http({
             url: apiBaseUrl + "/get/" + $scope.resultType + "/" + $scope.pagination.page + "?size=" + $scope.pagination.itemsPerPage + ($scope.searchQuery ? "&filter=" + $scope.searchQuery : ""),
@@ -83,6 +85,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
         }).then(function (response) {
             console.log(response);
             $timeout(function () {
+                $scope.loading = false;
                 $scope.skins = [...$scope.skins, ...response.data.skins];
                 if ($scope.skins.length === 0) {
                     $scope.skins.push({

@@ -44,12 +44,6 @@
                             </div>
                         </div>
 
-                        <!-- Loading Placeholder -->
-                        <div class="center-align" ng-hide="(viewMode < 2 && skins.length > 0) || (viewMode == 2 && !!$storage.recentSkins && $storage.recentSkins.length > 0)">
-                            <a class="galleryImage galleryImagePlaceholder" ng-repeat="x in [].constructor(64) track by $index">
-                                <img class="skull-image" src="/img/loading.svg">
-                            </a>
-                        </div>
                         <!-- Regular Gallery -->
                         <div class="center-align" ng-if="viewMode !== 2">
                             <a class="galleryImage tooltipped"
@@ -75,6 +69,12 @@
                                ui-sref="gallery.view({id:skin})"
                                ui-sref-options="{notify:false}">
                                 <img class="skull-image" ng-preload-src="https://api.mineskin.org/render/{{ skin }}/head" src="/img/loading.svg">
+                            </a>
+                        </div>
+                        <!-- Loading Placeholder -->
+                        <div class="center-align" ng-hide="(viewMode < 2 && skins.length > 0 && !loading) || (viewMode == 2 && !!$storage.recentSkins && $storage.recentSkins.length > 0)">
+                            <a class="galleryImage galleryImagePlaceholder" ng-repeat="x in [].constructor(64) track by $index">
+                                <img class="skull-image" src="/img/loading.svg">
                             </a>
                         </div>
 
