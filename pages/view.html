@@ -214,7 +214,8 @@ skin{{skin.uuid.substr(0, 8)}}.setProperty(new ProfileProperty("textures", "{{sk
 
             <div class="row">
                 <div class="pull-left">
-                    {{ skin.views }} views
+                    {{ skin.views }} views |
+                    <span style="opacity: 0.8; font-size: 12px">Legacy ID: {{ skin.id }} (deprecated)</span>
                 </div>
                 <div class="pull-right">
                     <div ng-show="skin.timestamp > 0" class="text-muted">
