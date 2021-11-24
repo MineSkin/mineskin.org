@@ -9,6 +9,8 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.accountServer = "";
     $scope.accountType = undefined;
 
+    $scope.gamePass = false;
+
     $scope.loggingIn = false;
     $scope.loggedIn = false;
     $scope.token = "";
@@ -172,6 +174,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             if ($scope.email) {
                 url += `?email=${ $scope.email }`;
             }
+            url += `&gamePass=${ $scope.gamePass }`;
             const oauthWindow = window.open(url, "", "width=1000,height=620,left=500,top=200,scrollbars=no,resizable=yes,toolbar=no,menubar=no,location=no");
 
             let oauthCloseTimer;
