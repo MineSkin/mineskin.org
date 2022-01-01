@@ -36,6 +36,11 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     $scope.accountLinkedToDiscord = false;
     $scope.sendAccountEmails = false;
 
+    $scope.showHiatusSetting = false; //TODO
+    $scope.enableHiatus = false;
+    $scope.hiatusToken = "";
+    $scope.hiatusCommand = "";
+
     $scope.loginWithMicrosoft = false;
     $scope.loginWithMojang = false;
 
@@ -360,6 +365,10 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                 $scope.accountLinkedToDiscord = accountResponse.data.discordLinked;
                 $scope.sendAccountEmails = accountResponse.data.settings.emails || accountResponse.data.sendEmails;
 
+                $scope.enableHiatus = accountResponse.data.hiatus && accountResponse.data.hiatus.enabled;
+                $scope.hiatusToken = $scope.enableHiatus ? accountResponse.data.hiatus.token : "";
+                $scope.refreshHiatusCommand();
+
                 $timeout(function () {
                     if ($scope.myAccount.hadErrors) {
                         Materialize.toast("Account Errors Cleared");
@@ -444,13 +453,13 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             if (settingResponse.data["error"] || !settingResponse.data["success"]) {
                 $scope.handleResponseError(settingResponse);
                 if (cb) {
-                    cb(undefined/*new value*/, false/*updated*/);
+                    cb(undefined/*new value*/, false/*updated*/, settingResponse);
                 }
                 return;
             }
 
             if (cb) {
-                cb(value/*new value*/, settingResponse.data["success"]/*updated*/);
+                cb(value/*new value*/, settingResponse.data["success"]/*updated*/, settingResponse);
             }
         }).catch(response => $scope.handleResponseError(response));
     };
@@ -471,7 +480,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         $scope.updateAccountSetting('emails', 'emails', $scope.sendAccountEmails, (v, u) => {
             $scope.sendAccountEmails = typeof v !== "undefined" ? v : $scope.sendAccountEmails;
             // ask for email if it's not set and sending emails is enabled
-            if(!$scope.email && $scope.sendAccountEmails) {
+            if (!$scope.email && $scope.sendAccountEmails) {
                 $scope.email = prompt("Email Address");
                 if ($scope.email) {
                     $scope.updateAccountSetting('email', 'email', $scope.email, (v, u) => {
@@ -481,6 +490,19 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             }
         });
     };
+
+    $scope.updateHiatusSetting = function () {
+        $scope.updateAccountSetting('hiatus', 'hiatus', $scope.enableHiatus, (v, u, r) => {
+            $scope.enableHiatus = typeof v !== "undefined" ? v : $scope.enableHiatus;
+            $scope.hiatusToken = r?.data?.result ?? $scope.hiatusToken;
+            $scope.refreshHiatusCommand();
+        });
+    }
+
+    $scope.refreshHiatusCommand = function () {
+        if(!$scope.enableHiatus || !$scope.hiatusToken || !$scope.myAccount) return;
+        $scope.hiatusCommand =  "/mineskin hiatus add " + $scope.hiatusToken + " " + $scope.myAccount.email;
+    }
 
     $scope.linkDiscord = function () {
         if (!$scope.loggedIn || !$scope.token || !$scope.uuid) return;

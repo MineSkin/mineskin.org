@@ -205,7 +205,7 @@
                 <div class="row">
                     <h6>Account Status</h6>
                     <div class="row">
-                        <span><strong>Enabled:</strong> {{ accountEnabled }}<br/></span>
+                        <span><strong>Enabled:</strong> {{ accountEnabled }} <span ng-show="myAccount.hiatus && myAccount.hiatus.enabled && myAccount.hiatus.onHiatus">(on hiatus)</span><br/></span>
                         <span><strong>Skins Generated:</strong> {{ myAccount.successCount || 0 }}<br/></span>
                         <span><strong>Success Rate:</strong> {{ myAccount.successRate*100 }}%<br/></span>
                     </div>
@@ -219,6 +219,7 @@
                     <div class="col s3">
                         <button class="btn waves-effect waves-light orange" ng-disabled="!accountEnabled" ng-click="disableAccount()">Disable Account</button>
                     </div>
+                    <span ng-show="!accountEnabled"><br/>(enabling your account will store your currently selected skin)</span>
                 </div>
                 <br>
                 <br/>
@@ -241,6 +242,29 @@
                         Make sure to <a href="https://yeleha.co/discord" target="_blank">join the Discord</a> before linking!
                         <br/>
                         <button class="btn waves-effect waves-light blue" ng-disabled="accountLinkedToDiscord" ng-click="linkDiscord()">Link Account to Discord</button>
+                    </div>
+                </div>
+                <br>
+                <div class="row" ng-show="showHiatusSetting">
+                    <strong>Link the Hiatus Mod</strong>
+                    <br/>
+                    <span>The MineSkin Hiatus mod lets you use your regular skin when playing the game, while letting MineSkin use your account when you're not online in Minecraft.</span>
+                    <br/>
+                    <span><a href="https://hiatus.mineskin.org" target="_blank">Find the mod download and more info <strong>here</strong></a></span>
+                    <br/>
+                    <div class="row">
+                        Toggle Hiatus Support
+                        <div class="switch">
+                            <label>
+                                <input ng-click="updateHiatusSetting()" ng-model="enableHiatus" type="checkbox">
+                                <span class="lever"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div ng-show="enableHiatus && hiatusToken && myAccount && myAccount.email">
+                        <br/>
+                        <span>Use this command ingame (after installing the mod) to link your account:</span><br/>
+                        <input ng-model="hiatusCommand" readonly type="text">
                     </div>
                 </div>
                 <br/>
