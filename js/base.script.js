@@ -285,6 +285,20 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
                 }
             }
         })
+        .state("hiatus", {
+            url: "/hiatus",
+            views: {
+                'tab1': {
+                    templateUrl: "/pages/hiatus.html"
+                }
+            },
+            data: {
+                meta: {
+                    title: "MineSkin Hiatus",
+                    image: "https://mineskin.org/favicon.png"
+                }
+            }
+        })
 
 
     $locationProvider.html5Mode(true);
