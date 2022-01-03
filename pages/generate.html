@@ -19,6 +19,8 @@
                                     <img src="" ngf-src="skinUpload" id="skinUploadTempImage" style="display:none;">
                                     <img src="" ngf-thumbnail="skinUpload" class="z-depth-1" style="height:128px;margin:2px;image-rendering: pixelated">
                                     <a class="btn" ng-click="skinUpload=null;">X</a>
+                                    <br/>
+                                    {{ skinUpload.name }}
                                 </div>
                                 <ul ng-show="uploadForm.file.$invalid">
                                     <li ng-show="uploadForm.file.$error.dimensions">Image dimensions are {{ skinUpload.$ngfWidth }}x{{ skinUpload.$ngfHeight }}, must be either 64x32 or 64x64</li>
