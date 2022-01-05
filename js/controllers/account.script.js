@@ -1,6 +1,15 @@
 mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$timeout", "$stateParams", "$sce", "ngMeta", "$window", function ($scope, $http, $cookies, $timeout, $stateParams, $sce, ngMeta, $window) {
     console.info("accountController")
 
+    const ACCOUNT_COOKIES = [
+        "account_type",
+        "account_email",
+        "account_token",
+        "account_uuid"
+    ];
+    const now = new $window.Date();
+    const COOKIE_EXPIRES = new $window.Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 1);
+
     // Login
 
     $scope.email = $stateParams.email || "";
@@ -13,6 +22,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
     $scope.loggingIn = false;
     $scope.loggedIn = false;
+    $scope.autologin = false;
     $scope.token = "";
     $scope.loginProfile = {};
 
@@ -58,6 +68,32 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         }
     };
 
+    let accountTypeCookie = $cookies.get("account_type");
+    if (accountTypeCookie && accountTypeCookie === "mojang" || accountTypeCookie === "microsoft") {
+        $scope.loggingIn = true;
+        $scope.autologin = true;
+        $scope.accountType = accountTypeCookie;
+        $scope.loginWithMicrosoft = $scope.accountType === "microsoft";
+
+        $scope.email = atob($cookies.get("account_email"));
+        $scope.token = atob($cookies.get("account_token"));
+        $scope.uuid = $cookies.get("account_uuid");
+
+        $scope.checkUnderstoodLogin = true;
+
+        $timeout(function () {
+            $scope.loggedIn = true;
+        }, 200);
+
+        $timeout(function () {
+            if ($scope.accountType === "mojang") {
+                $scope.getMojangChallenges();
+            } else {
+                $scope.getUserProfile();
+            }
+        }, 500);
+    }
+
     //// MOJANG
 
     $scope.loginMojang = function () {
@@ -94,6 +130,10 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                 $scope.loginProfile = loginResponse.data["profile"];
                 $scope.loggedIn = true;
                 $scope.loggingIn = false;
+
+                $cookies.put("account_type", "mojang", {secure: true, expires: COOKIE_EXPIRES});
+                $cookies.put("account_email", btoa($scope.email), {secure: true, expires: COOKIE_EXPIRES});
+                $cookies.put("account_token", btoa($scope.token), {secure: true, expires: COOKIE_EXPIRES});
 
                 $scope.getMojangChallenges();
             }).catch(response => $scope.handleResponseError(response));
@@ -254,6 +294,10 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                 $scope.loggedIn = true;
                 $scope.loggingIn = false;
 
+                $cookies.put("account_type", "microsoft", {secure: true, expires: COOKIE_EXPIRES});
+                $cookies.put("account_email", btoa($scope.email), {secure: true, expires: COOKIE_EXPIRES});
+                $cookies.put("account_token", btoa($scope.token), {secure: true, expires: COOKIE_EXPIRES});
+
                 $scope.getUserProfile();
             }).catch(response => $scope.handleResponseError(response));
         });
@@ -287,7 +331,18 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         });
     };
 
+    $scope.clearAccountCookies = function () {
+        for (let c of ACCOUNT_COOKIES) {
+            $cookies.remove(c);
+        }
+
+        $scope.loggedIn = false;
+        $scope.loggingIn = false;
+    };
+
     $scope.logout = function () {
+        $scope.clearAccountCookies();
+
         $http({
             method: "POST",
             url: `https://${ $scope.accountServer ? $scope.accountServer.host : 'api.mineskin.org' }/accountManager/logout`,
@@ -313,14 +368,20 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             }).then(profileResponse => {
                 if (profileResponse.data["error"]) {
                     $scope.handleResponseError(profileResponse);
+                    $scope.clearAccountCookies();
                     return;
                 }
 
                 $scope.uuid = profileResponse.data.id;
                 $scope.userProfile = profileResponse.data;
 
+                $cookies.put("account_uuid", $scope.uuid, {secure: true, expires: COOKIE_EXPIRES});
+
                 $scope.getAccount();
-            }).catch(response => $scope.handleResponseError(response));
+            }).catch(response => {
+                $scope.clearAccountCookies();
+                $scope.handleResponseError(response)
+            });
         })
     };
 
@@ -354,7 +415,8 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                         // account does not exist
                         $scope.accountExists = false;
                     } else {
-                        $scope.handleResponseError(accountResponse);
+                        $scope.handleResponseError(accountResponse); $scope.clearAccountCookies();
+
                     }
                     return;
                 }
@@ -385,6 +447,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                     $scope.accountExists = false;
                 } else {
                     $scope.handleResponseError(response)
+                    $scope.clearAccountCookies();
                 }
             });
         });
@@ -500,8 +563,8 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     }
 
     $scope.refreshHiatusCommand = function () {
-        if(!$scope.enableHiatus || !$scope.hiatusToken || !$scope.myAccount) return;
-        $scope.hiatusCommand =  "/mineskin hiatus add " + $scope.hiatusToken + " " + $scope.myAccount.email;
+        if (!$scope.enableHiatus || !$scope.hiatusToken || !$scope.myAccount) return;
+        $scope.hiatusCommand = "/mineskin hiatus add " + $scope.hiatusToken + " " + $scope.myAccount.email;
     }
 
     $scope.linkDiscord = function () {
