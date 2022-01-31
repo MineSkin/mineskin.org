@@ -1,6 +1,8 @@
 mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http", "$timeout", "$interval", "$stateParams", "$localStorage", function ($scope, Upload, $state, $http, $timeout, $interval, $stateParams, $localStorage) {
     console.info("bulkController")
 
+    $scope.apiKey = "d175f64d0601005779e4fc3497ffb7c8fbbc00b90610052939a7ac173ccf3317";
+
     let skinObjTemplate = {
         upload: undefined,
         url: undefined,
@@ -156,6 +158,9 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
                 $http({
                     url: apiBaseUrl + "/generate/url",
                     method: "POST",
+                    headers: {
+                        "Authorization": "Bearer " + $scope.apiKey
+                    },
                     data: {
                         url: skin.url,
                         name: skin.skinName,
@@ -180,6 +185,9 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
                 Upload.upload({
                     url: apiBaseUrl + "/generate/upload",
                     method: "POST",
+                    headers: {
+                        "Authorization": "Bearer " + $scope.apiKey
+                    },
                     data: {
                         file: skin.upload,
                         name: skin.skinName,
@@ -207,6 +215,9 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
                     $http({
                         url: apiBaseUrl + "/generate/user",
                         method: "POST",
+                        headers: {
+                            "Authorization": "Bearer " + $scope.apiKey
+                        },
                         data: {
                             uuid: uuid,
                             name: skin.skinName,
@@ -263,7 +274,7 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
         $.ajax({
             url: apiBaseUrl + "/get/delay?t=" + Math.floor(Date.now() / 1000),
             headers: {
-                "Authorization": "Bearer d175f64d0601005779e4fc3497ffb7c8fbbc00b90610052939a7ac173ccf3317"
+                "Authorization": "Bearer " + $scope.apiKey
             },
             success: function (data) {
                 $scope.generatorDelay = data.delay;

@@ -1,6 +1,8 @@
 mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http", "$timeout", "$interval", "$stateParams", "$localStorage", function ($scope, Upload, $state, $http, $timeout, $interval, $stateParams, $localStorage) {
     console.info("indexController")
 
+    $scope.apiKey = "d175f64d0601005779e4fc3497ffb7c8fbbc00b90610052939a7ac173ccf3317";
+
     $scope.skinUpload = undefined;
     $scope.skinUrl = undefined;
     $scope.skinUser = undefined;
@@ -53,7 +55,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
                     url: apiBaseUrl + "/generate/url",
                     method: "POST",
                     headers: {
-                        "Authorization": "Bearer d175f64d0601005779e4fc3497ffb7c8fbbc00b90610052939a7ac173ccf3317"
+                        "Authorization": "Bearer " + $scope.apiKey
                     },
                     data: {
                         url: $scope.skinUrl,
@@ -82,7 +84,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
                     url: apiBaseUrl + "/generate/upload",
                     method: "POST",
                     headers: {
-                        "Authorization": "Bearer d175f64d0601005779e4fc3497ffb7c8fbbc00b90610052939a7ac173ccf3317"
+                        "Authorization": "Bearer " + $scope.apiKey
                     },
                     data: {
                         file: $scope.skinUpload,
@@ -114,7 +116,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
                         url: apiBaseUrl + "/generate/user",
                         method: "POST",
                         headers: {
-                            "Authorization": "Bearer d175f64d0601005779e4fc3497ffb7c8fbbc00b90610052939a7ac173ccf3317"
+                            "Authorization": "Bearer " + $scope.apiKey
                         },
                         data: {
                             uuid: uuid,
@@ -223,7 +225,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
         $.ajax({
             url: apiBaseUrl + "/get/delay?t=" + Math.floor(Date.now() / 1000),
             headers: {
-                "Authorization": "Bearer d175f64d0601005779e4fc3497ffb7c8fbbc00b90610052939a7ac173ccf3317"
+                "Authorization": "Bearer " + $scope.apiKey
             },
             success: function (data) {
                 $scope.generatorDelay = data.delay;
