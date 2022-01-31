@@ -1,7 +1,7 @@
 mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http", "$timeout", "$interval", "$stateParams", "$localStorage", function ($scope, Upload, $state, $http, $timeout, $interval, $stateParams, $localStorage) {
     console.info("bulkController")
 
-    $scope.apiKey = "d175f64d0601005779e4fc3497ffb7c8fbbc00b90610052939a7ac173ccf3317";
+    $scope.apiKey = $localStorage.apiKey || "d175f64d0601005779e4fc3497ffb7c8fbbc00b90610052939a7ac173ccf3317";
 
     let skinObjTemplate = {
         upload: undefined,
