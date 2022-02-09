@@ -601,7 +601,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             Materialize.toast(deleteResponse.data.msg);
             setTimeout(() => {
                 window.location.reload();
-            });
+            }, 2000);
         }).catch(response => $scope.handleResponseError(response));
     };
 
