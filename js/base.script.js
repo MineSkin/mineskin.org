@@ -307,7 +307,7 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
     ngMetaProvider.useTitleSuffix(true);
     ngMetaProvider.setDefaultTitleSuffix(" | MineSkin");
     ngMetaProvider.setDefaultTitle("MineSkin - Custom Skin Generator");
-    ngMetaProvider.setDefaultTag("image", "https://mineskin.org/favicon.png");
+    ngMetaProvider.setDefaultTag("image", "https://mineskin.org/img/infographic-1200x628.png");
 
 });
 mineskinApp.run(['$transitions', '$rootScope', 'ngMeta', function ($transitions, $rootScope, ngMeta) {
