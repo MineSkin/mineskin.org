@@ -332,10 +332,23 @@ mineskinApp.run(['$transitions', '$rootScope', 'ngMeta', function ($transitions,
     });
 
     ngMeta.init()
+
+    googleInit().then(()=>{
+        google.accounts.id.prompt();
+    })
 }])
 
-function onGoogleSignedIn(response) {
-    console.log(response)
+function googleInit() {
+    console.log('googleInit')
+    return fetch({
+        method: 'GET',
+        url: 'https://toast.api.mineskin.org/account/google/init' //TODO: url
+    }).then(res => res.json())
+        .then(data => {
+            const el = document.getElementById('g_id_onload');
+            el.setAttribute('data-nonce', data.nonce);
+            el.setAttribute('data-login_uri', data.login_uri);
+        })
 }
 
 function materializeBaseInit() {
