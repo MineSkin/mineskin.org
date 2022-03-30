@@ -1,0 +1,293 @@
+<div class="row">
+    <style>
+        .obviousLabel {
+            color: black !important;
+        }
+    </style>
+    <br/>
+    <div class="center col s6 offset-s3">
+        <div class="row">
+            <h1>MineSkin Account Manager</h1>
+            <p>
+                On this site, you can add your own Minecraft account to speed up the MineSkin skin generation.<br/>
+                You can also manage accounts you already registered.<br/>
+            </p>
+
+            <h5>Why does MineSkin need your account?</h5>
+            <p>
+                MineSkin works by logging into Minecraft accounts & changing the skin in order to generate skin data signed by Mojang.<br/>
+                However, Mojang limits how often an account can change skins to about once every minute, so the more accounts MineSkin has available, the faster it can generate data.<br/>
+                If you add your account, MineSkin can change your account's skin and use it to generate skin data more frequently.<br/>
+            </p>
+        </div>
+        <br/>
+        <br/>
+
+        <div class="row">
+            <div ng-show="!loggedIn"><!-- Login -->
+                <h4>Please log in using your Microsoft or Mojang account data</h4>
+                <span>(This is just to check your account information and will not be stored until you decide to actually add your account.)</span>
+                <br/>
+
+                <br/>
+                <span>
+                    If you have questions or concerns, feel free to ask on <a href="https://yeleha.co/discord" target="_blank">the Discord</a>!
+                </span>
+                <br/>
+                <br/>
+
+                <br/>
+                <div>
+                    <input id="checkUnderstoodLogin" ng-model="checkUnderstoodLogin" type="checkbox"/>
+                    <label class="obviousLabel" for="checkUnderstoodLogin">I understand that I do <b>not have to</b> log in in order to use MineSkin</label>
+                </div>
+                <br/>
+
+                <!--
+                <br/>
+                <div>
+                    Account Type
+                    <div class="switch">
+                        <label>
+                            Mojang
+                            <input type="checkbox" ng-model="loginWithMicrosoft">
+                            <span class="lever"></span>
+                            Microsoft
+                        </label>
+                    </div>
+                </div>
+                <br/>
+                -->
+
+
+                <div ng-hide="!checkUnderstoodLogin">
+
+                    <span ng-show="loginWithMicrosoft">
+                        You might receive an email notification from Microsoft regarding unusual login activity shortly after logging in below. <br/>
+                        Please <a href="https://account.live.com/Activity" target="_blank">review the activity and specify that it was you on their activity website.</a><br/>
+                        (If the login fails and you're sure it was the correct credentials, check that page too)<br/>
+                    </span>
+                    <br/>
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input class="validate" id="email" ng-disabled="!checkUnderstoodLogin" ng-model="email" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$' required type="email">
+                            <label for="email">Microsoft/Mojang Account E-Mail</label>
+                        </div>
+                    </div>
+
+                    <form ng-hide="loginWithMojang || !email">
+                        <br/>
+                        <!--
+                        <div>
+                            <input id="checkGamePass" ng-model="gamePass" type="checkbox"/>
+                            <label class="obviousLabel" for="checkGamePass">This is a Game Pass account</label>
+                        </div>
+                        -->
+                        <a href="#" ng-click="startMicrosoftFlow()">
+                            <img alt="Sign in with Microsoft" src="https://docs.microsoft.com/en-us/azure/active-directory/develop/media/howto-add-branding-in-azure-ad-apps/ms-symbollockup_signin_light.svg">
+                        </a>
+                    </form>
+
+                    <br ng-hide="!email">
+                    <hr ng-hide="!email">
+                    <br ng-hide="!email">
+
+                    <form class="col s12" ng-hide="!email" ng-submit="doLogin()">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input class="validate" id="password" ng-disabled="!checkUnderstoodLogin" ng-model="password" required type="password">
+                                <label for="password">Password</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <button class="btn waves-effect waves-light" ng-disabled="!checkUnderstoodLogin || loggingIn" type="submit">Sign in with Mojang</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div ng-show="loggedIn">
+                <h2>Logged In!</h2>
+                <hr/>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div ng-hide="!loggedIn || loginWithMicrosoft" ng-show="!challengesSolved && needToSolveChallenges">
+                <h4>Please enter the answers to the security questions you set on your Minecraft/Mojang account</h4>
+                <form class="col s12" ng-submit="solveMojangChallenges()">
+                    <div class="row">
+                        <div class="input-field col s12" ng-repeat="question in securityQuestions">
+                            <label ng-attr-for="{{ 'securityAnswer' + question.question.id }}">{{ question.question.question }}</label>
+                            <input class="validate" ng-attr-id="{{ 'securityAnswer' + question.question.id }}" ng-model="question.answer.answer" type="text">
+                        </div>
+                        <span>Note: You can now have multiple different answers. If you used the same answer for every question before, just enter that 3 times.</span>
+                    </div>
+
+                    <div class="row">
+                        <span>If your account doesn't have any security questions enabled, you can <a href="#" ng-click="skipChallenges()"><strong>skip to the next step</strong></a>.</span>
+                    </div>
+
+                    <div class="row">
+                        <button class="btn waves-effect waves-light" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+            <div ng-show="challengesSolved">
+                <h2>Challenges Completed!</h2>
+                <hr/>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div ng-hide="!challengesSolved || userProfile">
+                <h4>Loading user data...</h4>
+            </div>
+            <div ng-show="userProfile && userProfile.id">
+                <h2>User data loaded!</h2>
+                <div>
+                    <span><strong>Type: </strong> {{ myAccount.type || accountType }}<br/></span>
+                    <span ng-if="myAccount.gamerTag"><strong>Gamertag: </strong> {{ myAccount.gamerTag }}<br/></span>
+                    <span><strong>UUID: </strong> {{ userProfile.id }}<br/></span>
+                    <span><strong>Name: </strong> {{ userProfile.name }}<br/></span>
+<!--                    <span><strong>Suspended: </strong> {{ userProfile.suspended }}</span> <span ng-show="userProfile.suspended" style="color:red">You can't use a suspended account!</span><br/>-->
+                </div>
+                <hr/>
+            </div>
+        </div>
+        <br/>
+        <div class="row" ng-show="!accountExists"><!-- Account add form -->
+            <div ng-hide="!userProfile || !userProfile.id" ng-show="!accountAdded">
+                <h4>Click the button below to add your account to the MineSkin database.</h4>
+                <p>
+                    By adding your account, you agree that MineSkin will have access to your full account data, including email, password, etc..<br/>
+                    <span ng-hide="loginWithMicrosoft">Your password <i>will</i> be stored in the MineSkin database, but it will be encrypted first and cannot be read by humans (also in the improbable event of a database breach).</span><br/>
+                    The skin of your account will be changed every couple of minutes in order to generate the skin data for MineSkin.<br/>
+                    You can always remove or temporarily disable your account.<br/>
+                </p>
+                <br/>
+
+                <div>
+                    <div>
+                        <input id="checkReadTerms" ng-model="checkReadTerms" type="checkbox"/>
+                        <label class="obviousLabel" for="checkReadTerms">I've read the terms above</label>
+                    </div>
+                    <div>
+                        <input id="checkAcceptSkins" ng-model="checkAcceptSkins" type="checkbox"/>
+                        <label class="obviousLabel" for="checkAcceptSkins">I understand that the skin of my account will be changed randomly</label>
+                    </div>
+                    <div>
+                        <input id="checkAcceptPassword" ng-model="checkAcceptPassword" type="checkbox"/>
+                        <label class="obviousLabel" for="checkAcceptPassword">I understand that MineSkin will have access to my account's credentials (email + password)</label>
+                    </div>
+                </div>
+                <br/>
+
+                <div class="row">
+                    <button class="btn waves-effect waves-light" ng-click="submitAccount()" ng-disabled="!checkReadTerms || !checkAcceptSkins || !checkAcceptPassword" type="submit">Add Account!</button>
+                </div>
+
+            </div>
+            <div ng-show="accountAdded">
+                <h2>Your Account has been added!</h2>
+                <h4>Thank you very much for your contribution to the MineSkin project! <3</h4>
+                <br/>
+                <div>
+                    <button class="btn waves-effect waves-light green" ng-click="getAccount()">Manage Account</button><br/>
+                    <span>Also please link your Discord account or Email to receive notifications about potential issues with your account.</span>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-show="accountExists"><!-- Account management -->
+            <h4>Manage Account</h4>
+            <div>
+                <br/>
+                <div class="row">
+                    <h6>Account Status</h6>
+                    <div class="row">
+                        <span><strong>Enabled:</strong> {{ accountEnabled }} <span ng-show="myAccount.hiatus && myAccount.hiatus.enabled && myAccount.hiatus.onHiatus">(on hiatus)</span><br/></span>
+                        <span><strong>Skins Generated:</strong> {{ myAccount.successCount || 0 }}<br/></span>
+                        <span><strong>Success Rate:</strong> {{ myAccount.successRate*100 }}%<br/></span>
+                    </div>
+                    <div class="row" ng-if="accountStats && accountStats.generateCount">
+                        <span ng-if="accountStats.generateCount > 0">Your account has already generated {{ accountStats.generateCount }} skins, yay!</span>
+                        <span ng-if="accountStats.generateCount <= 0">Your account hasn't generated any skins yet :(</span>
+                    </div>
+                    <div class="col s3 offset-s3">
+                        <button class="btn waves-effect waves-light green" ng-click="enableAccount()" ng-disabled="accountEnabled">Enable Account</button>
+                    </div>
+                    <div class="col s3">
+                        <button class="btn waves-effect waves-light orange" ng-click="disableAccount()" ng-disabled="!accountEnabled">Disable Account</button>
+                    </div>
+                    <span ng-show="!accountEnabled"><br/><br/>(enabling your account will store your currently selected skin)</span>
+                </div>
+                <br>
+
+                <br/>
+                <div class="row">
+                    <strong>Get notified about account issues</strong>
+                    <br/>
+                    <span>Please allow messages either via email or through Discord, so you can be notified if your account runs into issues.</span>
+                    <br/>
+                    <br>
+                    <div class="row">
+                        Send notifications to this account's email
+                        <div class="switch">
+                            <label>
+                                <input ng-click="updateEmailSetting()" ng-model="sendAccountEmails" type="checkbox">
+                                <span class="lever"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        Make sure to <a href="https://yeleha.co/discord" target="_blank">join the Discord</a> before linking!
+                        <br/>
+                        <button class="btn waves-effect waves-light blue" ng-click="linkDiscord()" ng-disabled="accountLinkedToDiscord">Link Account to Discord</button>
+                    </div>
+                </div>
+                <br>
+
+                <br/>
+                <div class="row">
+                    <strong>Link the <a href="https://hiatus.mineskin.org" target="_blank">Hiatus Mod</a></strong>
+                    <br/>
+                    <span>The MineSkin Hiatus Mod lets you use your regular skin when playing the game, while letting MineSkin use your account when you're not online in Minecraft.</span><br/>
+                    <br/>
+                    <span><a href="https://hiatus.mineskin.org" target="_blank">Find the mod download and more info <strong>here</strong></a></span>
+                    <br/>
+                    <div class="row">
+                        Toggle Hiatus Support
+                        <div class="switch">
+                            <label>
+                                <input ng-click="updateHiatusSetting()" ng-model="enableHiatus" type="checkbox">
+                                <span class="lever"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div ng-show="enableHiatus && hiatusToken && myAccount && myAccount.email">
+                        <br/>
+                        <span>Use this command ingame (after installing the mod) to link your account:</span><br/>
+                        <input ng-model="hiatusCommand" readonly type="text">
+                    </div>
+                </div>
+                <br/>
+
+                <br/>
+                <div class="row">
+                    <div class="row">
+                        <button class="btn waves-effect waves-light red" ng-click="deleteAccount()" ng-disabled="accountEnabled">Delete Account</button>
+                        <br/><span ng-show="accountEnabled" style="color:red">Please disable your account first to delete it</span>
+                    </div>
+                </div>
+                <br/>
+                <br/>
+                <div class="row">
+                    <div class="row">
+                        <button class="btn waves-effect waves-light orange" ng-click="logout()" ng-disabled="!loggedIn">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

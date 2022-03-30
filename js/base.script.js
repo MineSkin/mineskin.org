@@ -256,7 +256,7 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
             }]
         })
         .state("account", {
-            url: "/account?email",
+            url: "/account",
             views: {
                 'tab1': {
                     templateUrl: "/pages/account.html",
@@ -266,6 +266,21 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
             data: {
                 meta: {
                     title: "Account",
+                    image: "https://mineskin.org/favicon.png"
+                }
+            }
+        })
+        .state("account.minecraft", {
+            url: "/account/minecraft?email",
+            views: {
+                'tab1': {
+                    templateUrl: "/pages/account.minecraft.html",
+                    controller: "minecraftAccountController"
+                }
+            },
+            data: {
+                meta: {
+                    title: "Account | Minecraft",
                     image: "https://mineskin.org/favicon.png"
                 }
             }
@@ -318,6 +333,10 @@ mineskinApp.run(['$transitions', '$rootScope', 'ngMeta', function ($transitions,
 
     ngMeta.init()
 }])
+
+function onGoogleSignedIn(response) {
+    console.log(response)
+}
 
 function materializeBaseInit() {
     $('select').material_select();
