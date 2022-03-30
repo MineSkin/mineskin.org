@@ -331,25 +331,39 @@ mineskinApp.run(['$transitions', '$rootScope', 'ngMeta', function ($transitions,
         $rootScope.$broadcast('$routeChangeSuccess', trans.to());
     });
 
-    ngMeta.init()
+    google.accounts.id.prompt(); //TODO: only show after a couple visits
 
-    googleInit().then(()=>{
-        google.accounts.id.prompt();
-    })
+    ngMeta.init()
 }])
 
+/*
 function googleInit() {
     console.log('googleInit')
-    return fetch({
-        method: 'GET',
-        url: 'https://toast.api.mineskin.org/account/google/init' //TODO: url
-    }).then(res => res.json())
+    return fetch('https://toast.api.mineskin.org/account/google/init', {
+        method: 'POST'
+    })
+        .then(res => res.json())
         .then(data => {
             const el = document.getElementById('g_id_onload');
             el.setAttribute('data-nonce', data.nonce);
             el.setAttribute('data-login_uri', data.login_uri);
+
+            // google.accounts.id.initialize({
+            //     client_id: "352641379376-54jd29mpaorrk7bdvqh4qlll4a4n5g2b.apps.googleusercontent.com",
+            //     context: "use",
+            //     auto_select: "true",
+            //     login_uri: data.login_uri,
+            //     nonce: data.nonce,
+            //     ux_mode: "popup"
+            // });
+            google.accounts.id.setLogLevel("debug")//TODO
         })
 }
+
+googleInit().then(()=>{
+    google.accounts.id.prompt();
+})
+ */
 
 function materializeBaseInit() {
     $('select').material_select();
