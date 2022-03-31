@@ -120,6 +120,7 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
                             $http({
                                 method: 'POST',
                                 url: apiBaseUrl + '/account/skins',
+                                withCredentials: true,
                                 data: {
                                     uuid: data.uuid
                                 }

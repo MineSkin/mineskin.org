@@ -157,15 +157,15 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
     };
     // window.onGoogleSignedIn = $scope.googleSignedIn;
 
-    google.accounts.id.initialize({
-        client_id: '352641379376-54jd29mpaorrk7bdvqh4qlll4a4n5g2b.apps.googleusercontent.com',
-        context: 'use',
-        ux_mode: 'popup',
-        callback: $scope.googleSignedIn
-    });
-    // google.accounts.id.prompt();
 
     $timeout(function () {
+        google.accounts.id.initialize({
+            client_id: '352641379376-54jd29mpaorrk7bdvqh4qlll4a4n5g2b.apps.googleusercontent.com',
+            context: 'use',
+            ux_mode: 'popup',
+            callback: $scope.googleSignedIn
+        });
+
         $scope.checkAccount(function (account) {
             if (!account) {
                 google.accounts.id.prompt();

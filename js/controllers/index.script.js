@@ -190,6 +190,7 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
                 $http({
                     method: 'POST',
                     url: apiBaseUrl + '/account/skins',
+                    withCredentials: true,
                     data: {
                         uuid: data.uuid
                     }
