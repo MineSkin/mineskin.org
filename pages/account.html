@@ -13,7 +13,7 @@
         <div class="row">
             <h3>Account</h3>
 
-            <div id="google_button_placeholder" ng-init="loadLogin()">
+            <div id="google_button_placeholder" ng-if="!mineskinAccount" ng-init="loadLogin()">
                 <div class="g_id_signin"
                      data-locale="en"
                      data-logo_alignment="left"
@@ -24,6 +24,10 @@
                      data-type="standard"
                      data-width="260">
                 </div>
+            </div>
+
+            <div ng-if="mineskinAccount">
+                <pre>{{ mineskinAccount }}</pre>
             </div>
 
         </div>

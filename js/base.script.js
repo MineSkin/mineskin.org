@@ -1,4 +1,4 @@
-let apiBaseUrl = "https://api.mineskin.org";
+let apiBaseUrl = "https://toast.api.mineskin.org"; //TODO
 
 const mineskinApp = angular.module("mineskinApp", ["ui.router", "ui.materialize", "ngFileUpload", "ngCookies", "angularModalService", "ngMeta", "ngStorage"]);
 
@@ -331,10 +331,10 @@ mineskinApp.run(['$transitions', '$rootScope', 'ngMeta', function ($transitions,
         $rootScope.$broadcast('$routeChangeSuccess', trans.to());
     });
 
-    google.accounts.id.prompt(); //TODO: only show after a couple visits
-
     ngMeta.init()
 }])
+
+// window.mineskinAccount = undefined;
 
 /*
 function googleInit() {

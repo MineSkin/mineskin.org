@@ -105,4 +105,72 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
             materializeBaseInit();
         }, 100);
     };
+
+    /// Auth
+
+    $scope.mineskinAccount = undefined;
+    $scope.checkAccount = function (cb) {
+        if ($scope.mineskinAccount && cb) {
+            cb($scope.mineskinAccount);
+            return;
+        }
+        $http({
+            method: 'GET',
+            url: apiBaseUrl + '/account',
+            withCredentials: true,
+        }).then(res => {
+            $timeout(function () {
+                $scope.mineskinAccount = res.data;
+            })
+            if (cb) cb(res.data);
+        }).catch(err => {
+            console.warn(err);
+            if (cb) cb(false);
+        })
+    };
+
+    $scope.googleSignedIn = function (data) {
+        $timeout(function () {
+            $http({
+                method: 'POST',
+                url: apiBaseUrl + '/account/google/callback',
+                withCredentials: true,
+                data: data
+            }).then(function (res) {
+                $scope.checkAccount();
+            })
+            // fetch('https://toast.api.mineskin.org/account/google/callback', {//TODO: url
+            //     method: 'POST',
+            //     credentials: 'include',
+            //     cache: 'no-cache',
+            //     referrerPolicy: 'origin-when-cross-origin',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify(data)
+            // })
+            //     .then(res => res.json())
+            //     .then(data => {
+            //         window.mineskinAccount = data;
+            //     });
+        })
+    };
+    // window.onGoogleSignedIn = $scope.googleSignedIn;
+
+    google.accounts.id.initialize({
+        client_id: '352641379376-54jd29mpaorrk7bdvqh4qlll4a4n5g2b.apps.googleusercontent.com',
+        context: 'use',
+        ux_mode: 'popup',
+        callback: $scope.googleSignedIn
+    });
+    // google.accounts.id.prompt();
+
+    $timeout(function () {
+        $scope.checkAccount(function (account) {
+            if (!account) {
+                google.accounts.id.prompt();
+            }
+        });
+    }, 500);
+
 }]);

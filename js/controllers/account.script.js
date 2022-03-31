@@ -12,7 +12,10 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             theme: 'filled_blue',
             type: 'standard'
         });
-        google.accounts.id.prompt();
+        $scope.checkAccount(function (account){
+            if(!account) return;
+        })
+        // google.accounts.id.prompt();
         // googleInit().then(()=>{
         //     google.accounts.id.renderButton(document.getElementById('google_button_placeholder'), {
         //         locale: 'en',

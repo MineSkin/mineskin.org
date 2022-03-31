@@ -52,7 +52,22 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
             expires: expires
         });
 
-        $state.reload();
+        if ($scope.viewMode === 2) {
+            $scope.ownSkins = $storage.recentSkins || [];
+        }
+        $scope.checkAccount(function (account) {
+            if (!account) {
+                $state.reload();
+                return;
+            }
+            $http({
+                method: 'GET',
+                url: apiBaseUrl + '/account/skins'
+            }).then(res => {
+                $scope.ownSkins = [...$scope.ownSkins, ...res.data];
+                $state.reload();
+            });
+        })
     }
     $scope.resultTypeChanged = function () {
         var now = new $window.Date();

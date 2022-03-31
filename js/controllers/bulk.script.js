@@ -115,6 +115,16 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
                         $scope.$storage.recentSkins = recentSkins;
 
                         $scope.tryGenerateNext(nextIndex + 1);
+
+                        if ($scope.mineskinAccount) {
+                            $http({
+                                method: 'POST',
+                                url: apiBaseUrl + '/account/skins',
+                                data: {
+                                    uuid: data.uuid
+                                }
+                            })
+                        }
                     } else {
                         if (!doNotRetry && nextSkin.generateAttempt++ < 3) {
                             $scope.tryGenerateNext(nextIndex);//try again
