@@ -36,7 +36,7 @@
                                         <button class="btn btn-primary" ng-click="toggleViewMode()" type="button">
                                             Toggle View
                                         </button>
-                                        <button class="btn btn-primary" ng-click="toggleOwnSkins()" ng-show="$storage.recentSkins && $storage.recentSkins.length>0" type="button">
+                                        <button class="btn btn-primary" ng-click="toggleOwnSkins()" ng-show="ownSkins && ownSkins.length>0" type="button">
                                             Show {{ viewMode===2?'Gallery':'Own Skins' }}
                                         </button>
                                     </div>
@@ -72,7 +72,7 @@
                             </a>
                         </div>
                         <!-- Loading Placeholder -->
-                        <div class="center-align" ng-hide="(viewMode < 2 && skins.length > 0 && !loading) || (viewMode == 2 && !!$storage.recentSkins && $storage.recentSkins.length > 0)">
+                        <div class="center-align" ng-hide="(viewMode < 2 && skins.length > 0 && !loading) || (viewMode == 2 && !!ownSkins && ownSkins.length > 0)">
                             <a class="galleryImage galleryImagePlaceholder" ng-repeat="x in [].constructor(64) track by $index">
                                 <img class="skull-image" src="/img/loading.svg">
                             </a>
