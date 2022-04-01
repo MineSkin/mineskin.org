@@ -14,6 +14,9 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         });
         $scope.checkAccount(function (account){
             if(!account) return;
+
+            $scope.loadMinecraftAccounts();
+            $scope.loadApiKeys();
         })
         // google.accounts.id.prompt();
         // googleInit().then(()=>{
@@ -30,6 +33,27 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         // })
     }
 
+    $scope.minecraftAccounts = [];
+    $scope.loadMinecraftAccounts = function () {
+        $http({
+            method: 'GET',
+            url: apiBaseUrl+'/account/minecraftAccounts',
+            withCredentials: true
+        }).then(res=>{
+            $scope.minecraftAccounts = res;
+        })
+    }
+
+    $scope.apiKeys = [];
+    $scope.loadApiKeys = function () {
+        $http({
+            method: 'GET',
+            url: apiBaseUrl+'/account/apiKeys',
+            withCredentials: true
+        }).then(res=>{
+            $scope.apiKeys = res;
+        })
+    }
 
     /// UTIL
 
