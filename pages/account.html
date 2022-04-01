@@ -35,6 +35,15 @@
                     <pre>{{ minecraftAccounts }}</pre>
                     <pre>{{ apiKeys }}</pre>
                 </div>
+
+                <div class="row">
+                    <h4>Minecraft Accounts</h4>
+                    <div class="collection">
+                        <a class="collection-item" ng-repeat="mcAccount in minecraftAccounts" ui-sref="account_minecraft({email:mcAccount.email})">
+                            <strong>{{ mcAccount.playername }}</strong> {{ mcAccount.email }} {{ mcAccount.accountType }}
+                        </a>
+                    </div>
+                </div>
             </div>
 
         </div>
