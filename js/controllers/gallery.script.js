@@ -60,7 +60,6 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
 
     $scope.loadOwnSkins = function () {
         $scope.ownSkins = $scope.$storage.recentSkins || [];
-        let size = $scope.ownSkins.length;
         $scope.checkAccount(function (account) {
             if (!account) {
                 return;
@@ -69,10 +68,11 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
                 method: 'GET',
                 url: apiBaseUrl + '/account/skins',
                 withCredentials: true,
-            }).then(function() {
-                $scope.ownSkins = [...$scope.ownSkins, ...res.data];
-                if ($scope.ownSkins.length > size) {
-                    $state.reload();
+            }).then(function(res) {
+                for (let s of res.data()) {
+                    if (!$scope.ownSkins.includes(s)) {
+                        $scope.ownSkins.push(s);
+                    }
                 }
             });
         })

@@ -65,7 +65,7 @@
                                data-position="top"
                                data-tooltip="{{skin.substr(0, 8)}}"
                                href="/{{skin.uuid}}"
-                               ng-repeat="skin in $storage.recentSkins track by $index"
+                               ng-repeat="skin in ownSkins track by $index"
                                ui-sref="gallery.view({id:skin})"
                                ui-sref-options="{notify:false}">
                                 <img class="skull-image" ng-preload-src="https://api.mineskin.org/render/{{ skin }}/head" src="/img/loading.svg">
