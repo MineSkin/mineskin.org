@@ -42,7 +42,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             url: apiBaseUrl+'/account/minecraftAccounts',
             withCredentials: true
         }).then(res=>{
-            $scope.minecraftAccounts = res;
+            $scope.minecraftAccounts = res.data;
         })
     }
 
@@ -53,7 +53,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             url: apiBaseUrl+'/account/apiKeys',
             withCredentials: true
         }).then(res=>{
-            $scope.apiKeys = res;
+            $scope.apiKeys = res.data;
         })
     }
 

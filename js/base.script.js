@@ -270,11 +270,11 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
                 }
             }
         })
-        .state("account.minecraft", {
+        .state("account_minecraft", {
             url: "/account/minecraft?email",
             views: {
                 'tab1': {
-                    templateUrl: "/pages/account.minecraft.html",
+                    templateUrl: "/pages/account_minecraft.html",
                     controller: "minecraftAccountController"
                 }
             },
