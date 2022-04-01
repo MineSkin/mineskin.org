@@ -10,7 +10,7 @@
 <div class="row">
     <br/>
     <div class="center col s6 offset-s3">
-        <div class="row">
+        <div class="row" ng-init="loadAccount()">
             <h3>Account</h3>
 
             <div id="google_button_placeholder" ng-if="!mineskinAccount" ng-init="loadLogin()">
@@ -38,9 +38,11 @@
 
                 <div class="row">
                     <h4>Minecraft Accounts</h4>
-                    <div class="collection">
+                    <div class="collection" style="text-align: left">
                         <a class="collection-item" ng-repeat="mcAccount in minecraftAccounts" ui-sref="account_minecraft({email:mcAccount.email})">
-                            <strong>{{ mcAccount.playername }}</strong> {{ mcAccount.email }} {{ mcAccount.accountType }}
+                            [{{ mcAccount.accountType }}] <strong>{{ mcAccount.playername }}</strong>  {{ mcAccount.email }} <br/>
+                            <span ng-show="!mcAccount.enabled">(disabled)</span>
+                            <span ng-show="mcAccount.hasErrors">(has errors)</span>
                         </a>
                     </div>
                 </div>

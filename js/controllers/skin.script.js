@@ -137,7 +137,7 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
                 withCredentials: true,
                 data: data
             }).then(function (res) {
-                $scope.checkAccount();
+                location.reload();
             })
             // fetch('https://toast.api.mineskin.org/account/google/callback', {//TODO: url
             //     method: 'POST',

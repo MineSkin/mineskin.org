@@ -21,13 +21,15 @@ mineskinApp.controller("apiKeyController", ["$scope", "$http", "$cookies", "$tim
 
     window.__scope = $scope;
 
+    $scope.checkAccount();
 
     $scope.loadExistingKeyInfo = function () {
         if (!$scope.apiKey) return;
 
         $http({
             method: "GET",
-            url: `https://api.mineskin.org/apikey?key=${ $scope.apiKey }`
+            url: apiBaseUrl + `/apikey?key=${ $scope.apiKey }`,
+            withCredentials: true,
         }).then(keyResponse => {
             $scope.server = keyResponse.data.server;
             $scope.apiKey = keyResponse.data.key;
@@ -47,6 +49,7 @@ mineskinApp.controller("apiKeyController", ["$scope", "$http", "$cookies", "$tim
         $http({
             method: "POST",
             url: `https://${ $scope.server }.api.mineskin.org/apikey`,
+            withCredentials: true,
             data: {
                 name: $scope.keyName,
                 owner: $scope.owner,
@@ -76,6 +79,7 @@ mineskinApp.controller("apiKeyController", ["$scope", "$http", "$cookies", "$tim
         $http({
             method: "PUT",
             url: `https://${ $scope.server }.api.mineskin.org/apikey`,
+            withCredentials: true,
             data: {
                 key: $scope.apiKey,
                 secret: $scope.apiSecret,
@@ -101,6 +105,7 @@ mineskinApp.controller("apiKeyController", ["$scope", "$http", "$cookies", "$tim
             headers: {
                 "Content-Type": "application/json;charset=utf-8"
             },
+            withCredentials: true,
             data: {
                 key: $scope.apiKey,
                 secret: $scope.apiSecret

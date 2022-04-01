@@ -69,7 +69,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
                 method: 'GET',
                 url: apiBaseUrl + '/account/skins',
                 withCredentials: true,
-            }).then(res => {
+            }).then(function() {
                 $scope.ownSkins = [...$scope.ownSkins, ...res.data];
                 if ($scope.ownSkins.length > size) {
                     $state.reload();
