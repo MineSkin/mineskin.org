@@ -29,6 +29,17 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         // })
     }
 
+    $scope.logout = function () {
+        $scope.mineskinAccount = undefined;
+        $http({
+            method: 'GET',
+            url: apiBaseUrl + '/account/logout',
+            withCredentials: true
+        }).then(function (res) {
+            location.reload();
+        })
+    };
+
     $scope.loadAccount = function () {
         $scope.checkAccount(function (account) {
             if (!account) return;
