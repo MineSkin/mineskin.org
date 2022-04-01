@@ -39,24 +39,36 @@
                 <br/>
                 <div class="row">
                     <h4>Minecraft Accounts</h4>
-                    <div class="collection" style="text-align: left">
-                        <a class="collection-item" ng-repeat="mcAccount in minecraftAccounts" ui-sref="account_minecraft({email:mcAccount.email})">
-                            [{{ mcAccount.accountType }}] <strong>{{ mcAccount.playername }}</strong>  {{ mcAccount.email }} <br/>
-                            <span ng-show="!mcAccount.enabled">(disabled)</span>
-                            <span ng-show="mcAccount.hasErrors">(has errors)</span>
-                        </a>
-                    </div>
+                    <span ng-if="!minecraftAccounts || minecraftAccounts.length == 0">None :(</span>
+                    <table class="striped">
+                        <tbody>
+                            <tr ng-repeat="mcAccount in minecraftAccounts">
+                                <td><a ui-sref="account_minecraft({email:mcAccount.email})"><strong>{{ mcAccount.playername }}</strong></a></td>
+                                <td><a ui-sref="account_minecraft({email:mcAccount.email})">{{ mcAccount.email }}</a></td>
+                                <td>
+                                    <span ng-show="mcAccount.accountType == 'mojang'"> (mojang account)  </span>
+                                    <span ng-show="!mcAccount.enabled"> (disabled) </span>
+                                    <span ng-show="mcAccount.hasErrors"> (has errors) </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a class="btn waves-effect waves-light" ui-sref="account_minecraft">Add Account</a>
                 </div>
 
                 <br/>
                 <div class="row">
                     <h4>API Keys</h4>
-                    <div class="collection" style="text-align: left">
-                        <a class="collection-item" ng-repeat="key in apiKeys">
-                            <strong>{{ key.name }}</strong>  Last used @ {{ key.lastUsed }} <br/>
-                        </a>
-                    </div>
-                    <a ui-sref="apikey">Manage API Keys</a>
+                    <span ng-if="!apiKeys || apiKeys.length == 0">None</span>
+                    <table class="striped">
+                        <tbody>
+                            <tr ng-repeat="key in apiKeys">
+                                <td><strong>{{ key.name }}</strong></td>
+                                <td>Last used @ {{ key.lastUsed }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a class="btn waves-effect waves-light" ui-sref="apikey">Manage API Keys</a>
                 </div>
 
                 <br/>
