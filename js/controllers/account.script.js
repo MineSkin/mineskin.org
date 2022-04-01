@@ -1,6 +1,8 @@
 mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$timeout", "$stateParams", "$sce", "ngMeta", "$window", function ($scope, $http, $cookies, $timeout, $stateParams, $sce, ngMeta, $window) {
     console.info("accountController")
 
+    window.__scope = $scope;
+
     $scope.loadLogin = function () {
         console.log('loadLogin')
         google.accounts.id.renderButton(document.getElementById('google_button_placeholder'), {
