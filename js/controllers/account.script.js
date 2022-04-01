@@ -36,7 +36,9 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             url: apiBaseUrl + '/account/logout',
             withCredentials: true
         }).then(function (res) {
-            location.reload();
+            setTimeout(() => {
+                location.reload();
+            }, 100);
         })
     };
 
