@@ -27,9 +27,9 @@
                 </div>
 
                 <div class="divider"></div>
+                <br/>
 
                 <div ng-if="keyAction === 'create' && !mineskinAccount">
-                    <br/>
                     <div id="google_button_placeholder" ng-if="!mineskinAccount" ng-init="loadLogin()">
                         <div class="g_id_signin"
                              data-locale="en"
@@ -42,6 +42,9 @@
                              data-width="260">
                         </div>
                     </div>
+                </div>
+                <div ng-if="keyAction === 'create' && mineskinAccount && googleUser">
+                    <span>Signed in as {{ googleUser.name }}</span>
                 </div>
 
                 <br/>

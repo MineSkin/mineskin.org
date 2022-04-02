@@ -161,15 +161,21 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
             //     .then(data => {
             //         window.mineskinAccount = data;
             //     });
-        })
+        });
 
-        const decoded = atob(data.credential.split('.')[1]);
-        $scope.googleUser = {
-            name: decoded['preferred_name'] || decoded['given_name'] || decoded['name'],
-            email: decoded['email'],
-            picture: decoded['picture']
-        };
-        localStorage.setItem('g_user', JSON.stringify($scope.googleUser))
+        try {
+            const decoded = JSON.parse(atob(data.credential.split('.')[1]));
+            console.log(decoded);
+            const gUser = {
+                name: decoded['preferred_name'] || decoded['given_name'] || decoded['name'],
+                email: decoded['email'],
+                picture: decoded['picture']
+            };
+            console.log(gUser)
+            localStorage.setItem('g_user', JSON.stringify(gUser))
+        } catch (e) {
+            console.warn(e);
+        }
     };
     // window.onGoogleSignedIn = $scope.googleSignedIn;
 

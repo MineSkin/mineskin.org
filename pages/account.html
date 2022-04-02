@@ -13,16 +13,22 @@
         <div class="row" ng-init="loadAccount()">
             <h3>Account</h3>
 
-            <div id="google_button_placeholder" ng-if="!mineskinAccount" ng-init="loadLogin()">
-                <div class="g_id_signin"
-                     data-locale="en"
-                     data-logo_alignment="left"
-                     data-shape="pill"
-                     data-size="large"
-                     data-text="continue_with"
-                     data-theme="filled_blue"
-                     data-type="standard"
-                     data-width="260">
+            <div class="row" ng-if="googleUser">
+                <h5>Hi, {{ googleUser.name }}!</h5>
+            </div>
+
+            <div class="row" ng-if="!mineskinAccount" >
+                <div id="google_button_placeholder" ng-init="loadLogin()">
+                    <div class="g_id_signin"
+                         data-locale="en"
+                         data-logo_alignment="left"
+                         data-shape="pill"
+                         data-size="large"
+                         data-text="continue_with"
+                         data-theme="filled_blue"
+                         data-type="standard"
+                         data-width="260">
+                    </div>
                 </div>
             </div>
 
