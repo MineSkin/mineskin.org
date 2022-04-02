@@ -76,6 +76,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         }).then(function (res) {
             $scope.apiKeys = res.data;
             for (let k of $scope.apiKeys) {
+                if (!k.lastUsed) continue;
                 k.lastUsed = new Date(Date.parse(k.lastUsed)).toLocaleString();
             }
         })
