@@ -82,6 +82,12 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         })
     }
 
+    $scope.linkDiscord = function () {
+        if (!$scope.mineskinAccount) return;
+        $window.open(apiBaseUrl + `/account/discord/oauth/start`, "_blank");
+    };
+
+
     /// UTIL
 
     $scope.handleResponseError = function (response) {
