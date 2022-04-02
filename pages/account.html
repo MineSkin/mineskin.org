@@ -55,7 +55,7 @@
                         <tbody>
                             <tr ng-repeat="key in apiKeys">
                                 <td><strong>{{ key.name }}</strong></td>
-                                <td>Last used @ {{ key.lastUsed }}</td>
+                                <td>Last used: {{ key.lastUsed || 'Never' }}</td>
                             </tr>
                         </tbody>
                     </table>
