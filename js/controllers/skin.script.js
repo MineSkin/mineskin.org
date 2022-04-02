@@ -161,6 +161,7 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
     $timeout(function () {
         google.accounts.id.initialize({
             client_id: '352641379376-54jd29mpaorrk7bdvqh4qlll4a4n5g2b.apps.googleusercontent.com',
+            auto_select: true,
             context: 'use',
             ux_mode: 'popup',
             callback: $scope.googleSignedIn
