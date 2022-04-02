@@ -163,7 +163,7 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
             //     });
         })
 
-        const decoded = atob(data.split('.')[1]);
+        const decoded = atob(data.credential.split('.')[1]);
         $scope.googleUser = {
             name: decoded['preferred_name'] || decoded['given_name'] || decoded['name'],
             email: decoded['email'],
