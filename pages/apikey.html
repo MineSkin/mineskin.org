@@ -1,3 +1,12 @@
+<style>
+    #google_button_placeholder > div {
+        max-width: 260px;
+        margin: 0 auto;
+    }
+    #google_button_placeholder iframe, .g_id_signin iframe, .g_id_signin > div > div > div {
+        margin: 0 auto !important;
+    }
+</style>
 <div class="row">
     <div class="col s6 offset-s3">
         <div class="row" ng-init="loadAccount()">
@@ -20,6 +29,7 @@
                 <div class="divider"></div>
 
                 <div ng-if="keyAction === 'create' && !mineskinAccount">
+                    <br/>
                     <div id="google_button_placeholder" ng-if="!mineskinAccount" ng-init="loadLogin()">
                         <div class="g_id_signin"
                              data-locale="en"
