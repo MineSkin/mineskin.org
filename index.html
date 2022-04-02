@@ -67,7 +67,10 @@
                 <div class="nav-wrapper row">
                     <a href="https://mineskin.org" class="brand-logo center">MineSkin</a>
                     <ul class="right hide-on-med-and-down">
-                        <li><a class="waves-effect waves-light btn blue" href="/account">Account</a></li>
+                        <li><a class="waves-effect waves-light btn blue" href="/account" ng-class="{'btn-large': mineskinAccount && googleUser && googleUser.picture}" ng-style="{'padding-left': mineskinAccount && googleUser && googleUser.picture ? '60px' : '30px'}">
+                            <img height="40" ng-if="mineskinAccount && googleUser && googleUser.picture" ng-src="{{ googleUser.picture }}" src="/img/mineskin-x64.png" style="position: absolute; left: 7px; top: 7px; border-radius: 50%;" width="40">
+                            Account
+                        </a></li>
                     </ul>
                 </div>
                 <div class="nav-content">
