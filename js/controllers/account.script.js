@@ -44,7 +44,10 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
 
     $scope.loadAccount = function () {
         $scope.checkAccount(function (account) {
-            if (!account) return;
+            if (!account) {
+                $scope.loadLogin();
+                return;
+            }
 
             $scope.loadMinecraftAccounts();
             $scope.loadApiKeys();

@@ -17,8 +17,6 @@ mineskinApp.controller("apiKeyController", ["$scope", "$http", "$cookies", "$tim
 
     window.__scope = $scope;
 
-    $scope.checkAccount();
-
     $scope.loadLogin = function () {
         console.log('loadLogin')
         google.accounts.id.renderButton(document.getElementById('google_button_placeholder'), {
@@ -47,7 +45,10 @@ mineskinApp.controller("apiKeyController", ["$scope", "$http", "$cookies", "$tim
 
     $scope.loadAccount = function () {
         $scope.checkAccount(function (account) {
-            if (!account) return;
+            if (!account) {
+                $scope.loadLogin();
+                return;
+            }
 
             $scope.loadMinecraftAccounts();
             $scope.loadApiKeys();
