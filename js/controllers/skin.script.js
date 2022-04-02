@@ -108,6 +108,7 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
 
     /// Auth
 
+    $scope.googleUser = undefined;
     $scope.mineskinAccount = undefined;
     $scope.checkAccount = function (cb) {
         if ($scope.mineskinAccount && cb) {
@@ -127,6 +128,13 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
             console.warn(err);
             if (cb) cb(false);
         })
+
+        const str = localStorage.getItem('g_user');
+        if (str) {
+            $timeout(function () {
+                $scope.googleUser = JSON.parse(str);
+            });
+        }
     };
 
     $scope.googleSignedIn = function (data) {
@@ -154,6 +162,14 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
             //         window.mineskinAccount = data;
             //     });
         })
+
+        const decoded = atob(data.split('.')[1]);
+        $scope.googleUser = {
+            name: decoded['preferred_name'] || decoded['given_name'] || decoded['name'],
+            email: decoded['email'],
+            picture: decoded['picture']
+        };
+        localStorage.setItem('g_user', JSON.stringify($scope.googleUser))
     };
     // window.onGoogleSignedIn = $scope.googleSignedIn;
 
