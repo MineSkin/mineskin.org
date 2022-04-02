@@ -5,10 +5,6 @@ mineskinApp.controller("apiKeyController", ["$scope", "$http", "$cookies", "$tim
 
     $scope.materializeInit('tab1');
 
-    $scope.ownerState = location.search ? atob(decodeURIComponent(location.search.substr(1))) : undefined;
-    $scope.server = $scope.ownerState ? $scope.ownerState.split(":")[0] : undefined;
-    $scope.owner = $scope.ownerState ? $scope.ownerState.split(":")[1] : undefined;
-
     $scope.keyAction = "create";
 
     $scope.keyName = "";
@@ -22,6 +18,41 @@ mineskinApp.controller("apiKeyController", ["$scope", "$http", "$cookies", "$tim
     window.__scope = $scope;
 
     $scope.checkAccount();
+
+    $scope.loadLogin = function () {
+        console.log('loadLogin')
+        google.accounts.id.renderButton(document.getElementById('google_button_placeholder'), {
+            locale: 'en',
+            logo_alignment: 'left',
+            shape: 'pill',
+            size: 'large',
+            text: 'continue_with',
+            theme: 'filled_blue',
+            type: 'standard'
+        });
+        // google.accounts.id.prompt();
+        // googleInit().then(()=>{
+        //     google.accounts.id.renderButton(document.getElementById('google_button_placeholder'), {
+        //         locale: 'en',
+        //         logo_alignment: 'left',
+        //         shape: 'pill',
+        //         size: 'large',
+        //         text: 'continue_with',
+        //         theme: 'filled_blue',
+        //         type: 'standard'
+        //     });
+        //     google.accounts.id.prompt();
+        // })
+    }
+
+    $scope.loadAccount = function () {
+        $scope.checkAccount(function (account) {
+            if (!account) return;
+
+            $scope.loadMinecraftAccounts();
+            $scope.loadApiKeys();
+        })
+    };
 
     $scope.loadExistingKeyInfo = function () {
         if (!$scope.apiKey) return;
@@ -44,15 +75,14 @@ mineskinApp.controller("apiKeyController", ["$scope", "$http", "$cookies", "$tim
     $scope.create = function () {
         if ($scope.keyAction !== "create") return;
         console.log("create()");
-        if (!$scope.ownerState || !$scope.owner || !$scope.keyName) return;
+        if (!$scope.mineskinAccount || !$scope.keyName) return;
 
         $http({
             method: "POST",
-            url: `https://${ $scope.server }.api.mineskin.org/apikey`,
+            url: apiBaseUrl + `/apikey`,
             withCredentials: true,
             data: {
                 name: $scope.keyName,
-                owner: $scope.owner,
                 origins: $scope.keyOrigins.split("\n"),
                 ips: $scope.keyIps.split("\n"),
                 agents: $scope.keyAgents.split("\n")
@@ -78,13 +108,12 @@ mineskinApp.controller("apiKeyController", ["$scope", "$http", "$cookies", "$tim
 
         $http({
             method: "PUT",
-            url: `https://${ $scope.server }.api.mineskin.org/apikey`,
+            url: apiBaseUrl + `/apikey`,
             withCredentials: true,
             data: {
                 key: $scope.apiKey,
                 secret: $scope.apiSecret,
                 name: $scope.keyName,
-                owner: $scope.ownerState,
                 origins: $scope.keyOrigins.split("\n"),
                 ips: $scope.keyIps.split("\n"),
                 agents: $scope.keyAgents.split("\n")
@@ -101,7 +130,7 @@ mineskinApp.controller("apiKeyController", ["$scope", "$http", "$cookies", "$tim
 
         $http({
             method: "DELETE",
-            url: `https://${ $scope.server }.api.mineskin.org/apikey`,
+            url: apiBaseUrl + `/apikey`,
             headers: {
                 "Content-Type": "application/json;charset=utf-8"
             },

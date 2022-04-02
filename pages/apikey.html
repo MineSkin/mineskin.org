@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col s6 offset-s3">
-        <div class="row">
+        <div class="row" ng-init="loadAccount()">
             <h1>API Key Manager</h1>
 
             <div>
@@ -19,17 +19,27 @@
 
                 <div class="divider"></div>
 
-                <div class="row" ng-show="keyAction === 'create' && !ownerState">
-                    <br/>
-                    <a class="btn cyan" href="https://api.mineskin.org/apikey/discord/oauth/start">Login with Discord</a>
-                    <br/>
+                <div ng-if="keyAction === 'create' && !mineskinAccount">
+                    <div id="google_button_placeholder" ng-if="!mineskinAccount" ng-init="loadLogin()">
+                        <div class="g_id_signin"
+                             data-locale="en"
+                             data-logo_alignment="left"
+                             data-shape="pill"
+                             data-size="large"
+                             data-text="continue_with"
+                             data-theme="filled_blue"
+                             data-type="standard"
+                             data-width="260">
+                        </div>
+                    </div>
                 </div>
 
                 <br/>
 
                 <div ng-show="(keyAction === 'create' && apiKey) || keyAction === 'update' || keyAction === 'delete'">
                     <span ng-show="keyAction === 'create'">
-                        Make sure to save these, you won't be able to see them again!
+                        <strong style="font-size: 18px">Make sure to save these, you won't be able to see them again!</strong>
+                        <br/>
                     </span>
                     <div class="row">
                         <div class="input-field col s12">
@@ -49,7 +59,7 @@
 
                 <br/>
 
-                <div ng-show="(keyAction === 'create' && ownerState) || (keyAction === 'update' && apiKey)">
+                <div ng-show="(keyAction === 'create' && mineskinAccount) || (keyAction === 'update' && apiKey)">
                     <div class="row">
                         <div class="input-field col s12">
                             <input ng-model="keyName" type="text">
@@ -83,7 +93,7 @@
                 <br/>
                 <br/>
 
-                <button class="btn green" ng-click="create()" ng-disabled="!ownerState || !keyName" ng-show="keyAction === 'create'">Create</button>
+                <button class="btn green" ng-click="create()" ng-disabled="!mineskinAccount || !keyName" ng-show="keyAction === 'create'">Create</button>
                 <button class="btn blue" ng-click="update()" ng-disabled="!apiKey || !apiSecret" ng-show="keyAction === 'update'">Update</button>
                 <button class="btn red" ng-click="delete()" ng-disabled="!apiKey || !apiSecret" ng-show="keyAction === 'delete'">Delete</button>
             </div>
