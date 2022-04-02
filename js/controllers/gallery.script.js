@@ -79,9 +79,9 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
         })
     };
 
-    if ($scope.viewMode === 2) {
+    if ($scope.viewMode === 2) { // already looking at own skins -> load them
         $scope.loadOwnSkins();
-    } else {
+    } else { // check if logged in, then load
         $scope.checkAccount(function (account) {
             if (!account) {
                 return;
