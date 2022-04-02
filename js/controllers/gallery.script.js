@@ -69,8 +69,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
                 method: 'GET',
                 url: apiBaseUrl + '/account/skins',
                 withCredentials: true,
-            }).then(function(res) {
-                res.data.rever
+            }).then(function (res) {
                 for (let s of res.data) {
                     if (!$scope.ownSkins.includes(s)) {
                         $scope.ownSkins.unshift(s);
@@ -82,6 +81,13 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
 
     if ($scope.viewMode === 2) {
         $scope.loadOwnSkins();
+    } else {
+        $scope.checkAccount(function (account) {
+            if (!account) {
+                return;
+            }
+            $scope.loadOwnSkins();
+        })
     }
 
     $scope.resultTypeChanged = function () {
