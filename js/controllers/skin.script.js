@@ -179,6 +179,26 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
     };
     // window.onGoogleSignedIn = $scope.googleSignedIn;
 
+    $scope.visitCount = 0;
+    $scope.stateCookie = {
+        visits: 0
+    };
+
+    $scope.updateStateCookie = function () {
+        if ($scope.stateCookie && $scope.stateCookie.visits > 0) {
+            // save updated
+            $cookies.put("mineskin", btoa(JSON.stringify($scope.stateCookie)));
+            return;
+        }
+
+        let stateCookie = $cookies.get("mineskin");
+        if (stateCookie) {
+            stateCookie = atob(JSON.parse(stateCookie));
+            $scope.stateCookie = stateCookie;
+        }
+    };
+    $scope.updateStateCookie();
+
 
     $timeout(function () {
         google.accounts.id.initialize({
@@ -191,9 +211,14 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
 
         $scope.checkAccount(function (account) {
             if (!account) {
-                google.accounts.id.prompt();
+                if ($scope.stateCookie.visits > 2) { // don't annoy them on the first visits
+                    google.accounts.id.prompt();
+                }
             }
         });
+
+        $scope.stateCookie.visits++;
+        $scope.updateStateCookie();
     }, 500);
 
 }]);
