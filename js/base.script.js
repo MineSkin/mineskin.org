@@ -1,4 +1,4 @@
-let apiBaseUrl = "https://toast.api.mineskin.org"; //TODO
+let apiBaseUrl = "https://api.mineskin.org";
 
 const mineskinApp = angular.module("mineskinApp", ["ui.router", "ui.materialize", "ngFileUpload", "ngCookies", "angularModalService", "ngMeta", "ngStorage"]);
 
