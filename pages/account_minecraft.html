@@ -179,7 +179,7 @@
                     </div>
                     <div>
                         <input id="checkAcceptPassword" ng-model="checkAcceptPassword" type="checkbox"/>
-                        <label class="obviousLabel" for="checkAcceptPassword">I understand that MineSkin will have access to my account's credentials (email + password)</label>
+                        <label class="obviousLabel" for="checkAcceptPassword">I understand that MineSkin will <span ng-hide="loginWithMicrosoft">have access to my account's credentials (email + password)</span><span ng-show="loginWithMicrosoft">be able to sign in to my account</span></label>
                     </div>
                 </div>
                 <br/>
