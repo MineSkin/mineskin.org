@@ -92,7 +92,9 @@
                 <div class="row">
                     Make sure to <a href="https://yeleha.co/discord" target="_blank">join the Discord</a> before linking!
                     <br/>
-                    <button class="btn waves-effect waves-light blue" ng-click="linkDiscord()">Link Account to Discord</button>
+                    <button class="btn waves-effect waves-light blue" ng-click="linkDiscord()" ng-disabled="mineskinAccount.discordLinked">
+                        {{ mineskinAccount.discordLinked ? 'Account linked to Discord' : 'Link Account to Discord' }}
+                    </button>
                 </div>
 
 
