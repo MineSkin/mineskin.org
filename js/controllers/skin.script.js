@@ -122,6 +122,13 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
         }).then(res => {
             $timeout(function () {
                 $scope.mineskinAccount = res.data;
+
+                if (res.data.sessionTimeout) {
+                    $scope.mineskinAccount?.$sessionTimer?.cancel();
+                    $scope.mineskinAccount.$sessionTimer = $timeout(function () {
+                        $scope.mineskinAccount = {};
+                    }, res.data.sessionTimeout * 1000);
+                }
             })
             if (cb) cb(res.data);
         }).catch(err => {
