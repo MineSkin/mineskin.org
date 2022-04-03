@@ -187,7 +187,9 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
     $scope.updateStateCookie = function () {
         if ($scope.stateCookie && $scope.stateCookie.visits > 0) {
             // save updated
-            $cookies.put("mineskin", btoa(JSON.stringify($scope.stateCookie)));
+            let now = new Date();
+            let expires = new $window.Date(now.getFullYear() + 1, now.getMonth(), now.getDate());
+            $cookies.put("mineskin", btoa(JSON.stringify($scope.stateCookie)), {expires});
             return;
         }
 
