@@ -57,7 +57,7 @@
                     <table class="striped">
                         <tbody>
                             <tr ng-repeat="mcAccount in minecraftAccounts">
-                                <td><a ui-sref="account_minecraft({email:mcAccount.email})"><strong>{{ mcAccount.playername }}</strong></a></td>
+                                <td><a ui-sref="account_minecraft({email:mcAccount.email})"><strong>{{ mcAccount.playername || mcAccount.uuid }}</strong></a></td>
                                 <td><a ui-sref="account_minecraft({email:mcAccount.email})">{{ mcAccount.email }}</a></td>
                                 <td>
                                     <span ng-show="mcAccount.accountType == 'mojang'"> (mojang account)  </span>
