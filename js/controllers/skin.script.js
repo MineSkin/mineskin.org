@@ -105,4 +105,28 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
             materializeBaseInit();
         }, 100);
     };
+
+
+    $scope.visitCount = 0;
+    $scope.stateCookie = {
+        visits: 0
+    };
+
+    $scope.updateStateCookie = function () {
+        if ($scope.stateCookie && $scope.stateCookie.visits > 0) {
+            // save updated
+            let now = new Date();
+            let expires = new $window.Date(now.getFullYear() + 1, now.getMonth(), now.getDate());
+            $cookies.put("mineskin", btoa(JSON.stringify($scope.stateCookie)), {expires});
+            return;
+        }
+
+        let stateCookie = $cookies.get("mineskin");
+        if (stateCookie) {
+            stateCookie = atob(JSON.parse(stateCookie));
+            $scope.stateCookie = stateCookie;
+        }
+    };
+    $scope.updateStateCookie();
+
 }]);
