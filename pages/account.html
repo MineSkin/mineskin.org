@@ -17,7 +17,21 @@
                 <h5>Hi, {{ googleUser.name }}!</h5>
             </div>
 
-            <div class="row" ng-if="!mineskinAccount" >
+            <div class="row" ng-if="!mineskinAccount">
+
+                <br/>
+                <div class="row">
+                    <div class="col s6 offset-s3">
+                        <span>Sign In to</span>
+                        <ul style="text-align: left; list-style-type: square;">
+                            <li style="list-style-type: square;">Save your generated skins and retain a list of your private skins</li>
+                            <li style="list-style-type: square;">Keep a list of your MineSkin API Keys</li>
+                            <li style="list-style-type: square;">Have an overview of your Minecraft accounts linked to MineSkin</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <br/>
                 <div id="google_button_placeholder" ng-init="loadLogin()">
                     <div class="g_id_signin"
                          data-locale="en"
@@ -74,6 +88,7 @@
                 </div>
 
                 <br/>
+                <br/>
                 <div class="row">
                     Make sure to <a href="https://yeleha.co/discord" target="_blank">join the Discord</a> before linking!
                     <br/>
@@ -81,6 +96,7 @@
                 </div>
 
 
+                <br/>
                 <br/>
                 <br/>
                 <br/>
