@@ -123,8 +123,14 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
 
         let stateCookie = $cookies.get("mineskin");
         if (stateCookie) {
-            stateCookie = atob(JSON.parse(stateCookie));
-            $scope.stateCookie = stateCookie;
+            try {
+                stateCookie = JSON.parse(atob(stateCookie));
+                $scope.stateCookie = stateCookie;
+            } catch (e) {
+                console.warn(e);
+                $scope.stateCookie = {};
+                $scope.updateStateCookie();
+            }
         }
     };
     $scope.updateStateCookie();
