@@ -27,7 +27,7 @@
         color: white;
     }
 
-    .card-panel {
+    .card-panel, .dropdown-content {
         background-color: #303030;
     }
 
