@@ -1,0 +1,7 @@
+#google_button_placeholder > div {
+    max-width: 260px;
+    margin: 0 auto;
+}
+#google_button_placeholder iframe, .g_id_signin iframe, .g_id_signin > div > div > div {
+    margin: 0 auto !important;
+}
