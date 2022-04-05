@@ -30,8 +30,16 @@
     .card-panel {
         background-color: #303030;
     }
-    
+
+    .modal {
+        background-color: #202020;
+    }
+
     #back-to-top {
         color: white;
+    }
+
+    table.striped>tbody>tr:nth-child(odd) {
+        background-color: #2c2c2c;
     }
 }
