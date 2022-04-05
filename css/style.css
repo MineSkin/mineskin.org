@@ -2,6 +2,36 @@
     max-width: 260px;
     margin: 0 auto;
 }
+
 #google_button_placeholder iframe, .g_id_signin iframe, .g_id_signin > div > div > div {
     margin: 0 auto !important;
+}
+
+#back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    opacity: 0.5;
+    font-size: 50px;
+    text-decoration: none;
+    color: black;
+}
+
+@media (prefers-color-scheme: dark) {
+    html {
+        background-color: black;
+    }
+
+    body {
+        background-color: #202020;
+        color: white;
+    }
+
+    .card-panel {
+        background-color: #303030;
+    }
+    
+    #back-to-top {
+        color: white;
+    }
 }
