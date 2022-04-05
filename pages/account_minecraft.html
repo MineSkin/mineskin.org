@@ -207,8 +207,8 @@
                     <h6>Account Status</h6>
                     <div class="row">
                         <span><strong>Enabled:</strong> {{ accountEnabled }} <span ng-show="myAccount.hiatus && myAccount.hiatus.enabled && myAccount.hiatus.onHiatus">(on hiatus)</span><br/></span>
-                        <span><strong>Skins Generated:</strong> {{ myAccount.successCount || 0 }}<br/></span>
-                        <span><strong>Success Rate:</strong> {{ myAccount.successRate*100 }}%<br/></span>
+                        <span><strong>Skins Generated:</strong> {{ (myAccount.successCount || 0) | number: 0 }}<br/></span>
+                        <span><strong>Success Rate:</strong> {{ myAccount.successRate*100 | number: 0 }}%<br/></span>
                     </div>
                     <div class="row" ng-if="accountStats && accountStats.generateCount">
                         <span ng-if="accountStats.generateCount > 0">Your account has already generated {{ accountStats.generateCount }} skins, yay!</span>
