@@ -14,7 +14,7 @@ mineskinApp.controller("bulkController", ["$scope", "Upload", "$state", "$http",
     }
 
     $scope.skins = [
-        Object.assign({}, skinObjTemplate)
+        // Object.assign({}, skinObjTemplate)
     ];
 
     $scope.global = {
