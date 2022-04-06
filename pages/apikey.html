@@ -71,25 +71,29 @@
                         </div>
                     </div>
 
+                    <div>
+                        <strong>All of the below fields are optional!</strong>
+                    </div>
+
                     <div class="row">
                         <div class="input-field col s12">
                             <textarea class="materialize-textarea" ng-disabled="keyIps" ng-model="keyOrigins"></textarea>
                             <label>Allowed Origins (one per line)</label>
-                            <span class="helper-text"><small>For Web Requests - https://mineskin.org, https://inventivetalent.dev, ...</small></span>
+                            <span class="helper-text"><small>For Requests from Browsers - e.g. https://mineskin.org, https://inventivetalent.dev, ...</small></span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <textarea class="materialize-textarea" ng-disabled="keyOrigins" ng-model="keyIps"></textarea>
                             <label>Allowed IPs (one per line)</label>
-                            <span class="helper-text"><small>For Server Requests - 1.2.3.4, 127.0.0.1, ...</small></span>
+                            <span class="helper-text"><small>For Requests from Servers - e.g. 1.2.3.4, 127.0.0.1, ...</small></span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <textarea class="materialize-textarea" ng-model="keyAgents"></textarea>
                             <label>Allowed User-Agents (one per line)</label>
-                            <span class="helper-text"><small>MineSkin, MyCoolApp, ...</small></span>
+                            <span class="helper-text"><small>MyCoolApp, SomeAppName/v1.0 ...</small></span>
                         </div>
                     </div>
                 </div>
