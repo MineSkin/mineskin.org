@@ -129,7 +129,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
                         uuid: "40404040404040404040404040404040",
                         time: 1081051444,
                         url: "http://textures.minecraft.net/texture/7c37db4dfa8d891d26624ec9b2ec23cea0cdaccac1123b502f6a6737f3cf7"
-                    })
+                    });
                 }
                 $scope.pagination.page = response.data.page.index;
                 $scope.pagination.pages = response.data.page.amount;
@@ -137,14 +137,27 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
                 newLoad = false;
             });
 
-            setTimeout(function (){
+            setTimeout(function () {
                 // preload next page
                 $http({
-                    url: apiBaseUrl + "/get/" + $scope.resultType + "/" + ($scope.pagination.page+1) + "?size=" + $scope.pagination.itemsPerPage + ($scope.searchQuery ? "&filter=" + $scope.searchQuery : ""),
+                    url: apiBaseUrl + "/get/" + $scope.resultType + "/" + ($scope.pagination.page + 1) + "?size=" + $scope.pagination.itemsPerPage + ($scope.searchQuery ? "&filter=" + $scope.searchQuery : ""),
                     method: "GET"
-                }).then(function (resp){
+                }).then(function (resp) {
+                    for (let s of resp.data.skins) {
+                        setTimeout(function () {
+                            const img = document.createElement('img');
+                            img.style.display = 'none';
+                            img.setAttribute('src', apiBaseUrl + "/render/" + ($scope.viewMode == 0 ? 'head' : 'skin') + "?url=" + s.url + "&skinName=" + (s.name||''));
+                            img.onload = function () {
+                                setTimeout(function () {
+                                    img.remove();
+                                }, 10000);
+                            };
+                            document.body.append(img);
+                        }, 1000 * Math.random());
+                    }
                 })
-            })
+            },1)
         });
     };
     $scope.reloadGallery = function () {
