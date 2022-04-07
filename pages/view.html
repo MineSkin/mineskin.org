@@ -66,31 +66,39 @@
                 </div>
                 <div class="col s9" style="z-index:1;">
                     <div class="row">
-                        <div class="input-field col s12 m12">
+                        <div class="input-field col s1 m1">
+                            <button class="btn tooltipped view-top-copy-btn" data-clipboard-target="#skinLink"><i aria-hidden="true" class="fa fa-clipboard"></i></button>
+                        </div>
+                        <div class="input-field col s11 m11">
                             <label for="skinLink">Direct Link</label>
                             <input id="skinLink" ng-model="'https://minesk.in/' + skin.uuid" readonly type="text">
-                            <button class="btn tooltipped" data-clipboard-target="#skinLink"><i class="fa fa-clipboard" aria-hidden="true"></i></button>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s12">
+                        <div class="input-field col s1 m1">
+                            <button class="btn tooltipped view-top-copy-btn" data-clipboard-target="#textureValue"><i aria-hidden="true" class="fa fa-clipboard"></i></button>
+                        </div>
+                        <div class="input-field col s11">
                             <label for="textureValue">Texture Value</label>
                             <input type="text" readonly id="textureValue" ng-model="skin.data.texture.value">
-                            <button class="btn tooltipped" data-clipboard-target="#textureValue"><i class="fa fa-clipboard" aria-hidden="true"></i></button>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s12">
+                        <div class="input-field col s1 m1">
+                            <button class="btn tooltipped view-top-copy-btn" data-clipboard-target="#textureSignature"><i aria-hidden="true" class="fa fa-clipboard"></i></button>
+                        </div>
+                        <div class="input-field col s11">
                             <label for="textureSignature">Texture Signature</label>
                             <input type="text" readonly id="textureSignature" ng-model="skin.data.texture.signature">
-                            <button class="btn tooltipped" data-clipboard-target="#textureSignature"><i class="fa fa-clipboard" aria-hidden="true"></i></button>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s12">
+                        <div class="input-field col s1 m1">
+                            <button class="btn tooltipped view-top-copy-btn" data-clipboard-target="#textureUrl"><i aria-hidden="true" class="fa fa-clipboard"></i></button>
+                        </div>
+                        <div class="input-field col s11">
                             <label for="textureUrl">Texture URL</label>
                             <input type="text" readonly id="textureUrl" ng-model="skin.data.texture.url">
-                            <button class="btn tooltipped" data-clipboard-target="#textureUrl"><i class="fa fa-clipboard" aria-hidden="true"></i></button>
                         </div>
                     </div>
                     <div class="row">
