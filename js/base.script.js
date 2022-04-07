@@ -8,9 +8,13 @@ mineskinApp.directive("ngPreloadSrc", function () {
         replace: true,
         link: function (scope, element, attrs) {
             var $preloader = $("<img style='display:none'>");
-            $preloader.attr("src", attrs.ngPreloadSrc);
+            setTimeout(function () {
+                $preloader.attr("src", attrs.ngPreloadSrc);
+            }, 10 * Math.random());
             $preloader.on("load", function () {
-                element.attr("src", attrs.ngPreloadSrc);
+                setTimeout(function () {
+                    element.attr("src", attrs.ngPreloadSrc);
+                }, 1);
                 $preloader.remove();
             });
             $preloader.on("error", function () {

@@ -136,6 +136,15 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
                 $scope.pagination.totalItems = response.data.page.total;
                 newLoad = false;
             });
+
+            setTimeout(function (){
+                // preload next page
+                $http({
+                    url: apiBaseUrl + "/get/" + $scope.resultType + "/" + ($scope.pagination.page+1) + "?size=" + $scope.pagination.itemsPerPage + ($scope.searchQuery ? "&filter=" + $scope.searchQuery : ""),
+                    method: "GET"
+                }).then(function (resp){
+                })
+            })
         });
     };
     $scope.reloadGallery = function () {
