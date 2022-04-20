@@ -53,7 +53,7 @@
                                 <td>
                                     <span ng-show="mcAccount.accountType == 'mojang'"> (mojang account)  </span>
                                     <span ng-show="!mcAccount.enabled"> (disabled) </span>
-                                    <span ng-show="mcAccount.hasErrors"> (has errors) </span>
+                                    <span ng-show="mcAccount.hasErrors"> <i aria-hidden="true" class="fa fa-exclamation-triangle"></i> (has errors) </span>
                                 </td>
                             </tr>
                         </tbody>
