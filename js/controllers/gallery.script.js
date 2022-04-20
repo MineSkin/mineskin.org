@@ -113,7 +113,6 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
     $scope.skins = [];
     $scope.loadMore = function () {
         $scope.pagination.page++;
-        if ($scope.pagination.page > $scope.pagination.pages + 1) return;
         $scope.loading = true;
         console.log("load more " + $scope.pagination.page + " (" + $scope.pagination.nextAnchor + ")");
         $http({
