@@ -159,7 +159,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
                         }, 1000 * Math.random());
                     }
                 })
-            }, 1)
+            }, 5)
         });
     };
     $scope.reloadGallery = function () {
