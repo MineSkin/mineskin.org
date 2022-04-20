@@ -75,7 +75,9 @@ mineskinApp.controller("minecraftAccountController", ["$scope", "$http", "$cooki
         $scope.accountType = accountTypeCookie;
         $scope.loginWithMicrosoft = $scope.accountType === "microsoft";
 
-        $scope.email = atob($cookies.get("account_email"));
+        if (!$stateParams.email) {
+            $scope.email = atob($cookies.get("account_email"));
+        }
         $scope.token = atob($cookies.get("account_token"));
         $scope.uuid = $cookies.get("account_uuid");
 
