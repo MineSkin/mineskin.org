@@ -106,7 +106,8 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
         pages: 0,
         totalItems: 0,
         itemsPerPage: $scope.viewMode === 1 ? 12 : 32,
-        maxSize: 4
+        maxSize: 4,
+        nextAnchor: 'start'
     };
     $scope.loading = true;
     $scope.skins = [];
@@ -114,9 +115,9 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
         $scope.pagination.page++;
         if ($scope.pagination.page > $scope.pagination.pages + 1) return;
         $scope.loading = true;
-        console.log("load more " + $scope.pagination.page);
+        console.log("load more " + $scope.pagination.page + " (" + $scope.pagination.nextAnchor + ")");
         $http({
-            url: apiBaseUrl + "/get/" + $scope.resultType + "/" + $scope.pagination.page + "?size=" + $scope.pagination.itemsPerPage + ($scope.searchQuery ? "&filter=" + $scope.searchQuery : ""),
+            url: apiBaseUrl + "/get/" + $scope.resultType + "/" + $scope.pagination.nextAnchor + "?size=" + $scope.pagination.itemsPerPage + ($scope.searchQuery ? "&filter=" + $scope.searchQuery : ""),
             method: "GET"
         }).then(function (response) {
             console.log(response);
@@ -131,6 +132,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
                         url: "http://textures.minecraft.net/texture/7c37db4dfa8d891d26624ec9b2ec23cea0cdaccac1123b502f6a6737f3cf7"
                     });
                 }
+                $scope.pagination.nextAnchor = response.data.skins[response.data.skins.length - 1].uuid;
                 $scope.pagination.page = response.data.page.index;
                 $scope.pagination.pages = response.data.page.amount;
                 $scope.pagination.totalItems = response.data.page.total;
@@ -140,14 +142,14 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
             setTimeout(function () {
                 // preload next page
                 $http({
-                    url: apiBaseUrl + "/get/" + $scope.resultType + "/" + ($scope.pagination.page + 1) + "?size=" + $scope.pagination.itemsPerPage + ($scope.searchQuery ? "&filter=" + $scope.searchQuery : ""),
+                    url: apiBaseUrl + "/get/" + $scope.resultType + "/" + $scope.pagination.nextAnchor + "?size=" + $scope.pagination.itemsPerPage + ($scope.searchQuery ? "&filter=" + $scope.searchQuery : ""),
                     method: "GET"
                 }).then(function (resp) {
                     for (let s of resp.data.skins) {
                         setTimeout(function () {
                             const img = document.createElement('img');
                             img.style.display = 'none';
-                            img.setAttribute('src', apiBaseUrl + "/render/" + ($scope.viewMode == 0 ? 'head' : 'skin') + "?url=" + s.url + "&skinName=" + (s.name||''));
+                            img.setAttribute('src', apiBaseUrl + "/render/" + ($scope.viewMode == 0 ? 'head' : 'skin') + "?url=" + s.url + "&skinName=" + (s.name || ''));
                             img.onload = function () {
                                 setTimeout(function () {
                                     img.remove();
@@ -157,7 +159,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
                         }, 1000 * Math.random());
                     }
                 })
-            },1)
+            }, 1)
         });
     };
     $scope.reloadGallery = function () {
