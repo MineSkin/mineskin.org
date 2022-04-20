@@ -132,10 +132,12 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
                         url: "http://textures.minecraft.net/texture/7c37db4dfa8d891d26624ec9b2ec23cea0cdaccac1123b502f6a6737f3cf7"
                     });
                 }
-                $scope.pagination.nextAnchor = response.data.skins[response.data.skins.length - 1].uuid;
-                $scope.pagination.page = response.data.page.index;
-                $scope.pagination.pages = response.data.page.amount;
-                $scope.pagination.totalItems = response.data.page.total;
+                if (response.data.skins.length > 0) {
+                    $scope.pagination.nextAnchor = response.data.skins[response.data.skins.length - 1].uuid;
+                }
+                // $scope.pagination.page = response.data.page.index;
+                // $scope.pagination.pages = response.data.page.amount;
+                // $scope.pagination.totalItems = response.data.page.total;
                 newLoad = false;
             });
 
