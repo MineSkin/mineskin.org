@@ -149,6 +149,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
                     url: apiBaseUrl + "/get/" + $scope.resultType + "/" + $scope.pagination.nextAnchor + "?size=" + $scope.pagination.itemsPerPage + ($scope.searchQuery ? "&filter=" + $scope.searchQuery : ""),
                     method: "GET"
                 }).then(function (resp) {
+                    let x = 1;
                     for (let s of resp.data.skins) {
                         setTimeout(function () {
                             const img = document.createElement('img');
@@ -160,7 +161,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
                                 }, 10000);
                             };
                             document.body.append(img);
-                        }, 1000 * Math.random());
+                        }, 100 * (x++) + 1000 * Math.random());
                     }
                 })
             }, 5)
