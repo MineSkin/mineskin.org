@@ -14,6 +14,13 @@
 
                 min-width: 150px;
                 min-height: 160px;
+                max-width: 170px;
+                max-height: 170px;
+            }
+
+            .galleryImage {
+                min-width: 150px;
+                min-height: 160px;
             }
         </style>
 
@@ -55,7 +62,12 @@
                                ui-sref="gallery.view({id:skin.uuid})"
                                ui-sref-options="{notify:false}">
                                 <img class="skull-image" ng-class="{'new-image': (getLastSkinCookie() < skin.id)}"
-                                     ng-preload-src="https://api.mineskin.org/render/{{viewMode == 0 ? 'head' : 'skin'}}?url={{skin.url}}&skinName={{skin.name}}" src="/img/loading.svg">
+                                     ng-preload-src="https://api.mineskin.org/render/{{viewMode == 0 ? 'head' : 'skin'}}?url={{skin.url}}&skinName={{skin.name}}" src="/img/questionhead.png">
+                            </a>
+
+                            <a class="galleryImage galleryImagePlaceholder" ng-repeat="x in [].constructor(64) track by $index">
+                                <img class="skull-image" ng-if="$index === 0 || $index === 63" scrolly="loadMore()" src="/img/questionhead.png">
+                                <img class="skull-image" ng-if="$index !== 0 && $index !== 63" src="/img/questionhead.png">
                             </a>
                         </div>
                         <!-- Own Skins -->
@@ -68,17 +80,18 @@
                                ng-repeat="skin in ownSkins track by $index"
                                ui-sref="gallery.view({id:skin})"
                                ui-sref-options="{notify:false}">
-                                <img class="skull-image" ng-preload-src="https://api.mineskin.org/render/{{ skin }}/head" src="/img/loading.svg">
-                            </a>
-                        </div>
-                        <!-- Loading Placeholder -->
-                        <div class="center-align" ng-hide="(viewMode < 2 && skins.length > 0 && !loading) || (viewMode == 2 && !!ownSkins && ownSkins.length > 0)">
-                            <a class="galleryImage galleryImagePlaceholder" ng-repeat="x in [].constructor(64) track by $index">
-                                <img class="skull-image" src="/img/loading.svg">
+                                <img class="skull-image" ng-preload-src="https://api.mineskin.org/render/{{ skin }}/head" src="/img/questionhead.png">
                             </a>
                         </div>
 
-                        <div class="center-align">
+<!--                        &lt;!&ndash; Loading Placeholder &ndash;&gt;-->
+<!--                        <div class="center-align" ng-hide="(viewMode < 2 && skins.length > 0 && !loading) || (viewMode == 2 && !!ownSkins && ownSkins.length > 0)">-->
+<!--                            <a class="galleryImage galleryImagePlaceholder" ng-repeat="x in [].constructor(64) track by $index">-->
+<!--                                <img class="skull-image" src="/img/questionhead.png">-->
+<!--                            </a>-->
+<!--                        </div>-->
+
+                        <div class="center-align" ng-if="viewMode !== 2">
                             <a href="" ng-click="loadMore()" scrolly="loadMore()">load more</a>
                         </div>
                     </div>

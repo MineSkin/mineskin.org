@@ -108,7 +108,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
         itemsPerPage: $scope.viewMode === 1 ? 12 : 32,
         maxSize: 4,
         lastSize: 32,
-        nextAnchor: 'start'
+        nextAnchor: 'start',
     };
     $scope.loading = true;
     $scope.skins = [];
@@ -130,7 +130,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
                         id: 404,
                         uuid: "40404040404040404040404040404040",
                         time: 1081051444,
-                        url: "http://textures.minecraft.net/texture/7c37db4dfa8d891d26624ec9b2ec23cea0cdaccac1123b502f6a6737f3cf7"
+                        url: "http://textures.minecraft.net/texture/556b851d728a546fa8111d08519052d1e1d8fd9fa38d592d7346c895fee21933"
                     });
                 }
                 $scope.pagination.lastSize = response.data.skins.length;
