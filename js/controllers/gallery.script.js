@@ -107,14 +107,14 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
         totalItems: 0,
         itemsPerPage: $scope.viewMode === 1 ? 12 : 32,
         maxSize: 4,
-        lastSize: 0,
+        lastSize: 32,
         nextAnchor: 'start'
     };
     $scope.loading = true;
     $scope.skins = [];
     $scope.loadMore = function () {
         $scope.pagination.page++;
-        if ($scope.pagination.lastSize <= $scope.pagination.itemsPerPage) return; // probably no more results
+        if ($scope.pagination.lastSize < $scope.pagination.itemsPerPage) return; // probably no more results
         $scope.loading = true;
         console.log("load more " + $scope.pagination.page + " (" + $scope.pagination.nextAnchor + ")");
         $http({
