@@ -98,10 +98,14 @@
                     <button class="btn waves-effect waves-light orange" ng-click="logout()">Logout</button>
                 </div>
 
-                <!-- TODO: account delete -->
                 <br/>
                 <br/>
-                <i>If you would like to delete your account, please contact <span>account@mineskin.org</span> from your registered email. <br/>Please note that this might break any linked accounts, api keys, etc..</i>
+                <div class="row">
+                    <button class="btn waves-effect waves-light red" ng-click="deleteMyAccount()">Delete My Account</button>
+                </div>
+                <strong>This does not delete your linked Minecraft accounts! Login to those separately to delete them.</strong>
+                <br/>
+                <i>Please note that this might break any linked accounts, api keys, etc..</i>
             </div>
 
         </div>

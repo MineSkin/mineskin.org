@@ -1,4 +1,4 @@
-mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$timeout", "$stateParams", "$sce", "ngMeta", "$window", function ($scope, $http, $cookies, $timeout, $stateParams, $sce, ngMeta, $window) {
+mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$timeout", "$stateParams", "$sce", "ngMeta", "$window", "ModalService", function ($scope, $http, $cookies, $timeout, $stateParams, $sce, ngMeta, $window, ModalService) {
     console.info("accountController")
 
     window.__scope = $scope;
@@ -43,6 +43,43 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             }, 100);
         })
     };
+
+    $scope.deleteMyAccount = function () {
+        let parentScope = $scope;
+        ModalService.showModal({
+            templateUrl: "/pages/account_delete_confirmation.html",
+            controller: ["$scope", "$http", function ($scope, $http) {
+                $scope.checkDeleteAccount = false;
+                $scope.actuallyDeleteAccount = function () {
+                    parentScope.mineskinAccount = undefined;
+                    $http({
+                        method: 'DELETE',
+                        url: apiBaseUrl + '/account?confirm=' + $scope.checkDeleteAccount,
+                        withCredentials: true
+                    }).then(function (res) {
+                        if (res.data.msg) {
+                            Materialize.toast(res.data.msg, 4000);
+                        }
+                        setTimeout(() => {
+                            location.reload();
+                        }, 2000);
+                    })
+                };
+            }]
+        }).then(function (modal) {
+            modal.element.modal({
+                ready: function () {
+                    console.log("ready");
+                },
+                complete: function () {
+                    console.log("complete");
+                    $(".modal").remove()
+                }
+            })
+            modal.element.modal("open");
+
+        })
+    }
 
     $scope.loadAccount = function () {
         $scope.checkAccount(function (account) {

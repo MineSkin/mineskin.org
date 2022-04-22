@@ -1,0 +1,18 @@
+<div class="modal">
+    <div class="modal-content">
+        <h4>Delete Account</h4>
+
+        <div>
+            <div class="row">
+                <input id="checkDeleteAccount" ng-model="checkDeleteAccount" type="checkbox"/>
+                <label for="checkDeleteAccount">Confirm Deleting My Account</label>
+            </div>
+
+            <br/>
+
+            <div class="row">
+                <button class="btn waves-effect waves-light red" ng-click="actuallyDeleteAccount()" ng-disabled="!checkDeleteAccount">Delete My Account</button>
+            </div>
+        </div>
+    </div>
+</div>
