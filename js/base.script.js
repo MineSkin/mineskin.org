@@ -144,7 +144,7 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
             },
             data: {
                 meta: {
-                    title: "MineSkin - Custom Skin Generator",
+                    title: "MineSkin - Skin Signature Generator",
                     titleSuffix: "",
                     image: "https://mineskin.org/favicon.png"
                 }
