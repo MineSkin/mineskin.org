@@ -1,7 +1,9 @@
 mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http", "$timeout", "$interval", "$stateParams", "$localStorage", function ($scope, Upload, $state, $http, $timeout, $interval, $stateParams, $localStorage) {
     console.info("indexController")
 
-    $scope.apiKey = $localStorage.apiKey || "d175f64d0601005779e4fc3497ffb7c8fbbc00b90610052939a7ac173ccf3317";
+    const DEFAULT_API_KEY = "d175f64d0601005779e4fc3497ffb7c8fbbc00b90610052939a7ac173ccf3317";
+
+    $scope.apiKey = $localStorage.apiKey || DEFAULT_API_KEY;
 
     $scope.skinUpload = undefined;
     $scope.skinUrl = undefined;
@@ -249,4 +251,15 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
         });
     };
     $scope.refreshTimeout();
+
+    $scope.setApiKey = function () {
+        let key = prompt("API Key (leave empty to reset)");
+        if (!key || key.length < 32) {
+            $scope.apiKey = DEFAULT_API_KEY;
+            $scope.$storage.apiKey = undefined;
+            return;
+        }
+        $scope.apiKey = key;
+        $scope.$storage.apiKey = key;
+    };
 }]);
