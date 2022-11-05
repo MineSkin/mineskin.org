@@ -232,7 +232,15 @@ mineskinApp.controller("minecraftAccountController", ["$scope", "$http", "$cooki
                 $scope.finalizeMicrosoftLogin();
             }
 
+            let windowTicks = 0;
             oauthCloseTimer = setInterval(function () {
+                windowTicks++;
+                if (windowTicks === 2) {
+                    if (!oauthWindow || oauthWindow.closed || typeof oauthWindow.closed == 'undefined') {
+                        alert("Please allow popups!")
+                    }
+                    return;
+                }
                 if (oauthWindow.closed) {
                     oauthWindowClosed();
                     clearInterval(oauthCloseTimer);
