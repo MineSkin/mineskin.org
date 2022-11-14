@@ -187,17 +187,6 @@ mineskinApp.controller("indexController", ["$scope", "Upload", "$state", "$http"
             } else {
                 $state.go("gallery.view", {id: data.uuid})
             }
-
-            if ($scope.mineskinAccount) {
-                $http({
-                    method: 'POST',
-                    url: apiBaseUrl + '/account/skins',
-                    withCredentials: true,
-                    data: {
-                        uuid: data.uuid
-                    }
-                })
-            }
         }, 1500);
     };
     $scope.generateError = function (message, genAlert) {
