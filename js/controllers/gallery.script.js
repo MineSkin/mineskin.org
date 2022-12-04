@@ -90,7 +90,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
         if ($scope.viewMode === 1) {
             $scope.pagination.itemsPerPage = 12;
         } else {
-            $scope.pagination.itemsPerPage = 32;
+            $scope.pagination.itemsPerPage = 64;
         }
 
         let now = new $window.Date();
@@ -170,9 +170,9 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
         page: 0,
         pages: 0,
         totalItems: 0,
-        itemsPerPage: $scope.viewMode === 1 ? 12 : 32,
+        itemsPerPage: $scope.viewMode === 1 ? 12 : 64,
         maxSize: 4,
-        lastSize: 32,
+        lastSize: 64,
         nextAnchor: 'start',
     };
     $scope.loading = false;
@@ -232,7 +232,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
                         }, 100 * (x++) + 1000 * Math.random());
                     }
                 })
-            }, 5)
+            }, 100)
         });
     };
     $scope.reloadGallery = function () {
