@@ -154,7 +154,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
                         setTimeout(function () {
                             const img = document.createElement('img');
                             img.style.display = 'none';
-                            img.setAttribute('src', apiBaseUrl + "/render/" + ($scope.viewMode == 0 ? 'head' : 'skin') + "?url=" + s.url + "&skinName=" + (s.name || ''));
+                            img.setAttribute('src', "https://render.mineskin.org/render?overlay=true&body=" + ($scope.viewMode == 0 ? 'false' : 'true') + "&url=" + s.url);
                             img.onload = function () {
                                 setTimeout(function () {
                                     img.remove();

@@ -62,7 +62,7 @@
                                ui-sref="gallery.view({id:skin.uuid})"
                                ui-sref-options="{notify:false}">
                                 <img class="skull-image" ng-class="{'new-image': (getLastSkinCookie() < skin.id)}"
-                                     ng-preload-src="https://api.mineskin.org/render/{{viewMode == 0 ? 'head' : 'skin'}}?url={{skin.url}}&skinName={{skin.name}}" src="/img/questionhead.png">
+                                     ng-preload-src="https://render.mineskin.org/render?overlay=true&body={{viewMode == 0 ? 'false' : 'true'}}&url={{skin.url}}" src="/img/questionhead.png">
                             </a>
 
                             <a class="galleryImage galleryImagePlaceholder" ng-repeat="x in [].constructor(64) track by $index">
@@ -80,7 +80,7 @@
                                ng-repeat="skin in ownSkins track by $index"
                                ui-sref="gallery.view({id:skin})"
                                ui-sref-options="{notify:false}">
-                                <img class="skull-image" ng-preload-src="https://api.mineskin.org/render/{{ skin }}/head" src="/img/questionhead.png">
+                                <img class="skull-image" ng-preload-src="https://render.mineskin.org/render?overlay=true&url={{ skin.url }}" src="/img/questionhead.png">
                             </a>
                         </div>
 
