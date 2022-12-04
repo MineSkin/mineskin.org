@@ -158,7 +158,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
                             img.onload = function () {
                                 setTimeout(function () {
                                     img.remove();
-                                }, 10000);
+                                }, 100);
                             };
                             document.body.append(img);
                         }, 100 * (x++) + 1000 * Math.random());

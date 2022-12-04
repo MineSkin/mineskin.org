@@ -53,10 +53,7 @@
 
                         <!-- Regular Gallery -->
                         <div class="center-align" ng-if="viewMode !== 2">
-                            <a class="galleryImage tooltipped"
-                               data-delay="20"
-                               data-position="top"
-                               data-tooltip="{{skin.name || skin.uuid.substr(0, 8)}}"
+                            <a class="galleryImage"
                                href="/{{skin.uuid}}"
                                ng-repeat="skin in skins track by $index"
                                ui-sref="gallery.view({id:skin.uuid})"
@@ -72,10 +69,7 @@
                         </div>
                         <!-- Own Skins -->
                         <div class="center-align" ng-if="viewMode === 2">
-                            <a class="galleryImage tooltipped ownSkin"
-                               data-delay="20"
-                               data-position="top"
-                               data-tooltip="{{skin.substr(0, 8)}}"
+                            <a class="galleryImage ownSkin"
                                href="/{{skin.uuid}}"
                                ng-repeat="skin in ownSkins track by $index"
                                ui-sref="gallery.view({id:skin})"
