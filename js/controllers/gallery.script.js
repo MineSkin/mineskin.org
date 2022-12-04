@@ -76,7 +76,10 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
             $scope.reloadGallery();
         }, 500);
     };
-    $scope.viewMode = 0 // parseInt($cookies.get("viewMode") || 0);// 0 = heads only; 1 = full skins; 2 = own skins
+    $scope.viewMode = parseInt($cookies.get("viewMode") || 0);// 0 = heads only; 1 = full skins; 2 = own skins
+    if ($scope.viewMode === 1) {
+        $scope.viewMode = 0; // disabled
+    }
     $scope.resultType = $cookies.get("resultType");
     if ($scope.resultType == undefined) {
         $scope.resultType = "list";
