@@ -178,7 +178,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
     $scope.loading = false;
     $scope.skins = [];
     $scope.loadMore = function () {
-        if($scope.loading) return;
+        if ($scope.loading) return;
         $scope.pagination.page++;
         if ($scope.pagination.lastSize < $scope.pagination.itemsPerPage) return; // probably no more results
         $scope.loading = true;
@@ -189,7 +189,6 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
         }).then(function (response) {
             console.log(response);
             $timeout(function () {
-                $scope.loading = false;
                 $scope.skins = [...$scope.skins, ...response.data.skins];
                 if ($scope.skins.length === 0) {
                     $scope.skins.push({
@@ -208,6 +207,9 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
                 // $scope.pagination.totalItems = response.data.page.total;
                 newLoad = false;
             });
+            $timeout(function () {
+                $scope.loading = false;
+            }, 500);
 
             setTimeout(function () {
                 // preload next page
