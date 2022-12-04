@@ -24,6 +24,15 @@
                 min-height: 160px;
                 margin: 0 2px;
             }
+
+            .galleryImage > img {
+                transition: opacity 800ms ease;
+                opacity: 1;
+            }
+
+            .galleryImage:not(.intersecting) > img {
+                opacity: 0;
+            }
         </style>
 
         <h2>Skin Gallery</h2>
@@ -55,16 +64,16 @@
 
                         <!-- Regular Gallery -->
                         <div class="center-align" ng-if="viewMode !== 2">
-                            <a class="galleryImage"
+                            <a class="galleryImage" observeme
                                href="/{{skin.uuid}}"
                                ng-repeat="skin in skins track by $index"
                                ui-sref="gallery.view({id:skin.uuid})"
                                ui-sref-options="{notify:false}">
-                                <img class="skull-image" ng-class="{'new-image': (getLastSkinCookie() < skin.id)}"
+                                <img class="skull-image"
                                      ng-preload-src="https://render.mineskin.org/render?overlay=true&body={{viewMode == 0 ? 'false' : 'true'}}&url={{skin.url}}" src="/img/questionhead.png">
                             </a>
 
-                            <a class="galleryImage galleryImagePlaceholder" ng-repeat="x in [].constructor(64) track by $index">
+                            <a class="galleryImage galleryImagePlaceholder" ng-repeat="x in [].constructor(64) track by $index" observeme-load>
                                 <img class="skull-image" ng-if="$index === 0 || $index === 63" scrolly="loadMore()" src="/img/questionhead.png">
                                 <img class="skull-image" ng-if="$index !== 0 && $index !== 63" src="/img/questionhead.png">
                             </a>
@@ -88,7 +97,7 @@
 <!--                        </div>-->
 
                         <div class="center-align" ng-if="viewMode !== 2">
-                            <a href="" ng-click="loadMore()" scrolly="loadMore()">load more</a>
+                            <a href="" ng-click="loadMore()" observeme-load scrolly="loadMore()">load more</a>
                         </div>
                     </div>
                 </div>

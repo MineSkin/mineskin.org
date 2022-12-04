@@ -1,3 +1,58 @@
+let observer;
+let loadObserver;
+
+function observerCallback(entries, observer) {
+
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('intersecting');
+        } else {
+            entry.target.classList.remove('intersecting');
+        }
+    })
+}
+
+function loadMoreCallback(entries, observer) {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            window.__scope.loadMore()
+            entry.target.classList.add('intersecting');
+        } else {
+            entry.target.classList.remove('intersecting');
+        }
+    })
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    observer = new IntersectionObserver(observerCallback, {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.25
+    });
+
+    loadObserver = new IntersectionObserver(loadMoreCallback, {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.25
+    })
+})
+
+mineskinApp.directive("observeme", function () {
+    return {
+        link: function (scope, element, attributes) {
+            scope.observeme(element);
+        }
+    };
+});
+mineskinApp.directive("observemeLoad", function () {
+    return {
+        link: function (scope, element, attributes) {
+            scope.observemeLoad(element);
+        }
+    };
+});
+
+
 mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", "$cookies", "$window", "$state", "$timeout", "$sce", "ngMeta", "$localStorage", function ($scope, $stateParams, $http, $cookies, $window, $state, $timeout, $sce, ngMeta, $localStorage) {
     console.info("galleryController")
 
@@ -58,6 +113,13 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
         }
     }
 
+    $scope.observeme = function (el) {
+        observer.observe(el[0]);
+    };
+    $scope.observemeLoad = function (el) {
+        loadObserver.observe(el[0]);
+    };
+
     $scope.ownSkins = $scope.$storage.recentSkins || [];
     $scope.loadOwnSkins = function () {
         $scope.ownSkins = $scope.$storage.recentSkins || [];
@@ -110,9 +172,10 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
         lastSize: 32,
         nextAnchor: 'start',
     };
-    $scope.loading = true;
+    $scope.loading = false;
     $scope.skins = [];
     $scope.loadMore = function () {
+        if($scope.loading) return;
         $scope.pagination.page++;
         if ($scope.pagination.lastSize < $scope.pagination.itemsPerPage) return; // probably no more results
         $scope.loading = true;
@@ -183,17 +246,5 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
         $scope.pagination.page = page;
         $state.go('gallery', {page: $scope.pagination.page}, {notify: false});
     };
-    $scope.getLastSkinCookie = function () {
-        var id = $cookies.get("lastSkinId");
-        if (!id) {
-            var now = new $window.Date();
-            var expires = new $window.Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
-
-            $cookies.put("lastSkinId", "0", {
-                expires: expires
-            });
-            return 0;
-        }
-        return id;
-    };
 }]);
+
