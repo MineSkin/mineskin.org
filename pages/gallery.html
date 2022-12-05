@@ -69,7 +69,7 @@
                                ng-repeat="skin in skins track by $index"
                                ui-sref="gallery.view({id:skin.uuid})"
                                ui-sref-options="{notify:false}">
-                                <img class="skull-image"
+                                <img alt="{{ skin.name || skin.uuid }}" class="skull-image"
                                      ng-preload-src="https://render.mineskin.org/render?overlay=true&body={{viewMode == 0 ? 'false' : 'true'}}&url={{skin.url}}" src="/img/questionhead.png">
                             </a>
 
@@ -85,7 +85,8 @@
                                ng-repeat="skin in ownSkins track by $index"
                                ui-sref="gallery.view({id:skin})"
                                ui-sref-options="{notify:false}">
-                                <img class="skull-image" ng-preload-src="https://render.mineskin.org/render?overlay=true&url={{ skin.url }}" src="/img/questionhead.png">
+                                <img alt="{{ skin.name || skin.uuid }}" class="skull-image"
+                                     ng-preload-src="https://render.mineskin.org/render?overlay=true&url={{ skin.url }}" src="/img/questionhead.png">
                             </a>
                         </div>
 
