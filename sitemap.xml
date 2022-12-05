@@ -6,4 +6,19 @@
     <url>
         <loc>https://mineskin.org/gallery</loc>
     </url>
+    <url>
+        <loc>https://mineskin.org/stats</loc>
+    </url>
+    <url>
+        <loc>https://mineskin.org/apikey</loc>
+    </url>
+    <url>
+        <loc>https://status.mineskin.org/</loc>
+    </url>
+    <url>
+        <loc>https://api.mineskin.org/openapi</loc>
+    </url>
+    <url>
+        <loc>https://hiatus.mineskin.org/</loc>
+    </url>
 </urlset>
