@@ -1,9 +1,9 @@
 <div class="row">
-    <div class="col s2">
+    <div class="col hide-on-small-only m2">
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <div google-ad="7496187466" scroll-with-view></div>
     </div>
-    <div class="col s8">
+    <div class="col s12 m8">
         <style>
             /*
             * Based on http://stackoverflow.com/a/14260175/6257838
@@ -25,6 +25,25 @@
                 margin: 0 2px;
             }
 
+
+            @media (max-width: 992px) {
+                .skull-image {
+                    min-width: 75px;
+                    min-height: 80px;
+                    max-width: 90px;
+                    max-height: 90px;
+                }
+
+                .galleryImage {
+                    min-width: 75px;
+                    min-height: 80px;
+                }
+
+                .row .col {
+                    padding: 0 0.25rem;
+                }
+            }
+
             .galleryImage > img {
                 transition: opacity 800ms ease;
                 opacity: 1;
@@ -42,19 +61,18 @@
                     <div ng-init="galleryInit()">
                         <div>
                             <div class="row">
-                                <div class="input-field col s4" style="margin-top:0">
+                                <div class="input-field col m4 s4" style="margin-top:0">
                                     <input id="searchQuery" ng-change="searchChanged()" ng-maxlength="100" ng-minlength="1" ng-model="searchQuery" type="text">
-                                    <label class="required-label" for="searchQuery">Search Query</label>
+                                    <label class="required-label" for="searchQuery">Search</label>
                                 </div>
-                                <div class="col s4">
-
+                                <div class="col m4 hide-on-small-only">
                                 </div>
-                                <div class="col s4">
+                                <div class="col m4 s8">
                                     <div class="pull-right">
 <!--                                        <button class="btn btn-primary" ng-click="toggleViewMode()" type="button">-->
 <!--                                            Toggle View-->
 <!--                                        </button>-->
-                                        <button class="btn btn-primary" ng-click="toggleOwnSkins()" ng-show="ownSkins && ownSkins.length>0" type="button">
+                                        <button class="btn btn-primary truncate" ng-click="toggleOwnSkins()" ng-show="ownSkins && ownSkins.length>0" type="button">
                                             Show {{ viewMode===2?'Gallery':'Own Skins' }}
                                         </button>
                                     </div>
@@ -121,7 +139,7 @@
         </div>
         -->
     </div>
-    <div class="col s2">
+    <div class="col hide-on-small-only m2">
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <div google-ad="4698154800" scroll-with-view></div>
     </div>

@@ -7,6 +7,12 @@
                 min-width: 150px;
                 min-height: 150px;
             }
+
+            @media (max-width: 992px) {
+                #skinRender {
+                    pointer-events: none;
+                }
+            }
         </style>
 
         <div class="row card-panel" ng-show="!skin">
@@ -34,7 +40,7 @@
                 <small class="text-muted">{{skin.private ? "(private)" : ""}}</small>
             </h4>
             <div class="row card-panel">
-                <div class="col s3" style="min-width: 195px; min-height: 415px; z-index:1;">
+                <div class="col m3 s12" style="min-width: 195px; min-height: 415px; z-index:1;">
                     <div id="skinImageContainer">
                         <div style="min-height: 406px;">
                             <img src="https://api.mineskin.org/render/skin?url={{skin.data.texture.url}}&skinName={{skin.name}}&options=%26aa=true%26hr={{skinRotation}}" id="skinImage" class="center-align skin-image">
@@ -64,39 +70,39 @@
                         });
                     </script>
                 </div>
-                <div class="col s9" style="z-index:1;">
+                <div class="col m9 s12" style="z-index:1;">
                     <div class="row">
-                        <div class="input-field col s1 m1">
+                        <div class="input-field col s3 m1">
                             <button class="btn tooltipped view-top-copy-btn" data-clipboard-target="#skinLink"><i aria-hidden="true" class="fa fa-clipboard"></i></button>
                         </div>
-                        <div class="input-field col s11 m11">
+                        <div class="input-field col s9 m11">
                             <label for="skinLink">Direct Link</label>
                             <input id="skinLink" ng-model="'https://minesk.in/' + skin.uuid" readonly type="text">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s1 m1">
+                        <div class="input-field col s3 m1">
                             <button class="btn tooltipped view-top-copy-btn" data-clipboard-target="#textureValue"><i aria-hidden="true" class="fa fa-clipboard"></i></button>
                         </div>
-                        <div class="input-field col s11">
+                        <div class="input-field col s9 m11">
                             <label for="textureValue">Texture Value</label>
                             <input type="text" readonly id="textureValue" ng-model="skin.data.texture.value">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s1 m1">
+                        <div class="input-field col s3 m1">
                             <button class="btn tooltipped view-top-copy-btn" data-clipboard-target="#textureSignature"><i aria-hidden="true" class="fa fa-clipboard"></i></button>
                         </div>
-                        <div class="input-field col s11">
+                        <div class="input-field col s9 m11">
                             <label for="textureSignature">Texture Signature</label>
                             <input type="text" readonly id="textureSignature" ng-model="skin.data.texture.signature">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s1 m1">
+                        <div class="input-field col s3 m1">
                             <button class="btn tooltipped view-top-copy-btn" data-clipboard-target="#textureUrl"><i aria-hidden="true" class="fa fa-clipboard"></i></button>
                         </div>
-                        <div class="input-field col s11">
+                        <div class="input-field col s9 m11">
                             <label for="textureUrl">Texture URL</label>
                             <input type="text" readonly id="textureUrl" ng-model="skin.data.texture.url">
                         </div>
@@ -209,7 +215,7 @@ skin{{skin.uuid.substr(0, 8)}}.setProperty(new ProfileProperty("textures", "{{sk
                                 </div>
                                 <div ng-show="modCommand == 'taterzens'">
                                     <label for="taterzensCommand">Taterzens /npc edit skin Command</label>
-                                    <textarea class="materialize-textarea"  id="taterzensCommand" readonly style="min-height: 10px;max-width:100%;">/npc edit skin https://minesk.in/{{ skin.uuid }}</textarea>
+                                    <textarea class="materialize-textarea" id="taterzensCommand" readonly style="min-height: 10px;max-width:100%;">/npc edit skin https://minesk.in/{{ skin.uuid }}</textarea>
                                     <button class="btn tooltipped" data-clipboard-target="#taterzensCommand"><i aria-hidden="true" class="fa fa-clipboard"></i> Copy</button>
                                 </div>
                             </div>
@@ -250,10 +256,10 @@ skin{{skin.uuid.substr(0, 8)}}.setProperty(new ProfileProperty("textures", "{{sk
             }, 5000);
         }
 
-        $("#viewModal").on("scroll",function (e) {
+        $("#viewModal").on("scroll", function (e) {
             if (this.scrollTop > 10) {
                 $("#viewScrollBtn").hide();
-            }else{
+            } else {
                 $("#viewScrollBtn").show();
             }
         });
