@@ -2,9 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://mineskin.org</loc>
+        <priority>1</priority>
     </url>
     <url>
         <loc>https://mineskin.org/gallery</loc>
+        <priority>0.8</priority>
+        <changefreq>daily</changefreq>
     </url>
     <url>
         <loc>https://mineskin.org/stats</loc>
