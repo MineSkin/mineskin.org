@@ -127,7 +127,8 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
                 meta: {
                     title: "MineSkin - Skin Signature Generator",
                     titleSuffix: "",
-                    image: "https://mineskin.org/favicon.png"
+                    image: "https://mineskin.org/favicon.png",
+                    path: ""
                 }
             }
         })
@@ -143,7 +144,8 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
                 meta: {
                     title: "Generate Bulk | MineSkin",
                     titleSuffix: "",
-                    image: "https://mineskin.org/favicon.png"
+                    image: "https://mineskin.org/favicon.png",
+                    path: "/bulk"
                 }
             }
         })
@@ -184,7 +186,8 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
             data: {
                 meta: {
                     title: "Stats",
-                    image: "https://mineskin.org/favicon.png"
+                    image: "https://mineskin.org/favicon.png",
+                    path: "/stats"
                 }
             }
         })
@@ -204,7 +207,8 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
             data: {
                 meta: {
                     title: "Gallery",
-                    image: "https://mineskin.org/favicon.png"
+                    image: "https://mineskin.org/favicon.png",
+                    path: "/gallery"
                 }
             }
         })
@@ -230,11 +234,15 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
                             console.log("complete");
                             $(".modal").remove()
                             $state.go("^");
+
+                            document.getElementById('canonical-link').setAttribute('content', 'https://mineskin.org/gallery');
                         }
                     })
                     modal.element.modal("open");
 
                 })
+
+                document.getElementById('canonical-link').setAttribute('content', 'https://mineskin.org/' + $stateParams.id);
             }],
             onExit: ["$state", function ($state) {
                 console.info("onExit")
@@ -251,7 +259,8 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
             data: {
                 meta: {
                     title: "Account",
-                    image: "https://mineskin.org/favicon.png"
+                    image: "https://mineskin.org/favicon.png",
+                    path: "/account"
                 }
             }
         })
@@ -281,7 +290,8 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
             data: {
                 meta: {
                     title: "API Keys",
-                    image: "https://mineskin.org/favicon.png"
+                    image: "https://mineskin.org/favicon.png",
+                    path: "/apikey"
                 }
             }
         })
@@ -295,7 +305,8 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
             data: {
                 meta: {
                     title: "MineSkin Hiatus",
-                    image: "https://mineskin.org/favicon.png"
+                    image: "https://mineskin.org/favicon.png",
+                    path: "/hiatus"
                 }
             }
         })

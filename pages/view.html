@@ -35,7 +35,7 @@
             </div>
         </div>
 
-        <div ng-show="skin">
+        <div ng-if="skin">
             <h4>{{ skin.name || skin.uuid.substr(0, 8)}}
                 <small class="text-muted">{{skin.private ? "(private)" : ""}}</small>
             </h4>
