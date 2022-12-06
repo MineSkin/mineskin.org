@@ -98,7 +98,7 @@
                         </div>
                         <!-- Own Skins -->
                         <div class="center-align" ng-if="viewMode === 2">
-                            <a class="galleryImage ownSkin"
+                            <a class="galleryImage ownSkin" observeme
                                href="/{{skin}}"
                                ng-repeat="skin in ownSkins track by $index"
                                ui-sref="gallery.view({id:skin})"
