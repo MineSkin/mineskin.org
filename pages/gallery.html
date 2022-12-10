@@ -103,7 +103,7 @@
                                ng-repeat="skin in ownSkins track by $index"
                                ui-sref="gallery.view({id:skin})"
                                ui-sref-options="{notify:false}">
-                                <img class="skull-image" ng-preload-src="https://api.mineskin.org/render/{{ skin }}/head" src="/img/questionhead.png">
+                                <img alt="Loading more skins..." class="skull-image" ng-preload-src="https://api.mineskin.org/render/{{ skin }}/head" src="/img/questionhead.png">
                             </a>
                         </div>
 
