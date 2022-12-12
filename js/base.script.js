@@ -367,6 +367,10 @@ function materializeBaseInit() {
     document.querySelectorAll('.select-wrapper').forEach(t => t.addEventListener('click', e => e.stopPropagation()))
     $('.tooltipped').tooltip();
     Materialize.updateTextFields();
+
+    setTimeout(() => {
+        window.prerenderReady = true;
+    }, 500);
 }
 
 //// https://github.com/MineSkin/mineskin.org/issues/13 by @SpraxDev

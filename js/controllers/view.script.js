@@ -33,11 +33,13 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
     }).then(function (response) {
         $scope.skin = response.data;
 
+        $scope.skin.shortUrl = 'https://minesk.in/' + $scope.skin.uuid;
+
         // 1.16 UUID format support
         $scope.skin.data.uuidAsArray = formatInt32UUID(getInt32ForUUID($scope.skin.data.uuid));
 
         ngMeta.setTitle($scope.skin.name || $scope.skin.uuid.substr(0, 8));
-        ngMeta.setTag("image", $sce.trustAsResourceUrl(apiBaseUrl + "/render/" + $scope.skin.uuid + "/head"));
+        ngMeta.setTag("image", $sce.trustAsResourceUrl("https://render.mineskin.org/render?overlay=true&body=false&url=" + $scope.skin.url));
 
         $timeout(function () {
             materializeBaseInit();
