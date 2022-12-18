@@ -6,6 +6,8 @@
 
                 min-width: 150px;
                 min-height: 150px;
+
+                max-width: 190px;
             }
 
             @media (max-width: 992px) {
@@ -15,35 +17,35 @@
             }
         </style>
 
-        <div class="row card-panel" ng-show="!skin">
-            <div class="col s12">
-                <div class="center">
-                    <div class="preloader-wrapper big active">
-                        <div class="spinner-layer spinner-blue-only">
-                            <div class="circle-clipper left">
-                                <div class="circle"></div>
-                            </div>
-                            <div class="gap-patch">
-                                <div class="circle"></div>
-                            </div>
-                            <div class="circle-clipper right">
-                                <div class="circle"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!--        <div class="row card-panel" ng-show="!skin">-->
+<!--            <div class="col s12">-->
+<!--                <div class="center">-->
+<!--                    <div class="preloader-wrapper big active">-->
+<!--                        <div class="spinner-layer spinner-blue-only">-->
+<!--                            <div class="circle-clipper left">-->
+<!--                                <div class="circle"></div>-->
+<!--                            </div>-->
+<!--                            <div class="gap-patch">-->
+<!--                                <div class="circle"></div>-->
+<!--                            </div>-->
+<!--                            <div class="circle-clipper right">-->
+<!--                                <div class="circle"></div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
 
-        <div ng-if="skin">
-            <h4>{{ skin.name || skin.uuid.substr(0, 8)}}
+        <div>
+            <h4>{{ skin.name || skin.uuid.substr(0, 8) || "Loading..." }}
                 <small class="text-muted">{{skin.private ? "(private)" : ""}}</small>
             </h4>
             <div class="row card-panel">
                 <div class="col m3 s12" style="min-width: 195px; min-height: 415px; z-index:1;">
                     <div id="skinImageContainer">
                         <div style="min-height: 406px;">
-                            <img src="https://api.mineskin.org/render/skin?url={{skin.data.texture.url}}&skinName={{skin.name}}&options=%26aa=true%26hr={{skinRotation}}" id="skinImage" class="center-align skin-image">
+                            <img class="center-align skin-image" id="skinImage" ng-src="https://api.mineskin.org/render/skin?url={{skin.data.texture.url}}&skinName={{skin.name}}&options=%26aa=true%26hr={{skinRotation}}" src="/img/steve_gray.png">
                         </div>
                         <div style="padding-top: 20px;" class="text-center">
                             <div class="btn-group">
@@ -77,7 +79,7 @@
                         </div>
                         <div class="input-field col s9 m11">
                             <label for="skinLink">Direct Link</label>
-                            <input id="skinLink" ng-model="skin.shortUrl" readonly type="text">
+                            <input id="skinLink" ng-model="skin.shortUrl || 'Loading...'" readonly type="text">
                         </div>
                     </div>
                     <div class="row">
@@ -86,7 +88,7 @@
                         </div>
                         <div class="input-field col s9 m11">
                             <label for="textureValue">Texture Value</label>
-                            <input type="text" readonly id="textureValue" ng-model="skin.data.texture.value">
+                            <input id="textureValue" ng-model="skin.data.texture.value || 'Loading...'" readonly type="text">
                         </div>
                     </div>
                     <div class="row">
@@ -95,7 +97,7 @@
                         </div>
                         <div class="input-field col s9 m11">
                             <label for="textureSignature">Texture Signature</label>
-                            <input type="text" readonly id="textureSignature" ng-model="skin.data.texture.signature">
+                            <input id="textureSignature" ng-model="skin.data.texture.signature || 'Loading...'" readonly type="text">
                         </div>
                     </div>
                     <div class="row">
@@ -104,7 +106,7 @@
                         </div>
                         <div class="input-field col s9 m11">
                             <label for="textureUrl">Texture URL</label>
-                            <input type="text" readonly id="textureUrl" ng-model="skin.data.texture.url">
+                            <input id="textureUrl" ng-model="skin.data.texture.url || 'Loading...'" readonly type="text">
                         </div>
                     </div>
                     <div class="row">
