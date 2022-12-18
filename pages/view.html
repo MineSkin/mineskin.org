@@ -17,25 +17,25 @@
             }
         </style>
 
-<!--        <div class="row card-panel" ng-show="!skin">-->
-<!--            <div class="col s12">-->
-<!--                <div class="center">-->
-<!--                    <div class="preloader-wrapper big active">-->
-<!--                        <div class="spinner-layer spinner-blue-only">-->
-<!--                            <div class="circle-clipper left">-->
-<!--                                <div class="circle"></div>-->
-<!--                            </div>-->
-<!--                            <div class="gap-patch">-->
-<!--                                <div class="circle"></div>-->
-<!--                            </div>-->
-<!--                            <div class="circle-clipper right">-->
-<!--                                <div class="circle"></div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+        <!--        <div class="row card-panel" ng-show="!skin">-->
+        <!--            <div class="col s12">-->
+        <!--                <div class="center">-->
+        <!--                    <div class="preloader-wrapper big active">-->
+        <!--                        <div class="spinner-layer spinner-blue-only">-->
+        <!--                            <div class="circle-clipper left">-->
+        <!--                                <div class="circle"></div>-->
+        <!--                            </div>-->
+        <!--                            <div class="gap-patch">-->
+        <!--                                <div class="circle"></div>-->
+        <!--                            </div>-->
+        <!--                            <div class="circle-clipper right">-->
+        <!--                                <div class="circle"></div>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
 
         <div>
             <h4>{{ skin.name || skin.uuid.substr(0, 8) || "Loading..." }}
@@ -58,19 +58,7 @@
                         <iframe frameborder="0" src="#" id="skinRender" style="min-height:450px;max-height:500px; min-width:200px;max-width:220px;"></iframe>
                     </div>
                     <span id="skinRenderId" style="display:none">{{ skin.uuid }}</span>
-                    <script>
-                        $(document).ready(function () {
-                            $("#skinImage").on("load", function () {
-                                if (!/bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent)) {// disable for crawlers
-                                    $("#skinRender").attr("src", "https://minerender.org/embed/skin/?skin=https://api.mineskin.org/render/texture/" + $("#skinRenderId").text() + "&autoResize=true&shadow=true&camera.position=-15,35,20&controls.pan=false&utm_source=mineskin&utm_medium=website&utm_campaign=skin_preview");
-                                    $("#skinRender").on("load", function () {
-                                        $("#skinImageContainer").hide();
-                                        $("#skinRenderContainer").show();
-                                    })
-                                }
-                            })
-                        });
-                    </script>
+                    <script async src="/js/view.minerender.js"></script>
                 </div>
                 <div class="col m9 s12" style="z-index:1;">
                     <div class="row">
