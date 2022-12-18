@@ -46,6 +46,8 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
             $("#giveCommand").trigger("autoresize");
             $("#javaGameProfile").trigger("autoresize");
             $("#javaPlayerProfile").trigger("autoresize");
+
+            Materialize.updateTextFields();
         }, 100);
     });
 }])

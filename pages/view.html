@@ -110,7 +110,7 @@
 
             <br/>
 
-            <div class="row card-panel">
+            <div class="row card-panel" ng-if="skin">
                 <h5 id="vanilla">Vanilla /give Command</h5>
                 <div class="col s12">
                     <div>
@@ -146,7 +146,7 @@
                 </div>
             </div>
 
-            <div class="row card-panel">
+            <div class="row card-panel" ng-if="skin">
                 <h5 id="java">Java Code</h5>
                 <div class="col s12">
                     <div>
@@ -184,7 +184,7 @@ skin{{skin.uuid.substr(0, 8)}}.setProperty(new ProfileProperty("textures", "{{sk
                 </div>
             </div>
 
-            <div class="row card-panel">
+            <div class="row card-panel" ng-if="skin">
                 <h5 id="mods">Plugin/Mod Commands</h5>
                 <div class="col s12">
                     <div>
@@ -216,7 +216,7 @@ skin{{skin.uuid.substr(0, 8)}}.setProperty(new ProfileProperty("textures", "{{sk
 
             <br/>
 
-            <div class="row">
+            <div class="row" ng-if="skin">
                 <div class="pull-left">
                     {{ skin.views }} views |
                     <span style="opacity: 0.8; font-size: 12px">Legacy ID: {{ skin.id }} (deprecated)</span>
