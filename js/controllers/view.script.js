@@ -29,7 +29,7 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
     }
     $http({
         url: apiBaseUrl + url,
-        method: "GET"
+        method: "GET" 
     }).then(function (response) {
         $scope.skin = response.data;
 
