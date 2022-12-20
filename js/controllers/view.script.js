@@ -3,8 +3,6 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
 
     console.log($stateParams);
 
-    materializeBaseInit();
-
     //TODO: remember these preferences
     $scope.giveCommandVersion = "1_16";
     $scope.javaCodeAPI = "paper";
@@ -29,7 +27,7 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
     }
     $http({
         url: apiBaseUrl + url,
-        method: "GET" 
+        method: "GET"
     }).then(function (response) {
         $scope.skin = response.data;
 
@@ -47,7 +45,6 @@ mineskinApp.controller("viewController", ["$scope", "$http", "$cookies", "$timeo
             $("#javaGameProfile").trigger("autoresize");
             $("#javaPlayerProfile").trigger("autoresize");
 
-            Materialize.updateTextFields();
         }, 100);
     });
 }])
