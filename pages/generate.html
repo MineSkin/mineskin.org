@@ -23,11 +23,12 @@
         </picture>
     </div>
 
-    <h2>Generate New Skin <a class="btn hide-on-med-and-down" href="#tab2" style="float: right;" ui-sref="gallery()">Browse Existing Skins</a></h2>
+    <h2 class="show-on-med-and-up hide-on-small-only">Generate New Skin <a class="btn hide-on-med-and-down" href="#tab2" style="float: right;" ui-sref="gallery()">Browse Existing Skins</a></h2>
+    <h4 class="show-on-small hide-on-med-and-up">Generate New Skin</h4>
 
     <div class="card-panel z-depth-2">
         <div class="row">
-            <div class="col s12 m9">
+            <div class="col s12 m7">
                 <h3>Select Skin</h3>
 
                 <form class="col s12" name="uploadForm">
@@ -67,40 +68,9 @@
                     </div>
                 </form>
             </div>
-            <div class="col s12 m3 right">
-                <iframe id="skinRender" frameborder="0" style="display: none;min-height:450px;max-height:500px; min-width:200px;max-width:220px;"></iframe>
-                <script>
-                    $(document).ready(function () {
-                        $("#skinUrl,#skinUser").on("change", function () {
-                            var url = $("#skinUrl").val();
-                            var user = $("#skinUser").val();
-                            if (url && $("#skinUrl").is(":visible")) {
-                                $("#skinRender").attr("src", "https://minerender.org/embed/skin/?skin.url=" + url + "&autoResize=true&shadow=true&camera.position=-15,35,20&controls.pan=false&utm_source=mineskin&utm_medium=website&utm_campaign=skin_gen_url");
-                            } else if (user && $("#skinUser").is(":visible")) {
-                                $("#skinRender").attr("src", "https://minerender.org/embed/skin/?skin.name=" + user + "&autoResize=true&shadow=true&camera.position=-15,35,20&controls.pan=false&utm_source=mineskin&utm_medium=website&utm_campaign=skin_gen_name");
-                            }
-                        });
-//                        $("#skinUploadTempImage").on("load", function () {
-//                            var upload = $("#skinUploadTempImage").attr("src");
-//                            if (upload) {
-//                                $.ajax({
-//                                    url: upload
-//                                }).done(function (response) {
-//                                    console.log(response)
-//                                    var base64 = "data:image/png;base64," + btoa(encodeURIComponent(response));
-//                                    console.log(base64)
-//                                    $("#skinRender").attr("src", "https://skinrender.ga/embed/?skin.data=" + base64 + "&autoResize=true&shadow=true&camera.position=-15,35,20&controls.pan=false");
-//                                })
-//                            }
-//                        })
-                        $("#skinRender").on("load", function () {
-                            $("#skinRender").show();
-                        })
-                        $("#skinRender").on("error", function () {
-                            $("#skinRender").hide();
-                        })
-                    });
-                </script>
+            <div class="col s12 m5 right hide-on-small-only">
+                <iframe frameborder="0" id="skinRender" style="display: none;min-height: min(40vw,40vh);max-height:500px; min-width:200px;max-width:220px;"></iframe>
+                <script async src="/js/generate.minerender.js"></script>
             </div>
         </div>
     </div>
@@ -176,5 +146,5 @@
         </div>
     </div>
 
-    <script async src="/js/infographic.js"></script>
+    <script async src="/js/generate.infographic.js"></script>
 </div>
