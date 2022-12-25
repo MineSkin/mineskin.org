@@ -219,6 +219,12 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
                 console.log($stateParams);
                 if (!$stateParams.id) return;
 
+                try {
+                    document.getElementById('canonical-link').setAttribute('content', 'https://mineskin.org/' + $stateParams.id);
+                } catch (e) {
+                    console.warn(e);
+                }
+
                 ModalService.showModal({
                     templateUrl: "/pages/view.html",
                     controller: "viewController",
@@ -242,7 +248,7 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
 
                 })
 
-                document.getElementById('canonical-link').setAttribute('content', 'https://mineskin.org/' + $stateParams.id);
+
             }],
             onExit: ["$state", function ($state) {
                 console.info("onExit")
