@@ -130,7 +130,10 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
                     image: "https://mineskin.org/favicon.png",
                     path: ""
                 }
-            }
+            },
+            onEnter: ["$state", "$stateParams", function ($state, $stateParams) {
+                document.getElementById('canonical-link').setAttribute('content', 'https://mineskin.org');
+            }]
         })
         .state("bulk", {
             url: "/bulk",
@@ -147,11 +150,16 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
                     image: "https://mineskin.org/favicon.png",
                     path: "/bulk"
                 }
-            }
+            },
+            onEnter: ["$state", "$stateParams", function ($state, $stateParams) {
+                document.getElementById('canonical-link').setAttribute('content', 'https://mineskin.org/bulk');
+            }]
         })
         .state("index.stats", {
             url: "^/stats",
             onEnter: ["$state", "$stateParams", "ModalService", function ($state, $stateParams, ModalService) {
+                document.getElementById('canonical-link').setAttribute('content', 'https://mineskin.org/stats');
+
                 ModalService.showModal({
                     templateUrl: "/pages/stats.html",
                     controller: ["$scope", "$http", "$interval", function ($scope, $http, $interval) {
@@ -183,6 +191,9 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
 
                 })
             }],
+            onExit: ["$state", "$stateParams", function ($state, $stateParams) {
+                document.getElementById('canonical-link').setAttribute('content', 'https://mineskin.org');
+            }],
             data: {
                 meta: {
                     title: "Stats",
@@ -210,7 +221,10 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
                     image: "https://mineskin.org/favicon.png",
                     path: "/gallery"
                 }
-            }
+            },
+            onEnter: ["$state", "$stateParams", function ($state, $stateParams) {
+                document.getElementById('canonical-link').setAttribute('content', 'https://mineskin.org/gallery');
+            }]
         })
         .state("gallery.view", {
             url: "^/{id:[0-9a-z]{1,32}}",
@@ -219,11 +233,7 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
                 console.log($stateParams);
                 if (!$stateParams.id) return;
 
-                try {
-                    document.getElementById('canonical-link').setAttribute('content', 'https://mineskin.org/' + $stateParams.id);
-                } catch (e) {
-                    console.warn(e);
-                }
+                document.getElementById('canonical-link').setAttribute('content', 'https://mineskin.org/' + $stateParams.id);
 
                 ModalService.showModal({
                     templateUrl: "/pages/view.html",
@@ -268,7 +278,10 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
                     image: "https://mineskin.org/favicon.png",
                     path: "/account"
                 }
-            }
+            },
+            onEnter: ["$state", "$stateParams", function ($state, $stateParams) {
+                document.getElementById('canonical-link').setAttribute('content', 'https://mineskin.org/account');
+            }]
         })
         .state("account_minecraft", {
             url: "/account/minecraft?email",
@@ -283,7 +296,10 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
                     title: "Account | Minecraft",
                     image: "https://mineskin.org/favicon.png"
                 }
-            }
+            },
+            onEnter: ["$state", "$stateParams", function ($state, $stateParams) {
+                document.getElementById('canonical-link').setAttribute('content', 'https://mineskin.org/account/minecraft');
+            }]
         })
         .state("apikey", {
             url: "/apikey",
@@ -299,7 +315,10 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
                     image: "https://mineskin.org/favicon.png",
                     path: "/apikey"
                 }
-            }
+            },
+            onEnter: ["$state", "$stateParams", function ($state, $stateParams) {
+                document.getElementById('canonical-link').setAttribute('content', 'https://mineskin.org/apikey');
+            }]
         })
         .state("hiatus", {
             url: "/hiatus",
@@ -314,7 +333,10 @@ mineskinApp.config(function ($stateProvider, $locationProvider, ngMetaProvider) 
                     image: "https://mineskin.org/favicon.png",
                     path: "/hiatus"
                 }
-            }
+            },
+            onEnter: ["$state", "$stateParams", function ($state, $stateParams) {
+                document.getElementById('canonical-link').setAttribute('content', 'https://mineskin.org/hiatus');
+            }]
         })
 
 
