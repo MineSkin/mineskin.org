@@ -71,6 +71,7 @@
                             <tr ng-repeat="key in apiKeys">
                                 <td><strong>{{ key.name }}</strong></td>
                                 <td>Last used: {{ key.lastUsed || 'Never' }}</td>
+                                <td style="float: right; opacity: 0.2; margin-right: 4px;">{{ key.id }}</td>
                             </tr>
                         </tbody>
                     </table>
