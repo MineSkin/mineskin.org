@@ -124,6 +124,13 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
         $window.open(apiBaseUrl + `/account/discord/oauth/start`, "_blank");
     };
 
+    $scope.getRateLimitFormLink = function (key) {
+        return 'https://docs.google.com/forms/d/e/1FAIpQLScJnqh4d_i_yNaolGU9FZTUJiPy5OPs3OslZOuJweDdbJEPOg/viewform?usp=pp_url' +
+            '&entry.2119106156=' + $scope.mineskinAccount.email +
+            '&entry.1113014322=' + key.id +
+            '&entry.1756732929=' + $scope.minecraftAccounts.length +
+            '&entry.200041955=' + $scope.minecraftAccounts.map(a => a.uuid).join('%0A');
+    };
 
     /// UTIL
 
