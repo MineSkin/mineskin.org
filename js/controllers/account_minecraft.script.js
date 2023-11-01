@@ -15,6 +15,8 @@ mineskinApp.controller("minecraftAccountController", ["$scope", "$http", "$cooki
     $scope.email = $stateParams.email || "";
     $scope.password = "";
 
+    $scope.forceAccount = $stateParams.force_account;
+
     $scope.accountServer = "";
     $scope.accountType = undefined;
 
@@ -69,7 +71,7 @@ mineskinApp.controller("minecraftAccountController", ["$scope", "$http", "$cooki
     };
 
     let accountTypeCookie = $cookies.get("account_type");
-    if (accountTypeCookie && accountTypeCookie === "mojang" || accountTypeCookie === "microsoft") {
+    if (accountTypeCookie && (accountTypeCookie === "mojang" || accountTypeCookie === "microsoft")) {
         $scope.loggingIn = true;
         $scope.autologin = true;
         $scope.accountType = accountTypeCookie;
@@ -380,6 +382,10 @@ mineskinApp.controller("minecraftAccountController", ["$scope", "$http", "$cooki
                     $scope.handleResponseError(profileResponse);
                     $scope.clearAccountCookies();
                     return;
+                }
+
+                if ($scope.forceAccount && $scope.forceAccount !== profileResponse.data.id) {
+                    $scope.logout();
                 }
 
                 $scope.uuid = profileResponse.data.id;
