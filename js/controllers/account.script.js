@@ -1,8 +1,6 @@
 mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$timeout", "$stateParams", "$sce", "ngMeta", "$window", "ModalService", function ($scope, $http, $cookies, $timeout, $stateParams, $sce, ngMeta, $window, ModalService) {
     console.info("accountController")
 
-    window.__scope = $scope;
-
     $scope.loadLogin = function () {
         console.log('loadLogin')
         $timeout(function () {
@@ -132,6 +130,22 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             '&entry.200041955=' + $scope.minecraftAccounts.map(a => a.uuid).join('%0A');
     };
 
+
+    $scope.uaStats = {
+        agent: "",
+        stats: {}
+    }
+    $scope.checkUserAgentStats = function () {
+        console.log($scope.uaStats.agent);
+        if (!$scope.uaStats.agent) return;
+        $http({
+            method: 'GET',
+            url: apiBaseUrl + '/account/agentusage?agent=' + $scope.uaStats.agent,
+            withCredentials: true
+        }).then(function (res) {
+            $scope.uaStats.stats = res.data;
+        })
+    };
     /// UTIL
 
     $scope.handleResponseError = function (response) {
@@ -147,6 +161,8 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
             console.warn(response.data);
         }
     }
+
+    window.__scope = $scope;
 
 }])
 

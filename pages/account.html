@@ -47,15 +47,15 @@
                     <span ng-if="!minecraftAccounts || minecraftAccounts.length == 0">None :(</span>
                     <table class="striped">
                         <tbody>
-                            <tr ng-repeat="mcAccount in minecraftAccounts">
-                                <td><a ui-sref="account_minecraft({email:mcAccount.email,force_account:mcAccount.uuid})"><strong>{{ mcAccount.playername || mcAccount.uuid }}</strong></a></td>
-                                <td><a ui-sref="account_minecraft({email:mcAccount.email,force_account:mcAccount.uuid})">{{ mcAccount.email }}</a></td>
-                                <td>
-                                    <span ng-show="mcAccount.accountType == 'mojang'"> (mojang account)  </span>
-                                    <span ng-show="!mcAccount.enabled"> (disabled) </span>
-                                    <span ng-show="mcAccount.hasErrors"> <i aria-hidden="true" class="fa fa-exclamation-triangle"></i> (has errors) </span>
-                                </td>
-                            </tr>
+                        <tr ng-repeat="mcAccount in minecraftAccounts">
+                            <td><a ui-sref="account_minecraft({email:mcAccount.email,force_account:mcAccount.uuid})"><strong>{{ mcAccount.playername || mcAccount.uuid }}</strong></a></td>
+                            <td><a ui-sref="account_minecraft({email:mcAccount.email,force_account:mcAccount.uuid})">{{ mcAccount.email }}</a></td>
+                            <td>
+                                <span ng-show="mcAccount.accountType == 'mojang'"> (mojang account)  </span>
+                                <span ng-show="!mcAccount.enabled"> (disabled) </span>
+                                <span ng-show="mcAccount.hasErrors"> <i aria-hidden="true" class="fa fa-exclamation-triangle"></i> (has errors) </span>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                     <br/>
@@ -68,17 +68,38 @@
                     <span ng-if="!apiKeys || apiKeys.length == 0">None</span>
                     <table class="striped">
                         <tbody>
-                            <tr ng-repeat="key in apiKeys">
-                                <td><strong>{{ key.name }}</strong></td>
-                                <td>Last used: {{ key.lastUsed || 'Never' }}</td>
-                                <td>{{ key.usage.new.month || 0 }} new skins this month</td>
-                                <td><a href="{{ getRateLimitFormLink(key) }}" style="float: right;" target="_blank">Request Rate Limit Increase</a></td>
-                                <td style="float: right; opacity: 0.2; margin-right: 4px;">{{ key.id }}</td>
-                            </tr>
+                        <tr ng-repeat="key in apiKeys">
+                            <td><strong>{{ key.name }}</strong></td>
+                            <td>Last used: {{ key.lastUsed || 'Never' }}</td>
+                            <td>{{ key.usage.new.month || 0 }} new skins this month</td>
+                            <td><a href="{{ getRateLimitFormLink(key) }}" style="float: right;" target="_blank">Request Rate Limit Increase</a></td>
+                            <td style="float: right; opacity: 0.2; margin-right: 4px;">{{ key.id }}</td>
+                        </tr>
                         </tbody>
                     </table>
                     <br/>
                     <a class="btn waves-effect waves-light" ui-sref="apikey">Manage API Keys</a>
+                </div>
+
+                <br/>
+                <div class="row">
+                    <h4>User-Agent Stats</h4>
+                    <span>Get usage stats for your app's User-Agent</span><br/>
+                    <div class="center offset-m3 col s12">
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input id="stats-user-agent" ng-model="uaStats.agent" type="text">
+                                <label for="stats-user-agent">Your User-agent</label>
+                                <button class="btn waves-effect waves-light" ng-click="checkUserAgentStats()"  ng-disabled="!uaStats.agent">Check</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="row" ng-if="uaStats.stats && uaStats.stats.agent">
+                    <span><strong>{{ uaStats.stats.agent }}</strong></span><br/>
+                    <span><strong>{{ uaStats.stats.usage.new.year||0 }}</strong> New Skins This Year</span><br/>
+                    <span><strong>{{ uaStats.stats.usage.new.month||0 }}</strong> New Skins This Month</span><br/>
                 </div>
 
                 <br/>
