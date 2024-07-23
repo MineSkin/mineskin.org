@@ -123,8 +123,10 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
         loadObserver.observe(el[0]);
     };
 
+    $scope.signedIn = false;
     $scope.ownSkins = $scope.$storage.recentSkins || [];
     $scope.loadOwnSkins = function () {
+        $scope.signedIn = false;
         $scope.ownSkins = $scope.$storage.recentSkins || [];
         $scope.checkAccount(function (account) {
             if (!account) {
@@ -135,6 +137,7 @@ mineskinApp.controller("galleryController", ["$scope", "$stateParams", "$http", 
                 url: apiBaseUrl + '/account/skins',
                 withCredentials: true,
             }).then(function (res) {
+                $scope.signedIn = true;
                 for (let s of res.data) {
                     if (!$scope.ownSkins.includes(s)) {
                         $scope.ownSkins.unshift(s);
