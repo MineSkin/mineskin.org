@@ -2,17 +2,24 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
     console.info("accountController")
 
     $scope.loadLogin = function () {
-        console.log('loadLogin')
+        console.log('loadLogin');
+        console.log($stateParams);
         $timeout(function () {
-            google.accounts.id.renderButton(document.getElementById('google_button_placeholder'), {
-                locale: 'en',
-                logo_alignment: 'left',
-                shape: 'pill',
-                size: 'large',
-                text: 'continue_with',
-                theme: 'filled_blue',
-                type: 'standard'
-            });
+            try {
+                let b = google.accounts.id.renderButton(document.getElementById('google_button_placeholder'), {
+                    locale: 'en',
+                    logo_alignment: 'left',
+                    shape: 'pill',
+                    size: 'large',
+                    text: 'continue_with',
+                    theme: 'filled_blue',
+                    type: 'standard'
+                });
+                console.log(b);
+            } catch (e) {
+                console.error(e);
+                window.location.reload();
+            }
         }, 600);
         // google.accounts.id.prompt();
         // googleInit().then(()=>{
