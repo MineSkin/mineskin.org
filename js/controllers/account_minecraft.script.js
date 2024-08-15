@@ -59,6 +59,7 @@ mineskinApp.controller("minecraftAccountController", ["$scope", "$http", "$cooki
     $scope.checkUnderstoodLogin = false;
     $scope.checkReadTerms = false;
     $scope.checkAcceptSkins = false;
+    $scope.checkInvert = false;
     $scope.checkAcceptPassword = false;
 
     window.__scope = $scope;
@@ -479,6 +480,7 @@ mineskinApp.controller("minecraftAccountController", ["$scope", "$http", "$cooki
                 checks: {
                     readTerms: $scope.checkReadTerms,
                     acceptSkins: $scope.checkAcceptSkins,
+                    invert: $scope.checkInvert,
                     acceptPassword: $scope.checkAcceptPassword
                 }
             };

@@ -175,6 +175,10 @@
                         <label class="obviousLabel" for="checkAcceptSkins">I understand that the skin of my account will be changed randomly</label>
                     </div>
                     <div>
+                        <input id="checkInvert" ng-model="checkInvert" type="checkbox"/>
+                        <label class="obviousLabel" for="checkInvert">I don't know what I'm doing</label>
+                    </div>
+                    <div>
                         <input id="checkAcceptPassword" ng-model="checkAcceptPassword" type="checkbox"/>
                         <label class="obviousLabel" for="checkAcceptPassword">I understand that MineSkin will <span ng-hide="loginWithMicrosoft">have access to my account's credentials (email + password)</span><span ng-show="loginWithMicrosoft">be able to sign in to my account</span></label>
                     </div>
@@ -182,7 +186,7 @@
                 <br/>
 
                 <div class="row">
-                    <button class="btn waves-effect waves-light" ng-click="submitAccount()" ng-disabled="!checkReadTerms || !checkAcceptSkins || !checkAcceptPassword" type="submit">Add Account!</button>
+                    <button class="btn waves-effect waves-light" ng-click="submitAccount()" ng-disabled="!checkReadTerms || !checkAcceptSkins || checkInvert || !checkAcceptPassword" type="submit">Add Account!</button>
                 </div>
 
             </div>
