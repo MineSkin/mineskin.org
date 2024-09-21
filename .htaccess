@@ -13,7 +13,7 @@ Header set Content-Security-Policy "base-uri 'self'; \
  style-src 'report-sample' 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://maxcdn.bootstrapcdn.com https://use.fontawesome.com https://accounts.google.com; \
  font-src 'self' https://cdnjs.cloudflare.com https://maxcdn.bootstrapcdn.com https://use.fontawesome.com; \
  img-src 'self' blob: data: https://mineskin.org https://api.mineskin.org https://render.mineskin.org https://brand.inventivetalent.dev *; \
- connect-src 'self' https://mineskin.org https://api.mineskin.org https://*.api.mineskin.org *; \
+ connect-src 'self' https://mineskin.org https://api.mineskin.org https://*.api.mineskin.org https://account-api.mineskin.org *; \
  frame-src 'self' *; \
  media-src 'self'; \
  worker-src 'none'; \

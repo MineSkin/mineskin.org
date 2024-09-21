@@ -68,6 +68,7 @@ mineskinApp.directive('googleAd', ['$timeout',
             link: function (scope, element, attrs) {
                 console.log(attrs);
                 return $timeout(function () {
+                    if (window._mineskinGrants && window._mineskinGrants.ad_free) return;
                     element.append("<ins class=\"adsbygoogle\" style=\"display:block\" data-ad-client=\"ca-pub-2604356629473365\" data-ad-slot=\"" + (attrs.googleAd || '7160666614') + "\" data-ad-format=\"auto\" data-full-width-responsive=\"true\"></ins>");
                     return (adsbygoogle = window.adsbygoogle || []).push({});
                 })

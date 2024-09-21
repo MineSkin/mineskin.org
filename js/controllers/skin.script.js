@@ -115,6 +115,35 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
             cb($scope.mineskinAccount);
             return;
         }
+
+        $timeout(function () {
+            let body = {};
+            let token = localStorage.getItem('web_refresh_token');
+            if (token) {
+                body.token = token;
+            }
+            $http({
+                method: 'POST',
+                url: 'https://account-api.mineskin.org/auth/tokens/web',
+                withCredentials: true,
+                data: body
+            }).then(function (res) {
+                if (res.data?.refresh) {
+                    console.log("Got refresh token");
+                    localStorage.setItem('web_refresh_token', res.data.refresh);
+
+                    $timeout(function () {
+                        $scope.checkGrants();
+                    })
+                } else if (res.status === 401) {
+                    localStorage.removeItem('web_refresh_token');
+                }
+            }).catch(err => {
+                console.warn(err);
+                localStorage.removeItem('web_refresh_token');
+            })
+        })
+
         $http({
             method: 'GET',
             url: apiBaseUrl + '/account',
@@ -143,6 +172,34 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
             });
         }
     };
+    $scope.mineskinGrants = undefined;
+    $scope.checkGrants = function (cb) {
+        if ($scope.mineskinGrants && cb) {
+            cb($scope.mineskinGrants);
+            return
+        }
+        if(window._mineskinGrants && cb) {
+            $scope.mineskinGrants = window._mineskinGrants;
+            cb(window._mineskinGrants);
+            return;
+        }
+        $http({
+            method: 'GET',
+            url: 'https://account-api.mineskin.org/auth/tokens/web/grants',
+            withCredentials: true
+        }).then(function (res) {
+            if (res.data?.grants) {
+                $scope.mineskinGrants = res.data.grants;
+                window._mineskinGrants = res.data.grants;
+            }
+            if (cb) cb(res.data.grants);
+        }).catch(err => {
+            $scope.minsekinGrants = {};
+            console.warn(err);
+            if (cb) cb({});
+        })
+    }
+    $scope.checkGrants();
 
     $scope.googleSignedIn = function (data) {
         $timeout(function () {
