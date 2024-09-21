@@ -11,6 +11,11 @@ async function r() {
         script.setAttribute("async", "");
         script.setAttribute("data-cookie-consent", "targeting");
         document.body.append(script);
+
+        const script1 = document.createElement("script");
+        script1.src = "https://cdn.jsdelivr.net/gh/InventivetalentDev/AdBlockBanner@master/abb.min.js";
+        script1.setAttribute("async", "");
+        document.body.append(script1);
     } else {
         console.log("Ad-free grants detected")
     }
