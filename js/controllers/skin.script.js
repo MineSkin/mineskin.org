@@ -119,7 +119,14 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
         $timeout(function () {
             let body = {};
             let token = localStorage.getItem('web_refresh_token');
+            let lastRefresh = Number(localStorage.getItem('web_refresh_token_last'));
             if (token) {
+                if (lastRefresh) {
+                    if (Date.now() - lastRefresh < 1000 * 60 * 60 * 24) {
+                        return;
+                    }
+                }
+
                 body.token = token;
             }
             $http({
@@ -131,6 +138,8 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
                 if (res.data?.refresh) {
                     console.log("Got refresh token");
                     localStorage.setItem('web_refresh_token', res.data.refresh);
+
+                    localStorage.setItem('web_refresh_token_last', `${Date.now()}`);
 
                     $timeout(function () {
                         $scope.checkGrants();
@@ -178,7 +187,7 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
             cb($scope.mineskinGrants);
             return
         }
-        if(window._mineskinGrants && cb) {
+        if (window._mineskinGrants && cb) {
             $scope.mineskinGrants = window._mineskinGrants;
             cb(window._mineskinGrants);
             return;
