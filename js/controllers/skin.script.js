@@ -118,26 +118,25 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
 
         $timeout(function () {
             let body = {};
-            let token = localStorage.getItem('web_refresh_token');
+            // let token = localStorage.getItem('web_refresh_token');
             let lastRefresh = Number(localStorage.getItem('web_refresh_token_last'));
-            if (token) {
+            // if (token) {
                 if (lastRefresh) {
                     if (Date.now() - lastRefresh < 1000 * 60 * 60 * 24) {
                         return;
                     }
                 }
 
-                body.token = token;
-            }
+            //     body.token = token;
+            // }
             $http({
                 method: 'POST',
-                url: 'https://account-api.mineskin.org/auth/tokens/web',
-                withCredentials: true,
-                data: body
+                url: 'https://account-api.mineskin.org/auth/tokens/web/refresh',
+                withCredentials: true
             }).then(function (res) {
-                if (res.data?.refresh) {
-                    console.log("Got refresh token");
-                    localStorage.setItem('web_refresh_token', res.data.refresh);
+                if (res.status === 200) {
+                    console.log("refreshed token");
+                    // localStorage.setItem('web_refresh_token', res.data.refresh);
 
                     localStorage.setItem('web_refresh_token_last', `${Date.now()}`);
 
@@ -145,11 +144,11 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
                         $scope.checkGrants();
                     })
                 } else if (res.status === 401) {
-                    localStorage.removeItem('web_refresh_token');
+                    // localStorage.removeItem('web_refresh_token');
                 }
             }).catch(err => {
                 console.warn(err);
-                localStorage.removeItem('web_refresh_token');
+                // localStorage.removeItem('web_refresh_token');
             })
         })
 
