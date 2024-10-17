@@ -122,7 +122,7 @@ mineskinApp.controller("skinController", ["$scope", "$timeout", "$http", "$state
             let lastRefresh = Number(localStorage.getItem('web_refresh_token_last'));
             // if (token) {
                 if (lastRefresh) {
-                    if (Date.now() - lastRefresh < 1000 * 60 * 60 * 24) {
+                    if (Date.now() - lastRefresh < 1000 * 60 * 60 * 3) {
                         return;
                     }
                 }
