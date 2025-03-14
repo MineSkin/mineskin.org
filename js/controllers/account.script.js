@@ -18,7 +18,7 @@ mineskinApp.controller("accountController", ["$scope", "$http", "$cookies", "$ti
                 console.log(b);
             } catch (e) {
                 console.error(e);
-                window.location.reload();
+                //window.location.reload();
             }
         }, 600);
         // google.accounts.id.prompt();
