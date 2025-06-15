@@ -402,6 +402,16 @@ function materializeBaseInit() {
     }, 500);
 }
 
+$('.new-website-link').on('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    const url = new URL(location.href);
+    url.hostname = "mineskin.org";
+    url.port = "";
+    console.log(url.toString());
+    location.href = url.href;
+});
+
 //// https://github.com/MineSkin/mineskin.org/issues/13 by @SpraxDev
 const uuidView = new DataView(new ArrayBuffer(16));
 
@@ -416,8 +426,8 @@ function getInt32ForUUID(uuid) {
     uuid = uuid.replace(/-/g, '');  // Remove hyphens
     const result = [];
 
-    uuidView.setBigUint64(0, BigInt(`0x${ uuid.substring(0, 16) }`));  // most significant bits (hex)
-    uuidView.setBigUint64(8, BigInt(`0x${ uuid.substring(16) }`));     // least significant bits (hex)
+    uuidView.setBigUint64(0, BigInt(`0x${uuid.substring(0, 16)}`));  // most significant bits (hex)
+    uuidView.setBigUint64(8, BigInt(`0x${uuid.substring(16)}`));     // least significant bits (hex)
 
     // read int32
     for (let i = 0; i < 4; i++) {
@@ -436,5 +446,5 @@ function getInt32ForUUID(uuid) {
  * @returns {string}
  */
 function formatInt32UUID(uuidInt32) {
-    return `[I;${ uuidInt32[0] },${ uuidInt32[1] },${ uuidInt32[2] },${ uuidInt32[3] }]`;
+    return `[I;${uuidInt32[0]},${uuidInt32[1]},${uuidInt32[2]},${uuidInt32[3]}]`;
 }
